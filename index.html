@@ -565,17 +565,13 @@ function showToast() {
 
 async function loadFromServer() {
   try {
-    // Определяем правильный путь (работает и в корне, и в подпапке)
     const basePath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
-    const url = basePath + '/library.json?v=' + Date.now(); // ?v= ломает кэш
-
-    console.log('Пытаемся загрузить:', url);
+    const url = basePath + '/library.json?v=' + Date.now();
 
     const response = await fetch(url, { cache: 'no-store' });
 
     if (response.ok) {
       const data = await response.json();
-      console.log('Данные с сервера:', data);
 
       if (data.books && data.books.length > 0) {
         state.books = data.books;
@@ -583,30 +579,14 @@ async function loadFromServer() {
         if (data.backgrounds) state.backgrounds = data.backgrounds;
         if (data.bookOrder) state.bookOrder = data.bookOrder;
         else state.bookOrder = state.books.map(b => b.id);
-        
-        // Сохраняем в localStorage, чтобы работало офлайн
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
         console.log('✅ Загружено книг:', state.books.length);
-        showToastMessage('✅ Загружено ' + state.books.length + ' книг с сервера');
-      } else {
-        console.log('️ Файл library.json пустой или без книг');
-        showToastMessage('️ library.json пустой');
       }
-    } else {
-      console.log('⚠️ library.json не найден (статус ' + response.status + ')');
     }
   } catch(e) {
     console.log('❌ Ошибка загрузки library.json:', e);
-    showToastMessage('❌ Не удалось загрузить library.json');
   }
-}
-
-function showToastMessage(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3000);
 }
 
 function showSection(name) {
