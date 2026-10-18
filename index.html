@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Last Way Fandom Wiki — Chronicles & Editor</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<style>
+:root {
+  --bg: #0a0a0f; --bg-2: #13131f; --bg-3: #1c1c2e;
+  --text: #e8e8f0; --text-dim: #8a8aa0;
+  --accent: #ff2d55; --accent-2: #5e5ce6;
+  --border: #2a2a40; --success: #30d158; --radius: 12px;
+  --shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+[data-theme="light"] { --bg:#f5f5f7; --bg-2:#fff; --bg-3:#eee; --text:#1d1d1f; --text-dim:#6e6e73; --border:#d2d2d7; }
+[data-theme="sakura"] {
+  --bg: rgba(42, 26, 36, 0.92); --bg-2: rgba(58, 36, 51, 0.95); --bg-3: rgba(74, 46, 66, 0.95);
+  --text: #ffe4f0; --text-dim: #d4a0b7; --accent: #ff7eb3; --accent-2: #ff9ec7; --border: #5a3a4a;
+}
+[data-theme="snow"] { --bg:#0f1720; --bg-2:#1a2535; --bg-3:#243347; --accent:#64d2ff; --accent-2:#5ac8fa; }
+
+body { background: var(--bg); color: var(--text); font-family: -apple-system, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; min-height: 100vh; transition: background 0.5s; margin: 0; }
+body[data-theme="dark"] { background: radial-gradient(ellipse at top, var(--bg-2) 0%, var(--bg) 50%); }
+body[data-theme="light"] { background: #f5f5f7; }
+body[data-theme="snow"] { background: radial-gradient(ellipse at top, var(--bg-2) 0%, var(--bg) 50%); }
+body[data-theme="sakura"] { background: linear-gradient(rgba(20, 10, 15, 0.7), rgba(20, 10, 15, 0.85)), url('img/mitsuko.jpg') center/cover fixed no-repeat; }
+
+* { box-sizing: border-box; }
+
+/* Лепестки сакуры */
+.petal { position: fixed; top: -10vh; z-index: 1; pointer-events: none; background: #ffb7c5; border-radius: 150% 0 150% 0; animation: fall linear infinite; }
+@keyframes fall { 0% { transform: translateY(0) rotate(0deg) translateX(0); opacity: 1; } 100% { transform: translateY(110vh) rotate(360deg) translateX(100px); opacity: 0; } }
+
+/* Навигация */
+.navbar { position: sticky; top: 0; z-index: 100; background: rgba(10,10,15,0.9); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 12px 20px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.logo { font-weight: 800; font-size: 18px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; }
+.nav-links { display: flex; gap: 6px; flex-wrap: wrap; }
+.nav-link { padding: 6px 12px; border-radius: 6px; cursor: pointer; color: var(--text-dim); font-size: 13px; font-weight: 500; transition: all 0.2s; border: 1px solid transparent; }
+.nav-link:hover { color: var(--text); background: var(--bg-3); }
+.nav-link.active { color: var(--text); background: var(--bg-3); border-color: var(--accent); }
+.nav-right { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+.theme-btn { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border); cursor: pointer; }
+.theme-btn:hover { transform: scale(1.1); }
+.theme-btn.dark { background: #0a0a0f; } .theme-btn.light { background: #f5f5f7; } .theme-btn.sakura { background: #ff7eb3; } .theme-btn.snow { background: #64d2ff; }
+.petals-toggle { padding: 4px 10px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg-2); color: var(--text); font-size: 11px; cursor: pointer; }
+
+/* Секции */
+.section { display: none; padding: 28px 20px; max-width: 1200px; margin: 0 auto; animation: fadeIn 0.3s; }
+.section.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+h1 { font-size: 28px; background: linear-gradient(135deg, var(--text), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 12px; }
+h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bottom: 12px; color: var(--accent); }
+
+/* Хронология (как в старом коде) */
+.timeline { position: relative; padding: 20px 0; }
+.timeline::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--accent), var(--accent-2)); transform: translateX(-50%); }
+.timeline-item { position: relative; width: 50%; padding: 16px 32px; margin-bottom: 20px; }
+.timeline-item:nth-child(odd) { left: 0; text-align: right; } .timeline-item:nth-child(even) { left: 50%; }
+.timeline-item::before { content: ''; position: absolute; top: 24px; width: 14px; height: 14px; background: var(--accent); border-radius: 50%; border: 3px solid var(--bg); box-shadow: 0 0 0 3px var(--accent); }
+.timeline-item:nth-child(odd)::before { right: -7px; } .timeline-item:nth-child(even)::before { left: -7px; }
+.timeline-card { background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; cursor: pointer; transition: all 0.3s; box-shadow: var(--shadow); }
+.timeline-card:hover { transform: translateY(-4px); border-color: var(--accent); }
+.timeline-card img { width: 100%; height: 140px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; background: var(--bg-3); }
+.timeline-era { font-size: 11px; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+.timeline-title { font-size: 16px; font-weight: 700; margin: 6px 0; } .timeline-desc { font-size: 13px; color: var(--text-dim); }
+
+/* Книги */
+.books-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-top: 20px; }
+.book-card { background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; cursor: pointer; transition: all 0.3s; }
+.book-card:hover { transform: translateY(-4px); border-color: var(--accent); }
+.book-cover { width: 100%; height: 280px; object-fit: cover; background: var(--bg-3); }
+.book-info { padding: 12px; } .book-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; } .book-meta { font-size: 11px; color: var(--text-dim); }
+
+/* Читалка */
+.reader-container { max-width: 700px; margin: 0 auto; }
+.reader-nav { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); margin-bottom: 12px; }
+.reader-nav.bottom { border-top: 1px solid var(--border); border-bottom: none; margin-top: 20px; }
+.reader-title { font-size: 16px; font-weight: 700; } .reader-chapter { font-size: 12px; color: var(--text-dim); }
+.reader-content { font-size: 16px; line-height: 1.7; color: var(--text); padding: 16px 0; min-height: 300px; }
+.reader-content p { margin-bottom: 14px; }
+.reader-content img, .preview-box img { max-width: 100% !important; height: auto !important; border-radius: 8px; margin: 12px 0; }
+
+/* Лор / Вики (как на Fandom) */
+.wiki-layout { display: grid; grid-template-columns: 280px 1fr; gap: 28px; margin-top: 20px; }
+@media (max-width: 768px) { .wiki-layout { grid-template-columns: 1fr; } }
+.wiki-infobox { background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; height: fit-content; position: sticky; top: 80px; }
+.wiki-infobox img { width: 100%; height: 220px; object-fit: cover; border-radius: 8px; margin-bottom: 12px; background: var(--bg-3); }
+.wiki-infobox h3 { color: var(--accent); margin-bottom: 10px; font-size: 18px; }
+.wiki-infobox .short-desc { font-size: 13px; color: var(--text-dim); margin-bottom: 12px; font-style: italic; }
+.wiki-infobox .info-row { display: flex; justify-content: space-between; font-size: 12px; padding: 5px 0; border-bottom: 1px solid var(--border); }
+.wiki-infobox .info-row:last-child { border-bottom: none; }
+.wiki-infobox .categories { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+.wiki-infobox .category-tag { display: inline-block; padding: 3px 8px; background: var(--bg-3); border-radius: 4px; font-size: 11px; margin: 2px; color: var(--text-dim); }
+.wiki-main { font-size: 15px; line-height: 1.8; }
+.wiki-main p { margin-bottom: 14px; }
+.wiki-main .lore-link { color: var(--accent); text-decoration: underline; cursor: pointer; font-weight: 500; }
+.wiki-main .lore-link:hover { color: var(--accent-2); }
+
+.lore-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; margin-top: 16px; }
+.lore-card { background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; cursor: pointer; transition: all 0.3s; }
+.lore-card:hover { transform: translateY(-3px); border-color: var(--accent); }
+.lore-card img { width: 100%; height: 160px; object-fit: cover; background: var(--bg-3); }
+.lore-card-info { padding: 10px; } .lore-card-title { font-weight: 700; font-size: 14px; }
+
+/* Админка */
+.admin-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width: 800px) { .admin-layout { grid-template-columns: 1fr; } }
+.admin-panel { background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); margin-bottom: 16px; }
+.form-group { margin-bottom: 14px; } .form-group label { display: block; font-size: 12px; color: var(--text-dim); margin-bottom: 5px; font-weight: 600; }
+.form-input, .form-textarea, .form-select { width: 100%; padding: 9px 11px; border-radius: 7px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-size: 13px; font-family: inherit; }
+.form-input:focus, .form-textarea:focus { outline: none; border-color: var(--accent); }
+.form-textarea { min-height: 100px; resize: vertical; }
+
+.drop-zone { border: 2px dashed var(--border); border-radius: var(--radius); padding: 32px 16px; text-align: center; cursor: pointer; transition: all 0.3s; background: var(--bg); }
+.drop-zone:hover, .drop-zone.dragover { border-color: var(--accent); background: var(--bg-3); }
+
+.btn { padding: 7px 14px; border-radius: 7px; border: 1px solid var(--border); background: var(--bg-2); color: var(--text); cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.2s; display: inline-flex; align-items: center; gap: 5px; }
+.btn:hover { background: var(--bg-3); border-color: var(--accent); }
+.btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; } .btn-primary:hover { background: #ff4569; }
+.btn-small { padding: 5px 9px; font-size: 11px; }
+.btn-danger { color: #ff453a; border-color: #ff453a; } .btn-danger:hover { background: rgba(255,69,58,0.1); }
+
+.editor-toolbar { display: flex; gap: 4px; padding: 7px; background: var(--bg); border: 1px solid var(--border); border-radius: 7px 7px 0 0; flex-wrap: wrap; }
+.editor-toolbar button { padding: 5px 9px; background: transparent; border: 1px solid transparent; color: var(--text); border-radius: 4px; cursor: pointer; font-size: 12px; }
+.editor-toolbar button:hover { background: var(--bg-3); }
+.editor-content { min-height: 250px; padding: 14px; background: var(--bg); border: 1px solid var(--border); border-top: none; border-radius: 0 0 7px 7px; font-size: 14px; line-height: 1.7; outline: none; }
+
+.status { padding: 9px 12px; border-radius: 7px; font-size: 12px; margin-top: 10px; display: none; }
+.status.success { background: rgba(48,209,88,0.15); color: var(--success); border: 1px solid var(--success); display: block; }
+.status.error { background: rgba(255,69,58,0.15); color: #ff453a; border: 1px solid #ff453a; display: block; }
+.status.info { background: rgba(94,92,230,0.15); color: var(--accent-2); border: 1px solid var(--accent-2); display: block; }
+
+.toast { position: fixed; bottom: 20px; right: 20px; z-index: 1000; background: var(--success); color: #fff; padding: 10px 18px; border-radius: 7px; font-weight: 600; box-shadow: var(--shadow); transform: translateY(100px); opacity: 0; transition: all 0.3s; font-size: 13px; }
+.toast.show { transform: translateY(0); opacity: 1; }
+
+@media (max-width: 768px) {
+  .timeline::before { left: 16px; } .timeline-item { width: 100%; left: 0 !important; padding-left: 40px; text-align: left !important; }
+  .timeline-item::before { left: 9px !important; right: auto !important; }
+  .navbar { padding: 10px 14px; } .section { padding: 16px 14px; }
+}
+</style>
+</head>
+<body data-theme="dark">
+
+<nav class="navbar">
+  <div class="logo" onclick="showSection('timeline')"> LAST WAY</div>
+  <div class="nav-links">
+    <div class="nav-link active" data-section="timeline" onclick="showSection('timeline')">⏳ Хронология</div>
+    <div class="nav-link" data-section="books" onclick="showSection('books')">📚 Читальный зал</div>
+    <div class="nav-link" data-section="characters" onclick="showSection('characters')">👥 Персонажи</div>
+    <div class="nav-link" data-section="locations" onclick="showSection('locations')">📍 Локации</div>
+    <div class="nav-link" data-section="items" onclick="showSection('items')">⚔️ Предметы</div>
+    <div class="nav-link" data-section="admin" onclick="showSection('admin')">⚙️ Dev</div>
+  </div>
+  <div class="nav-right">
+    <button class="petals-toggle" id="petals-btn" onclick="togglePetals()" style="display:none;">🌸 Лепестки: ВКЛ</button>
+    <div class="theme-btn dark" onclick="setTheme('dark')" title="Тёмная"></div>
+    <div class="theme-btn light" onclick="setTheme('light')" title="Светлая"></div>
+    <div class="theme-btn sakura" onclick="setTheme('sakura')" title="Сакура"></div>
+    <div class="theme-btn snow" onclick="setTheme('snow')" title="Снежная"></div>
+  </div>
+</nav>
+
+<section id="section-timeline" class="section active">
+  <h1>Единая Хронологическая Линия Времени</h1>
+  <p style="color: var(--text-dim); margin-bottom: 24px; font-size: 14px;">Синхронизация канона вселенной Last Way</p>
+  <div class="timeline" id="timeline-container"></div>
+</section>
+
+<section id="section-books" class="section">
+  <h1>📚 Читальный зал Драгона</h1>
+  <input type="text" class="form-input" id="book-search" placeholder="🔍 Поиск по книгам..." oninput="renderBooks()" style="margin-bottom: 16px;">
+  <div class="books-grid" id="books-grid"></div>
+</section>
+
+<section id="section-reader" class="section">
+  <div class="reader-container">
+    <div class="reader-nav">
+      <div><div class="reader-title" id="reader-book-title">—</div><div class="reader-chapter" id="reader-chapter-title">Глава 1</div></div>
+      <div style="display: flex; gap: 6px;">
+        <button class="btn btn-small" onclick="prevPage()">← Назад</button>
+        <button class="btn btn-small" onclick="nextPage()">Вперёд →</button>
+        <button class="btn btn-small" onclick="showSection('books')">✕</button>
+      </div>
+    </div>
+    <div class="reader-content" id="reader-content"></div>
+    <div class="reader-nav bottom">
+      <button class="btn" onclick="prevPage()">← Предыдущая</button>
+      <div id="page-info" style="color: var(--text-dim); font-size: 13px;">Стр. 1</div>
+      <button class="btn" onclick="nextPage()">Следующая →</button>
+    </div>
+  </div>
+</section>
+
+<section id="section-characters" class="section">
+  <h1>👥 Персонажи Вселенной</h1>
+  <p style="color: var(--text-dim); font-size: 13px;">Добавляй персонажей через Dev-панель → База Лора</p>
+  <div class="lore-grid" id="lore-characters"></div>
+</section>
+<section id="section-locations" class="section">
+  <h1>📍 Локации и Базы</h1>
+  <div class="lore-grid" id="lore-locations"></div>
+</section>
+<section id="section-items" class="section">
+  <h1>⚔️ Предметы и Артефакты</h1>
+  <div class="lore-grid" id="lore-items"></div>
+</section>
+
+<section id="section-lore-view" class="section">
+  <button class="btn" onclick="showSection(lastLoreSection)" style="margin-bottom: 16px;">← Назад к списку</button>
+  <div class="wiki-layout" id="wiki-layout-content"></div>
+</section>
+
+<section id="section-admin" class="section">
+  <h1>⚙️ Visual Book Core Engine v4.0 PRO</h1>
+  <div style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;">
+    <button class="btn btn-primary" onclick="showAdminTab('books')">📚 Книги</button>
+    <button class="btn" onclick="showAdminTab('lore')">📖 База Лора</button>
+    <button class="btn" onclick="showAdminTab('backup')"> Бэкап / Хостинг</button>
+  </div>
+
+  <div id="admin-tab-books">
+    <div class="admin-layout">
+      <div>
+        <div class="admin-panel">
+          <h3>📥 Импорт книги из Word (.docx)</h3>
+          <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 12px;">Перетащи файл Word. Заголовки "Heading 1" станут главами.</p>
+          <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
+            <div style="font-size: 40px; margin-bottom: 8px;">📄</div>
+            <div>Перетащи .docx файл сюда</div>
+          </div>
+          <input type="file" id="file-input" accept=".docx" style="display: none;" onchange="handleFileSelect(event)">
+          <div id="conversion-status"></div>
+          <div id="preview-section" style="display: none; margin-top: 16px;">
+            <h3>👁️ Предпросмотр</h3>
+            <div class="preview-box" id="preview-box" style="background: var(--bg); border: 1px solid var(--border); border-radius: 7px; padding: 12px; max-height: 250px; overflow-y: auto; margin-top: 10px;"></div>
+            <div style="margin-top: 10px; display: flex; gap: 6px;">
+              <button class="btn btn-primary" onclick="saveConvertedBook()">💾 Сохранить книгу</button>
+              <button class="btn" onclick="cancelConversion()">✕ Отмена</button>
+            </div>
+          </div>
+        </div>
+        <div class="admin-panel">
+          <h3>✏️ Быстрое создание книги</h3>
+          <div class="form-group"><label>Название</label><input type="text" class="form-input" id="quick-title"></div>
+          <div class="form-group"><label>Обложка (из папки img/)</label><input type="text" class="form-input" id="quick-cover" placeholder="dragon.jpg"></div>
+          <button class="btn btn-primary" onclick="createEmptyBook()">➕ Создать</button>
+        </div>
+      </div>
+      <div>
+        <div class="admin-panel">
+          <h3>📚 Мои книги</h3>
+          <div id="admin-book-list" style="display: flex; flex-direction: column; gap: 8px; max-height: 450px; overflow-y: auto;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="admin-tab-lore" style="display: none;">
+    <div class="admin-panel">
+      <h3>➕ Добавить запись в Лор (Fandom-style)</h3>
+      <div class="form-group">
+        <label>Тип записи</label>
+        <select class="form-input" id="lore-type">
+          <option value="characters">👥 Персонаж</option>
+          <option value="locations">📍 Локация</option>
+          <option value="items">⚔️ Предмет</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Название</label><input type="text" class="form-input" id="lore-name" placeholder="Например: АВП Лапки"></div>
+      <div class="form-group"><label>Картинка (из папки img/)</label><input type="text" class="form-input" id="lore-img" placeholder="lapki.jpg"></div>
+      <div class="form-group"><label>Краткое описание (для инфобокса)</label><textarea class="form-input" id="lore-short" placeholder="Легендарное оружие..."></textarea></div>
+      <div class="form-group">
+        <label>Категории (через запятую)</label>
+        <input type="text" class="form-input" id="lore-categories" placeholder="Оружие, Легендарное, Last Way">
+      </div>
+      <div class="form-group">
+        <label>Подробный текст статьи</label>
+        <div class="editor-toolbar">
+          <button onclick="execCmdLore('bold')"><b>B</b></button>
+          <button onclick="execCmdLore('italic')"><i>I</i></button>
+          <button onclick="execCmdLore('underline')"><u>U</u></button>
+          <button onclick="execCmdLore('formatBlock', 'H2')">H2</button>
+          <button onclick="execCmdLore('formatBlock', 'P')">¶</button>
+          <button onclick="insertLoreLink()" style="background: var(--accent); color: #fff;">🔗 Ссылка на сущность</button>
+        </div>
+        <div class="editor-content" id="lore-editor" contenteditable="true" style="min-height: 200px;"></div>
+        <p style="font-size: 11px; color: var(--text-dim); margin-top: 6px;">💡 Используй кнопку "🔗 Ссылка на сущность" чтобы вставить кликабельную ссылку на другого персонажа/локацию/предмет.</p>
+      </div>
+      <button class="btn btn-primary" onclick="saveLoreEntry()"> Сохранить в базу лора</button>
+      <div id="lore-status"></div>
+    </div>
+    <div class="admin-panel">
+      <h3>📋 Существующие записи</h3>
+      <div id="admin-lore-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
+    </div>
+  </div>
+
+  <div id="admin-tab-backup" style="display: none;">
+    <div class="admin-panel">
+      <h3>📦 Экспорт для хостинга (чтобы книги были у всех)</h3>
+      <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 12px;">
+        Чтобы книги были доступны всем посетителям сайта без бэкапов, загрузи этот JSON файл на хостинг рядом с <code>dragonmswiki.html</code> под именем <code>library.json</code>. Сайт автоматически подтянет книги оттуда.
+      </p>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+        <button class="btn btn-primary" onclick="exportLibraryJSON()"> Скачать library.json</button>
+        <button class="btn" onclick="exportFullJSON()">🗃️ Полный бэкап (книги + лор)</button>
+        <button class="btn" onclick="document.getElementById('import-file').click()">⬆️ Импорт бэкапа</button>
+        <input type="file" id="import-file" accept=".json" style="display: none;" onchange="importJSON(event)">
+        <button class="btn btn-danger" onclick="clearAllData()">🗑️ Очистить всё</button>
+      </div>
+    </div>
+    <div class="admin-panel">
+      <h3>ℹ️ Инструкция по хостингу</h3>
+      <ol style="font-size: 12px; color: var(--text-dim); padding-left: 20px; line-height: 1.8;">
+        <li>Создай репозиторий на GitHub</li>
+        <li>Загрузи туда <code>dragonmswiki.html</code> и папку <code>img/</code></li>
+        <li>Нажми "Скачать library.json" и загрузи его в корень репозитория</li>
+        <li>Включи GitHub Pages в настройках репозитория</li>
+        <li>Готово! Сайт будет доступен всем, книги подтянутся автоматически</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="section-editor" class="section">
+  <div style="max-width: 850px; margin: 0 auto;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+      <h1 id="editor-book-title">Редактор</h1>
+      <button class="btn" onclick="showSection('admin')">← Назад</button>
+    </div>
+    <div class="admin-panel">
+      <h3>Глава книги</h3>
+      <div class="form-group"><label>Название главы</label><input type="text" class="form-input" id="chapter-title"></div>
+      <div class="editor-toolbar">
+        <button onclick="execCmd('bold')"><b>B</b></button>
+        <button onclick="execCmd('italic')"><i>I</i></button>
+        <button onclick="execCmd('underline')"><u>U</u></button>
+        <button onclick="execCmd('formatBlock', 'H2')">H2</button>
+        <button onclick="execCmd('formatBlock', 'P')">¶</button>
+      </div>
+      <div class="editor-content" id="editor-content" contenteditable="true" oninput="updateCharCount()"></div>
+      <div style="margin-top: 8px; font-size: 11px; color: var(--text-dim);">Символов: <span id="char-count">0</span> | Страниц: <span id="page-count">0</span></div>
+      <div style="margin-top: 12px; display: flex; gap: 6px;">
+        <button class="btn btn-primary" onclick="saveChapter()">💾 Сохранить главу</button>
+      </div>
+      <div id="editor-status"></div>
+    </div>
+    <div class="admin-panel">
+      <h3>📑 Главы этой книги</h3>
+      <div id="editor-chapter-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
+    </div>
+  </div>
+</section>
+
+<div class="toast" id="toast">💾 Сохранено!</div>
+
+<script>
+const STORAGE_KEY = 'dragonms_library_v4';
+let state = { books: [], lore: { characters: [], locations: [], items: [] } };
+let currentBookId = null, currentChapterIdx = 0, currentPage = 0, pages = [];
+let editingBookId = null, editingChapterId = null;
+let lastLoreSection = 'characters';
+let petalsEnabled = false;
+let petalInterval;
+
+function loadData() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      state.books = parsed.books || [];
+      state.lore = parsed.lore || { characters: [], locations: [], items: [] };
+    }
+  } catch(e) { console.error('Load error', e); }
+}
+function saveData() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    showToast();
+  } catch(e) { alert('Ошибка сохранения! Используй экспорт JSON.'); }
+}
+function showToast() {
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+// Подгрузка книг с сервера (library.json)
+async function loadFromServer() {
+  try {
+    const response = await fetch('library.json');
+    if (response.ok) {
+      const data = await response.json();
+      if (data.books && data.books.length > 0) {
+        state.books = data.books;
+        if (data.lore) state.lore = data.lore;
+        console.log('Книги загружены с сервера');
+      }
+    }
+  } catch(e) {
+    console.log('library.json не найден, используем localStorage');
+  }
+}
+
+function showSection(name) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  const section = document.getElementById('section-' + name);
+  if (section) section.classList.add('active');
+  const link = document.querySelector(`.nav-link[data-section="${name}"]`);
+  if (link) link.classList.add('active');
+
+  if (name === 'books') renderBooks();
+  if (name === 'timeline') renderTimeline();
+  if (name === 'characters' || name === 'locations' || name === 'items') renderLoreGrid(name);
+  if (name === 'admin') { renderAdminBookList(); renderAdminLoreList(); }
+  window.scrollTo(0, 0);
+}
+
+function showAdminTab(tab) {
+  ['books', 'lore', 'backup'].forEach(t => document.getElementById('admin-tab-'+t).style.display = 'none');
+  document.getElementById('admin-tab-'+tab).style.display = 'block';
+}
+
+function setTheme(t) {
+  document.body.setAttribute('data-theme', t);
+  localStorage.setItem('dragonms_theme', t);
+  const petalsBtn = document.getElementById('petals-btn');
+  if (t === 'sakura') {
+    petalsBtn.style.display = 'block';
+    if (petalsEnabled) startPetals();
+  } else {
+    petalsBtn.style.display = 'none';
+    stopPetals();
+  }
+}
+
+function togglePetals() {
+  petalsEnabled = !petalsEnabled;
+  document.getElementById('petals-btn').textContent = petalsEnabled ? '🌸 Лепестки: ВКЛ' : ' Лепестки: ВЫКЛ';
+  if (petalsEnabled) startPetals(); else stopPetals();
+  localStorage.setItem('dragonms_petals', petalsEnabled);
+}
+
+function startPetals() {
+  if (petalInterval) return;
+  petalInterval = setInterval(() => {
+    const petal = document.createElement('div');
+    petal.className = 'petal';
+    petal.style.left = Math.random() * 100 + 'vw';
+    petal.style.width = (Math.random() * 10 + 5) + 'px';
+    petal.style.height = petal.style.width;
+    petal.style.animationDuration = (Math.random() * 3 + 4) + 's';
+    petal.style.opacity = Math.random() * 0.5 + 0.5;
+    document.body.appendChild(petal);
+    setTimeout(() => petal.remove(), 7000);
+  }, 300);
+}
+function stopPetals() { clearInterval(petalInterval); petalInterval = null; document.querySelectorAll('.petal').forEach(p => p.remove()); }
+
+// Хронология (как в старом коде)
+const DEFAULT_TIMELINE = [
+  { era: 'Часть 1', title: 'Друзья навсегда', desc: 'Глубокая психологическая история взаимоотношений Максима и Драгона. Трагические события в Токио под бесконечным японским дождем.', img: 'img/cover_friendsforever.jpg', type: 'book', bookId: 'friendsforever' },
+  { era: 'Часть 2', title: 'Легенда об АВП Лапки 1', desc: 'Драгон Мс собирает легендарный первоначальный состав клуба Last Way. Зарождение мифологии священного оружия.', img: 'img/cover_lapki1.jpg', type: 'book', bookId: 'lapki1' },
+  { era: 'Эра Лапки 1 — Начало', title: 'Основание Клуба Last Way', desc: 'Драгон Мс собирает легендарный состав. Старт эпохи шиза-рассказов и зарождение мифологии оружия.', img: 'img/cover_lapki1.jpg', type: 'info' },
+  { era: 'Часть 3', title: 'Легенда об АВП Лапки 2: Пророчество', desc: 'Кризисная веха, повествующая о тяжелом ментальном упадке Драгона и жестком шантаже со стороны Империи Капибар.', img: 'img/cover_lapki2.jpg', type: 'book', bookId: 'lapki2' },
+  { era: 'Эра Лапки 2 — Лето 2023', title: 'Застой Капибары и Тильт', desc: 'Возвращение АВП. Совместные ламповые игры в Рафт и Гаррис Мод. Растущий тильт Капибары из-за FaceIt.', img: 'img/capybara.jpg', type: 'info' },
+  { era: 'Эра Лапки 2 — Осень 2023', title: 'Потеря АВП Лапки и Раскол', desc: 'Игра против Симпла. Выключение света. Стримснайпер Valerchik34 крадет винтовку. Ссора и распад команды.', img: 'img/cover_lapki2.jpg', type: 'info' }
+];
+
+function renderTimeline() {
+  document.getElementById('timeline-container').innerHTML = DEFAULT_TIMELINE.map(item => `
+    <div class="timeline-item"><div class="timeline-card" onclick="${item.type === 'book' ? `openBook('${item.bookId}')` : ''}">
+      <img src="${item.img}" onerror="this.style.display='none'">
+      <div class="timeline-era">${item.era}</div>
+      <div class="timeline-title">${item.title}</div>
+      <div class="timeline-desc">${item.desc}</div>
+    </div></div>
+  `).join('');
+}
+
+function renderBooks() {
+  const search = (document.getElementById('book-search').value || '').toLowerCase();
+  const filtered = state.books.filter(b => b.title.toLowerCase().includes(search));
+  const grid = document.getElementById('books-grid');
+  if (filtered.length === 0) { grid.innerHTML = '<p style="color:var(--text-dim); grid-column:1/-1; text-align:center; padding:32px;">Книг нет. Загрузи через Dev-панель или library.json.</p>'; return; }
+  grid.innerHTML = filtered.map(book => `
+    <div class="book-card" onclick="openBook('${book.id}')">
+      <img class="book-cover" src="img/${book.cover || 'dragon.jpg'}" onerror="this.src='img/dragon.jpg'">
+      <div class="book-info">
+        <div class="book-title">${book.title}</div>
+        <div class="book-meta">${(book.chapters || []).length} глав</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openBook(bookId) {
+  const book = state.books.find(b => b.id === bookId);
+  if (!book || !book.chapters || book.chapters.length === 0) { alert('Книга пустая!'); return; }
+  currentBookId = bookId; currentChapterIdx = 0; currentPage = 0;
+  showSection('reader'); renderReader();
+}
+
+function renderReader() {
+  const book = state.books.find(b => b.id === currentBookId);
+  const chapter = book.chapters[currentChapterIdx];
+  document.getElementById('reader-book-title').textContent = book.title;
+  document.getElementById('reader-chapter-title').textContent = chapter.title || `Глава ${currentChapterIdx + 1}`;
+
+  pages = splitIntoPages(chapter.content, 4000);
+  if (currentPage >= pages.length) currentPage = pages.length - 1;
+  if (currentPage < 0) currentPage = 0;
+
+  document.getElementById('reader-content').innerHTML = pages[currentPage] || '<p>Пусто</p>';
+  document.getElementById('page-info').textContent = `Стр. ${currentPage + 1} из ${pages.length} • Гл. ${currentChapterIdx + 1}/${book.chapters.length}`;
+  document.querySelector('.reader-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function splitIntoPages(html, maxChars) {
+  if (!html) return ['<p>Пусто</p>'];
+  const tmp = document.createElement('div'); tmp.innerHTML = html;
+  const blocks = Array.from(tmp.children).length > 0 ? Array.from(tmp.children) : [{outerHTML: html}];
+  const pages = []; let current = '', currentLen = 0;
+  blocks.forEach(block => {
+    const text = block.textContent || '';
+    if (currentLen + text.length > maxChars && currentLen > 0) { pages.push(current); current = block.outerHTML; currentLen = text.length; }
+    else { current += block.outerHTML; currentLen += text.length; }
+  });
+  if (current) pages.push(current);
+  return pages.length > 0 ? pages : ['<p>Пусто</p>'];
+}
+
+function nextPage() {
+  const book = state.books.find(b => b.id === currentBookId);
+  if (currentPage < pages.length - 1) { currentPage++; renderReader(); }
+  else if (currentChapterIdx < book.chapters.length - 1) { currentChapterIdx++; currentPage = 0; renderReader(); }
+  else { alert('🎉 Книга прочитана!'); }
+}
+function prevPage() {
+  if (currentPage > 0) { currentPage--; renderReader(); }
+  else if (currentChapterIdx > 0) { currentChapterIdx--; currentPage = 0; renderReader(); }
+}
+
+// Импорт Word
+const dropZone = document.getElementById('drop-zone');
+['dragenter', 'dragover'].forEach(e => dropZone.addEventListener(e, ev => { ev.preventDefault(); dropZone.classList.add('dragover'); }));
+['dragleave', 'drop'].forEach(e => dropZone.addEventListener(e, ev => { ev.preventDefault(); dropZone.classList.remove('dragover'); }));
+dropZone.addEventListener('drop', e => { if (e.dataTransfer.files[0]) processDocx(e.dataTransfer.files[0]); });
+function handleFileSelect(e) { if (e.target.files[0]) processDocx(e.target.files[0]); }
+
+let pendingBook = null;
+function processDocx(file) {
+  const status = document.getElementById('conversion-status');
+  status.className = 'status info'; status.textContent = '⏳ Конвертация...'; status.style.display = 'block';
+  const reader = new FileReader();
+  reader.onload = e => {
+    mammoth.convertToHtml({ arrayBuffer: e.target.result }).then(result => {
+      const chapters = splitByHeadings(result.value);
+      pendingBook = { fileName: file.name.replace('.docx', ''), html: result.value, chapters };
+      document.getElementById('preview-box').innerHTML = result.value;
+      document.getElementById('preview-section').style.display = 'block';
+      status.className = 'status success'; status.textContent = `✅ Готово! Глав: ${chapters.length}`;
+    }).catch(err => { status.className = 'status error'; status.textContent = '❌ ' + err.message; });
+  };
+  reader.readAsArrayBuffer(file);
+}
+function splitByHeadings(html) {
+  const tmp = document.createElement('div'); tmp.innerHTML = html;
+  const chapters = []; let current = { title: 'Глава 1', content: '' }; let num = 1;
+  Array.from(tmp.children).forEach(node => {
+    if (node.tagName === 'H1' || node.tagName === 'H2') {
+      if (current.content.trim()) chapters.push(current);
+      current = { title: node.textContent.trim() || `Глава ${num}`, content: '' }; num++;
+    } else { current.content += node.outerHTML; }
+  });
+  if (current.content.trim()) chapters.push(current);
+  if (chapters.length === 0) chapters.push({ title: 'Глава 1', content: html });
+  return chapters;
+}
+function saveConvertedBook() {
+  if (!pendingBook) return;
+  const title = prompt('Название книги:', pendingBook.fileName); if (!title) return;
+  const cover = prompt('Обложка (из img/):', 'dragon.jpg') || 'dragon.jpg';
+  state.books.push({ id: 'book_' + Date.now(), title, cover, description: '', chapters: pendingBook.chapters.map((c, i) => ({ id: 'ch_'+Date.now()+'_'+i, title: c.title, content: c.content })), createdAt: new Date().toISOString() });
+  saveData(); pendingBook = null;
+  document.getElementById('preview-section').style.display = 'none';
+  renderAdminBookList();
+}
+function cancelConversion() { pendingBook = null; document.getElementById('preview-section').style.display = 'none'; }
+
+function renderAdminBookList() {
+  const list = document.getElementById('admin-book-list');
+  if (state.books.length === 0) { list.innerHTML = '<p style="color:var(--text-dim)">Нет книг</p>'; return; }
+  list.innerHTML = state.books.map(book => `
+    <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; background:var(--bg); border:1px solid var(--border); border-radius:7px;">
+      <div><b style="font-size:13px">${book.title}</b><br><small style="color:var(--text-dim)">${(book.chapters||[]).length} глав</small></div>
+      <div style="display:flex; gap:5px;">
+        <button class="btn btn-small" onclick="openEditor('${book.id}')">✏️</button>
+        <button class="btn btn-small btn-danger" onclick="deleteBook('${book.id}')">🗑️</button>
+      </div>
+    </div>
+  `).join('');
+}
+function deleteBook(id) { if(confirm('Удалить?')) { state.books = state.books.filter(b => b.id !== id); saveData(); renderAdminBookList(); } }
+function createEmptyBook() {
+  const title = document.getElementById('quick-title').value.trim(); if (!title) return alert('Введи название');
+  const cover = document.getElementById('quick-cover').value.trim() || 'dragon.jpg';
+  state.books.push({ id: 'book_' + Date.now(), title, cover, chapters: [], createdAt: new Date().toISOString() });
+  saveData(); document.getElementById('quick-title').value = ''; renderAdminBookList();
+}
+
+function openEditor(bookId) {
+  editingBookId = bookId; editingChapterId = null;
+  const book = state.books.find(b => b.id === bookId);
+  document.getElementById('editor-book-title').textContent = '✏️ ' + book.title;
+  showSection('editor'); renderEditorChapterList();
+  document.getElementById('editor-content').innerHTML = ''; document.getElementById('chapter-title').value = '';
+}
+function renderEditorChapterList() {
+  const book = state.books.find(b => b.id === editingBookId);
+  const list = document.getElementById('editor-chapter-list');
+  if (!book.chapters.length) { list.innerHTML = '<p style="color:var(--text-dim)">Нет глав</p>'; return; }
+  list.innerHTML = book.chapters.map((ch, i) => `
+    <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; background:var(--bg); border:1px solid var(--border); border-radius:7px;">
+      <div><b style="font-size:13px">${i+1}. ${ch.title}</b></div>
+      <div style="display:flex; gap:5px;">
+        <button class="btn btn-small" onclick="loadChapter('${ch.id}')">✏️</button>
+        <button class="btn btn-small btn-danger" onclick="deleteChapter('${ch.id}')">🗑️</button>
+      </div>
+    </div>
+  `).join('');
+}
+function loadChapter(id) {
+  const book = state.books.find(b => b.id === editingBookId);
+  const ch = book.chapters.find(c => c.id === id); if (!ch) return;
+  editingChapterId = id; document.getElementById('chapter-title').value = ch.title; document.getElementById('editor-content').innerHTML = ch.content;
+  updateCharCount();
+}
+function saveChapter() {
+  const book = state.books.find(b => b.id === editingBookId);
+  const title = document.getElementById('chapter-title').value.trim() || 'Без названия';
+  const content = document.getElementById('editor-content').innerHTML;
+  if (editingChapterId) { const ch = book.chapters.find(c => c.id === editingChapterId); if(ch) { ch.title = title; ch.content = content; } }
+  else { book.chapters.push({ id: 'ch_' + Date.now(), title, content }); }
+  saveData(); renderEditorChapterList();
+  const s = document.getElementById('editor-status'); s.className = 'status success'; s.textContent = '✅ Сохранено!'; setTimeout(() => s.textContent = '', 2000);
+}
+function deleteChapter(id) {
+  if(!confirm('Удалить главу?')) return;
+  const book = state.books.find(b => b.id === editingBookId);
+  book.chapters = book.chapters.filter(c => c.id !== id); saveData(); renderEditorChapterList();
+  if (editingChapterId === id) { editingChapterId = null; document.getElementById('editor-content').innerHTML = ''; }
+}
+function execCmd(cmd, val) { document.execCommand(cmd, false, val); document.getElementById('editor-content').focus(); }
+function updateCharCount() {
+  const text = document.getElementById('editor-content').innerText.length;
+  document.getElementById('char-count').textContent = text;
+  document.getElementById('page-count').textContent = Math.ceil(text / 4000) || 0;
+}
+
+// Лор с перекрёстными ссылками
+function saveLoreEntry() {
+  const type = document.getElementById('lore-type').value;
+  const name = document.getElementById('lore-name').value.trim();
+  const img = document.getElementById('lore-img').value.trim() || 'dragon.jpg';
+  const short = document.getElementById('lore-short').value.trim();
+  const categories = document.getElementById('lore-categories').value.trim();
+  const full = document.getElementById('lore-editor').innerHTML;
+  if (!name || !full) return alert('Заполни название и текст!');
+
+  state.lore[type].push({ id: 'lore_' + Date.now(), name, img, short, categories: categories ? categories.split(',').map(c => c.trim()) : [], full, createdAt: new Date().toISOString() });
+  saveData(); renderAdminLoreList();
+
+  document.getElementById('lore-name').value = ''; document.getElementById('lore-img').value = '';
+  document.getElementById('lore-short').value = ''; document.getElementById('lore-categories').value = '';
+  document.getElementById('lore-editor').innerHTML = '';
+  const s = document.getElementById('lore-status'); s.className = 'status success'; s.textContent = '✅ Запись добавлена!'; setTimeout(() => s.textContent = '', 2500);
+}
+
+function renderAdminLoreList() {
+  const list = document.getElementById('admin-lore-list');
+  const all = [...state.lore.characters, ...state.lore.locations, ...state.lore.items];
+  if (all.length === 0) { list.innerHTML = '<p style="color:var(--text-dim)">Записей нет</p>'; return; }
+  list.innerHTML = all.map(item => {
+    const type = state.lore.characters.includes(item) ? 'Персонаж' : state.lore.locations.includes(item) ? 'Локация' : 'Предмет';
+    return `
+    <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; background:var(--bg); border:1px solid var(--border); border-radius:7px;">
+      <div><b style="font-size:13px">${item.name}</b> <small style="color:var(--text-dim)">(${type})</small></div>
+      <button class="btn btn-small btn-danger" onclick="deleteLore('${item.id}')">🗑️</button>
+    </div>`;
+  }).join('');
+}
+
+function deleteLore(id) {
+  if(!confirm('Удалить запись?')) return;
+  ['characters', 'locations', 'items'].forEach(type => { state.lore[type] = state.lore[type].filter(i => i.id !== id); });
+  saveData(); renderAdminLoreList();
+}
+
+function renderLoreGrid(type) {
+  lastLoreSection = type;
+  const container = document.getElementById('lore-' + type);
+  const items = state.lore[type];
+  if (items.length === 0) { container.innerHTML = '<p style="color:var(--text-dim); grid-column:1/-1; text-align:center; padding:32px;">Раздел пуст. Добавь записи через Dev-панель.</p>'; return; }
+  container.innerHTML = items.map(item => `
+    <div class="lore-card" onclick="openLoreArticle('${type}', '${item.id}')">
+      <img src="img/${item.img}" onerror="this.src='img/dragon.jpg'">
+      <div class="lore-card-info"><div class="lore-card-title">${item.name}</div></div>
+    </div>
+  `).join('');
+}
+
+function openLoreArticle(type, id) {
+  const item = state.lore[type].find(i => i.id === id); if (!item) return;
+  lastLoreSection = type;
+  const typeLabel = type === 'characters' ? 'Персонаж' : type === 'locations' ? 'Локация' : 'Предмет';
+  document.getElementById('wiki-layout-content').innerHTML = `
+    <div class="wiki-infobox">
+      <img src="img/${item.img}" onerror="this.src='img/dragon.jpg'">
+      <h3>${item.name}</h3>
+      <div class="short-desc">${item.short}</div>
+      <div class="info-row"><span>Тип:</span><span>${typeLabel}</span></div>
+      <div class="info-row"><span>Вселенная:</span><span>Last Way</span></div>
+      ${item.categories && item.categories.length ? `<div class="categories"><small style="color:var(--text-dim)">Категории:</small><br>${item.categories.map(c => `<span class="category-tag">${c}</span>`).join('')}</div>` : ''}
+    </div>
+    <div class="wiki-main">
+      <h1>${item.name}</h1>
+      ${processLoreLinks(item.full)}
+    </div>
+  `;
+  showSection('lore-view');
+}
+
+// Обработка ссылок на сущности в тексте
+function processLoreLinks(html) {
+  // Заменяем <a class="lore-link" data-lore-id="..." data-lore-type="...">Имя</a> на кликабельные
+  return html.replace(/<a\s+class="lore-link"\s+data-lore-id="([^"]+)"\s+data-lore-type="([^"]+)">([^<]+)<\/a>/g,
+    (match, id, type, name) => `<a class="lore-link" onclick="openLoreArticle('${type}', '${id}')">${name}</a>`);
+}
+
+function insertLoreLink() {
+  const allItems = [
+    ...state.lore.characters.map(i => ({...i, type: 'characters'})),
+    ...state.lore.locations.map(i => ({...i, type: 'locations'})),
+    ...state.lore.items.map(i => ({...i, type: 'items'}))
+  ];
+  if (allItems.length === 0) return alert('Сначала добавь персонажей/локации/предметы!');
+
+  const options = allItems.map((item, i) => `${i+1}. ${item.name} (${item.type === 'characters' ? 'Персонаж' : item.type === 'locations' ? 'Локация' : 'Предмет'})`).join('\n');
+  const choice = prompt(`Выбери сущность (введи номер):\n${options}`);
+  if (!choice) return;
+  const idx = parseInt(choice) - 1;
+  if (idx < 0 || idx >= allItems.length) return alert('Неверный номер');
+
+  const item = allItems[idx];
+  const html = `<a class="lore-link" data-lore-id="${item.id}" data-lore-type="${item.type}">${item.name}</a>`;
+  document.execCommand('insertHTML', false, html);
+}
+
+function execCmdLore(cmd, val) { document.execCommand(cmd, false, val); document.getElementById('lore-editor').focus(); }
+
+// Экспорт для хостинга
+function exportLibraryJSON() {
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'library.json'; a.click();
+}
+function exportFullJSON() {
+  const data = { ...state, exportedAt: new Date().toISOString() };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `dragonms_full_backup_${Date.now()}.json`; a.click();
+}
+function importJSON(e) {
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if (confirm(`Импортировать ${data.books?.length || 0} книг и лор?`)) {
+        state = { books: data.books || [], lore: data.lore || { characters: [], locations: [], items: [] } };
+        saveData(); renderAdminBookList(); renderAdminLoreList(); alert('✅ Импорт завершён!');
+      }
+    } catch(err) { alert('❌ Ошибка: ' + err.message); }
+  };
+  reader.readAsText(file);
+}
+function clearAllData() {
+  if (confirm('Удалить ВСЁ?')) { state = { books: [], lore: { characters: [], locations: [], items: [] } }; saveData(); renderAdminBookList(); renderAdminLoreList(); }
+}
+
+// Старт
+(async function init() {
+  loadData();
+  await loadFromServer(); // Пытаемся загрузить с сервера
+  const savedTheme = localStorage.getItem('dragonms_theme') || 'dark';
+  setTheme(savedTheme);
+  petalsEnabled = localStorage.getItem('dragonms_petals') === 'true';
+  if (petalsEnabled && savedTheme === 'sakura') {
+    document.getElementById('petals-btn').style.display = 'block';
+    document.getElementById('petals-btn').textContent = '🌸 Лепестки: ВКЛ';
+    startPetals();
+  }
+  renderTimeline();
+})();
+</script>
+</body>
+</html>
