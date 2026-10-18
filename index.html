@@ -110,19 +110,6 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
 .reader-content p { margin-bottom: 14px; }
 .reader-content img { max-width: 100% !important; height: auto !important; border-radius: 8px; margin: 12px 0; }
 
-/* Заставка главы */
-.chapter-cover-overlay {
-  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.95);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 1000;
-  animation: fadeIn 0.3s;
-}
-.chapter-cover-overlay img { max-width: 400px; max-height: 70vh; border-radius: var(--radius); box-shadow: 0 20px 60px rgba(0,0,0,0.8); }
-.chapter-cover-overlay .cover-info { position: absolute; bottom: 60px; text-align: center; color: #fff; }
-.chapter-cover-overlay .cover-title { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
-.chapter-cover-overlay .cover-chapter { font-size: 16px; color: var(--accent); }
-
 /* Боковая панель оглавления */
 .toc-sidebar {
   position: fixed; right: -340px; top: 0; bottom: 0;
@@ -265,13 +252,13 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
 <body data-theme="dark">
 
 <nav class="navbar">
-  <div class="logo" onclick="showSection('home')"> LAST WAY</div>
+  <div class="logo" onclick="showSection('home')">🐉 LAST WAY</div>
   <div class="nav-links">
     <div class="nav-link active" data-section="home" onclick="showSection('home')">🏠 Главная</div>
     <div class="nav-link" data-section="books" onclick="showSection('books')">📚 Читальный зал</div>
-    <div class="nav-link" data-section="characters" onclick="showSection('characters')"> Персонажи</div>
+    <div class="nav-link" data-section="characters" onclick="showSection('characters')">👥 Персонажи</div>
     <div class="nav-link" data-section="locations" onclick="showSection('locations')">📍 Локации</div>
-    <div class="nav-link" data-section="items" onclick="showSection('items')">️ Предметы</div>
+    <div class="nav-link" data-section="items" onclick="showSection('items')">⚔️ Предметы</div>
     <div class="nav-link" data-section="admin" onclick="showSection('admin')">⚙️ Dev</div>
   </div>
   <div class="nav-right">
@@ -286,7 +273,7 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
 
 <!-- ГЛАВНАЯ -->
 <section id="section-home" class="section active">
-  <h1> Last Way Fandom Wiki</h1>
+  <h1>🐉 Last Way Fandom Wiki</h1>
   <p style="color: var(--text-dim); margin-bottom: 24px; font-size: 14px;">Официальная энциклопедия вселенной Драгона Мс</p>
   
   <h2>⏳ Хронология произведений</h2>
@@ -313,9 +300,9 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
           </div>
           <button class="btn btn-small" onclick="prevPage()">← Назад</button>
           <button class="btn btn-small" onclick="nextPage()">Вперёд →</button>
-          <button class="btn btn-small" onclick="toggleToc()">📑</button>
-          <button class="btn btn-small" onclick="toggleSearch()"></button>
-          <button class="btn btn-small" onclick="showSection('home')">✕</button>
+          <button class="btn" onclick="toggleToc()" title="Открыть оглавление книги"> Оглавление</button>
+          <button class="btn" onclick="toggleSearch()" title="Поиск по тексту книги">🔍 Поиск</button>
+          <button class="btn btn-small btn-danger" onclick="showSection('home')" title="Выйти из читалки">✕ Выход</button>
         </div>
       </div>
       
@@ -359,7 +346,7 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
   <div class="lore-grid" id="lore-locations"></div>
 </section>
 <section id="section-items" class="section">
-  <h1>️ Предметы и Артефакты</h1>
+  <h1>⚔️ Предметы и Артефакты</h1>
   <div class="lore-grid" id="lore-items"></div>
 </section>
 
@@ -433,7 +420,7 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
       <div class="form-group">
         <label>Плашки инфобокса (Статус, Локация, Группировка)</label>
         <div class="dynamic-fields" id="dynamic-fields"></div>
-        <button class="btn btn-small" onclick="addDynamicField()"> Добавить плашку</button>
+        <button class="btn btn-small" onclick="addDynamicField()">➕ Добавить плашку</button>
       </div>
       <div class="form-group">
         <label>Категории (через запятую)</label>
@@ -469,7 +456,7 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
       <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 12px;">Скачай library.json и загрузи его на GitHub рядом с index.html.</p>
       <div style="display: flex; gap: 8px; flex-wrap: wrap;">
         <button class="btn btn-primary" onclick="exportLibraryJSON()"> Скачать library.json</button>
-        <button class="btn" onclick="exportFullJSON()">️ Полный бэкап</button>
+        <button class="btn" onclick="exportFullJSON()">🗃️ Полный бэкап</button>
         <button class="btn" onclick="document.getElementById('import-file').click()">⬆️ Импорт бэкапа</button>
         <input type="file" id="import-file" accept=".json" style="display: none;" onchange="importJSON(event)">
         <button class="btn btn-danger" onclick="clearAllData()">🗑️ Очистить всё</button>
@@ -534,7 +521,7 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
   </div>
 </div>
 
-<div class="toast" id="toast">💾 Сохранено!</div>
+<div class="toast" id="toast"> Сохранено!</div>
 
 <script>
 const STORAGE_KEY = 'dragonms_library_v6';
@@ -542,7 +529,7 @@ let state = {
   books: [], 
   lore: { characters: [], locations: [], items: [] },
   backgrounds: [],
-  bookOrder: [] // порядок книг на таймлайне
+  bookOrder: []
 };
 let currentBookId = null, currentChapterIdx = 0, currentPage = 0, pages = [];
 let editingBookId = null, editingChapterId = null;
@@ -600,6 +587,8 @@ function showSection(name) {
   if (section) section.classList.add('active');
   const link = document.querySelector(`.nav-link[data-section="${name}"]`);
   if (link) link.classList.add('active');
+
+  hideLoreTooltip();
 
   if (name === 'home') renderTimeline();
   if (name === 'books') renderBooks();
@@ -702,11 +691,9 @@ function applyBg() {
 function renderTimeline() {
   const container = document.getElementById('timeline-container');
   
-  // Синхронизируем порядок: добавляем новые книги в конец
   state.books.forEach(book => {
     if (!state.bookOrder.includes(book.id)) state.bookOrder.push(book.id);
   });
-  // Удаляем несуществующие
   state.bookOrder = state.bookOrder.filter(id => state.books.find(b => b.id === id));
   
   const items = state.bookOrder.map(bookId => {
@@ -772,7 +759,6 @@ function openBook(bookId) {
   if (!book || !book.chapters || book.chapters.length === 0) { alert('Книга пустая!'); return; }
   currentBookId = bookId;
   
-  // Восстанавливаем позицию
   const savedPos = localStorage.getItem('reading_pos_' + bookId);
   if (savedPos) {
     const pos = JSON.parse(savedPos);
@@ -828,6 +814,7 @@ function splitIntoPages(html, maxChars) {
 }
 
 function nextPage() {
+  hideLoreTooltip();
   const book = state.books.find(b => b.id === currentBookId);
   if (currentPage < pages.length - 1) { currentPage++; renderReader(); }
   else if (currentChapterIdx < book.chapters.length - 1) { 
@@ -837,6 +824,7 @@ function nextPage() {
   else { alert('🎉 Книга прочитана!'); }
 }
 function prevPage() {
+  hideLoreTooltip();
   if (currentPage > 0) { currentPage--; renderReader(); }
   else if (currentChapterIdx > 0) { currentChapterIdx--; currentPage = 0; renderReader(); }
 }
@@ -978,7 +966,7 @@ function renderAdminBookList() {
       <div><b style="font-size:13px">${book.title}</b><br><small style="color:var(--text-dim)">${(book.chapters||[]).length} глав • ${book.era || ''}</small></div>
       <div style="display:flex; gap:5px;">
         <button class="btn btn-small" onclick="openEditor('${book.id}')">✏️</button>
-        <button class="btn btn-small btn-danger" onclick="deleteBook('${book.id}')">️</button>
+        <button class="btn btn-small btn-danger" onclick="deleteBook('${book.id}')">🗑️</button>
       </div>
     </div>
   `).join('');
@@ -1027,7 +1015,7 @@ function renderEditorChapterList() {
       <div><b style="font-size:13px">${i+1}. ${ch.title}</b>${ch.cover ? '<br><small style="color:var(--text-dim)">Обложка: '+ch.cover+'</small>' : ''}</div>
       <div style="display:flex; gap:5px;">
         <button class="btn btn-small" onclick="loadChapter('${ch.id}')">✏️</button>
-        <button class="btn btn-small btn-danger" onclick="deleteChapter('${ch.id}')">🗑️</button>
+        <button class="btn btn-small btn-danger" onclick="deleteChapter('${ch.id}')">️</button>
       </div>
     </div>
   `).join('');
@@ -1186,6 +1174,7 @@ function renderLoreGrid(type) {
 }
 
 function openLoreArticle(type, id) {
+  hideLoreTooltip();
   const item = state.lore[type].find(i => i.id === id); if (!item) return;
   lastLoreSection = type;
   const typeLabel = type === 'characters' ? 'Персонаж' : type === 'locations' ? 'Локация' : 'Предмет';
@@ -1234,7 +1223,6 @@ function showLoreTooltip(e, id, type) {
   tooltip.style.top = rect.top + 'px';
   tooltip.classList.add('show');
   
-  // Проверка выхода за экран
   setTimeout(() => {
     const tRect = tooltip.getBoundingClientRect();
     if (tRect.right > window.innerWidth) {
@@ -1250,7 +1238,6 @@ function hideLoreTooltip() {
   document.getElementById('lore-tooltip').classList.remove('show');
 }
 
-// Делегирование событий для лор-ссылок
 document.addEventListener('click', function(e) {
   const link = e.target.closest('.lore-link');
   if (link) {
@@ -1359,6 +1346,14 @@ document.addEventListener('keydown', e => {
   }
 });
 
+// Скрывать tooltip при скролле и клике в пустое место
+window.addEventListener('scroll', hideLoreTooltip, { passive: true });
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.lore-link') && !e.target.closest('.lore-tooltip')) {
+    hideLoreTooltip();
+  }
+});
+
 // СТАРТ
 (async function init() {
   loadData();
@@ -1366,15 +1361,13 @@ document.addEventListener('keydown', e => {
   const savedTheme = localStorage.getItem('dragonms_theme') || 'dark';
   setTheme(savedTheme);
   
-  // Восстанавливаем состояние лепестков
   petalsEnabled = localStorage.getItem('dragonms_petals') === 'true';
   if (savedTheme === 'sakura') {
     document.getElementById('petals-btn').style.display = 'block';
-    document.getElementById('petals-btn').textContent = petalsEnabled ? '🌸 Лепестки: ВКЛ' : '🌸 Лепестки: ВЫКЛ';
+    document.getElementById('petals-btn').textContent = petalsEnabled ? ' Лепестки: ВКЛ' : '🌸 Лепестки: ВЫКЛ';
     if (petalsEnabled) startPetals();
   }
   
-  // Восстанавливаем размер шрифта
   const savedFont = localStorage.getItem('reader_font_size');
   if (savedFont) {
     savedFontSize = parseInt(savedFont);
