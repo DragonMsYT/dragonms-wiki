@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Last Way Fandom Wiki — Chronicles & Editor</title>
+<title>Last Way Fandom Wiki</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <style>
 :root {
@@ -20,7 +20,7 @@
 }
 [data-theme="snow"] { --bg:#0f1720; --bg-2:#1a2535; --bg-3:#243347; --accent:#64d2ff; --accent-2:#5ac8fa; }
 
-body { background: var(--bg); color: var(--text); font-family: -apple-system, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; min-height: 100vh; transition: background 0.5s; margin: 0; }
+body { background: var(--bg); color: var(--text); font-family: -apple-system, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; min-height: 100vh; margin: 0; transition: background 0.5s; }
 body[data-theme="dark"] { background: radial-gradient(ellipse at top, var(--bg-2) 0%, var(--bg) 50%); }
 body[data-theme="light"] { background: #f5f5f7; }
 body[data-theme="snow"] { background: radial-gradient(ellipse at top, var(--bg-2) 0%, var(--bg) 50%); }
@@ -28,11 +28,9 @@ body[data-theme="sakura"] { background: linear-gradient(rgba(20, 10, 15, 0.7), r
 
 * { box-sizing: border-box; }
 
-/* Лепестки сакуры */
 .petal { position: fixed; top: -10vh; z-index: 1; pointer-events: none; background: #ffb7c5; border-radius: 150% 0 150% 0; animation: fall linear infinite; }
 @keyframes fall { 0% { transform: translateY(0) rotate(0deg) translateX(0); opacity: 1; } 100% { transform: translateY(110vh) rotate(360deg) translateX(100px); opacity: 0; } }
 
-/* Навигация */
 .navbar { position: sticky; top: 0; z-index: 100; background: rgba(10,10,15,0.9); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 12px 20px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
 .logo { font-weight: 800; font-size: 18px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; }
 .nav-links { display: flex; gap: 6px; flex-wrap: wrap; }
@@ -40,39 +38,51 @@ body[data-theme="sakura"] { background: linear-gradient(rgba(20, 10, 15, 0.7), r
 .nav-link:hover { color: var(--text); background: var(--bg-3); }
 .nav-link.active { color: var(--text); background: var(--bg-3); border-color: var(--accent); }
 .nav-right { margin-left: auto; display: flex; gap: 8px; align-items: center; }
-.theme-btn { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border); cursor: pointer; }
+.theme-btn { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border); cursor: pointer; transition: transform 0.2s; }
 .theme-btn:hover { transform: scale(1.1); }
 .theme-btn.dark { background: #0a0a0f; } .theme-btn.light { background: #f5f5f7; } .theme-btn.sakura { background: #ff7eb3; } .theme-btn.snow { background: #64d2ff; }
 .petals-toggle { padding: 4px 10px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg-2); color: var(--text); font-size: 11px; cursor: pointer; }
 
-/* Секции */
 .section { display: none; padding: 28px 20px; max-width: 1200px; margin: 0 auto; animation: fadeIn 0.3s; }
 .section.active { display: block; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 h1 { font-size: 28px; background: linear-gradient(135deg, var(--text), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 12px; }
 h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bottom: 12px; color: var(--accent); }
 
-/* Хронология (как в старом коде) */
+/* Главная — Featured Books */
+.featured-section { margin-bottom: 40px; }
+.featured-section h2 { display: flex; justify-content: space-between; align-items: center; }
+.featured-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+.featured-card { background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; cursor: pointer; transition: all 0.3s; position: relative; }
+.featured-card:hover { transform: translateY(-4px); border-color: var(--accent); }
+.featured-card img { width: 100%; height: 280px; object-fit: cover; background: var(--bg-3); }
+.featured-card-info { padding: 12px; }
+.featured-card-title { font-weight: 700; font-size: 15px; margin-bottom: 4px; }
+.featured-card-meta { font-size: 11px; color: var(--text-dim); }
+.featured-controls { position: absolute; top: 8px; right: 8px; display: flex; gap: 4px; opacity: 0; transition: opacity 0.2s; }
+.featured-card:hover .featured-controls { opacity: 1; }
+.featured-controls button { width: 28px; height: 28px; border-radius: 50%; border: none; background: rgba(0,0,0,0.7); color: #fff; cursor: pointer; font-size: 14px; }
+.featured-controls button:hover { background: var(--accent); }
+
+/* Timeline */
 .timeline { position: relative; padding: 20px 0; }
 .timeline::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--accent), var(--accent-2)); transform: translateX(-50%); }
 .timeline-item { position: relative; width: 50%; padding: 16px 32px; margin-bottom: 20px; }
 .timeline-item:nth-child(odd) { left: 0; text-align: right; } .timeline-item:nth-child(even) { left: 50%; }
 .timeline-item::before { content: ''; position: absolute; top: 24px; width: 14px; height: 14px; background: var(--accent); border-radius: 50%; border: 3px solid var(--bg); box-shadow: 0 0 0 3px var(--accent); }
 .timeline-item:nth-child(odd)::before { right: -7px; } .timeline-item:nth-child(even)::before { left: -7px; }
-.timeline-card { background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; cursor: pointer; transition: all 0.3s; box-shadow: var(--shadow); }
+.timeline-card { background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; transition: all 0.3s; box-shadow: var(--shadow); }
 .timeline-card:hover { transform: translateY(-4px); border-color: var(--accent); }
 .timeline-card img { width: 100%; height: 140px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; background: var(--bg-3); }
 .timeline-era { font-size: 11px; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
 .timeline-title { font-size: 16px; font-weight: 700; margin: 6px 0; } .timeline-desc { font-size: 13px; color: var(--text-dim); }
 
-/* Книги */
 .books-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-top: 20px; }
 .book-card { background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; cursor: pointer; transition: all 0.3s; }
 .book-card:hover { transform: translateY(-4px); border-color: var(--accent); }
 .book-cover { width: 100%; height: 280px; object-fit: cover; background: var(--bg-3); }
 .book-info { padding: 12px; } .book-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; } .book-meta { font-size: 11px; color: var(--text-dim); }
 
-/* Читалка */
 .reader-container { max-width: 700px; margin: 0 auto; }
 .reader-nav { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); margin-bottom: 12px; }
 .reader-nav.bottom { border-top: 1px solid var(--border); border-bottom: none; margin-top: 20px; }
@@ -81,21 +91,23 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
 .reader-content p { margin-bottom: 14px; }
 .reader-content img, .preview-box img { max-width: 100% !important; height: auto !important; border-radius: 8px; margin: 12px 0; }
 
-/* Лор / Вики (как на Fandom) */
+/* Wiki / Fandom-style */
 .wiki-layout { display: grid; grid-template-columns: 280px 1fr; gap: 28px; margin-top: 20px; }
 @media (max-width: 768px) { .wiki-layout { grid-template-columns: 1fr; } }
 .wiki-infobox { background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; height: fit-content; position: sticky; top: 80px; }
 .wiki-infobox img { width: 100%; height: 220px; object-fit: cover; border-radius: 8px; margin-bottom: 12px; background: var(--bg-3); }
 .wiki-infobox h3 { color: var(--accent); margin-bottom: 10px; font-size: 18px; }
 .wiki-infobox .short-desc { font-size: 13px; color: var(--text-dim); margin-bottom: 12px; font-style: italic; }
-.wiki-infobox .info-row { display: flex; justify-content: space-between; font-size: 12px; padding: 5px 0; border-bottom: 1px solid var(--border); }
-.wiki-infobox .info-row:last-child { border-bottom: none; }
+.wiki-infobox .info-row { display: flex; justify-content: space-between; font-size: 12px; padding: 6px 0; border-bottom: 1px solid var(--border); }
+.wiki-infobox .info-row:last-of-type { border-bottom: none; }
+.wiki-infobox .info-label { color: var(--text-dim); font-weight: 600; }
+.wiki-infobox .info-value { color: var(--text); text-align: right; }
 .wiki-infobox .categories { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
 .wiki-infobox .category-tag { display: inline-block; padding: 3px 8px; background: var(--bg-3); border-radius: 4px; font-size: 11px; margin: 2px; color: var(--text-dim); }
 .wiki-main { font-size: 15px; line-height: 1.8; }
 .wiki-main p { margin-bottom: 14px; }
-.wiki-main .lore-link { color: var(--accent); text-decoration: underline; cursor: pointer; font-weight: 500; }
-.wiki-main .lore-link:hover { color: var(--accent-2); }
+.wiki-main .lore-link { color: var(--accent); text-decoration: underline; cursor: pointer; font-weight: 500; padding: 0 2px; border-radius: 3px; transition: background 0.2s; }
+.wiki-main .lore-link:hover { background: var(--bg-3); color: var(--accent-2); }
 
 .lore-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; margin-top: 16px; }
 .lore-card { background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; cursor: pointer; transition: all 0.3s; }
@@ -103,7 +115,6 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
 .lore-card img { width: 100%; height: 160px; object-fit: cover; background: var(--bg-3); }
 .lore-card-info { padding: 10px; } .lore-card-title { font-weight: 700; font-size: 14px; }
 
-/* Админка */
 .admin-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 @media (max-width: 800px) { .admin-layout { grid-template-columns: 1fr; } }
 .admin-panel { background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); margin-bottom: 16px; }
@@ -120,11 +131,18 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
 .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; } .btn-primary:hover { background: #ff4569; }
 .btn-small { padding: 5px 9px; font-size: 11px; }
 .btn-danger { color: #ff453a; border-color: #ff453a; } .btn-danger:hover { background: rgba(255,69,58,0.1); }
+.btn-icon { width: 30px; height: 30px; padding: 0; justify-content: center; }
 
 .editor-toolbar { display: flex; gap: 4px; padding: 7px; background: var(--bg); border: 1px solid var(--border); border-radius: 7px 7px 0 0; flex-wrap: wrap; }
 .editor-toolbar button { padding: 5px 9px; background: transparent; border: 1px solid transparent; color: var(--text); border-radius: 4px; cursor: pointer; font-size: 12px; }
 .editor-toolbar button:hover { background: var(--bg-3); }
 .editor-content { min-height: 250px; padding: 14px; background: var(--bg); border: 1px solid var(--border); border-top: none; border-radius: 0 0 7px 7px; font-size: 14px; line-height: 1.7; outline: none; }
+
+/* Динамические поля (плашки) */
+.dynamic-fields { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+.dynamic-field { display: flex; gap: 6px; align-items: center; }
+.dynamic-field input { flex: 1; }
+.dynamic-field .btn-icon { flex-shrink: 0; }
 
 .status { padding: 9px 12px; border-radius: 7px; font-size: 12px; margin-top: 10px; display: none; }
 .status.success { background: rgba(48,209,88,0.15); color: var(--success); border: 1px solid var(--success); display: block; }
@@ -144,9 +162,9 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
 <body data-theme="dark">
 
 <nav class="navbar">
-  <div class="logo" onclick="showSection('timeline')"> LAST WAY</div>
+  <div class="logo" onclick="showSection('home')">🐉 LAST WAY</div>
   <div class="nav-links">
-    <div class="nav-link active" data-section="timeline" onclick="showSection('timeline')">⏳ Хронология</div>
+    <div class="nav-link active" data-section="home" onclick="showSection('home')">🏠 Главная</div>
     <div class="nav-link" data-section="books" onclick="showSection('books')">📚 Читальный зал</div>
     <div class="nav-link" data-section="characters" onclick="showSection('characters')">👥 Персонажи</div>
     <div class="nav-link" data-section="locations" onclick="showSection('locations')">📍 Локации</div>
@@ -154,7 +172,7 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
     <div class="nav-link" data-section="admin" onclick="showSection('admin')">⚙️ Dev</div>
   </div>
   <div class="nav-right">
-    <button class="petals-toggle" id="petals-btn" onclick="togglePetals()" style="display:none;">🌸 Лепестки: ВКЛ</button>
+    <button class="petals-toggle" id="petals-btn" onclick="togglePetals()" style="display:none;"> Лепестки: ВКЛ</button>
     <div class="theme-btn dark" onclick="setTheme('dark')" title="Тёмная"></div>
     <div class="theme-btn light" onclick="setTheme('light')" title="Светлая"></div>
     <div class="theme-btn sakura" onclick="setTheme('sakura')" title="Сакура"></div>
@@ -162,10 +180,23 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
   </div>
 </nav>
 
-<section id="section-timeline" class="section active">
-  <h1>Единая Хронологическая Линия Времени</h1>
-  <p style="color: var(--text-dim); margin-bottom: 24px; font-size: 14px;">Синхронизация канона вселенной Last Way</p>
-  <div class="timeline" id="timeline-container"></div>
+<!-- ГЛАВНАЯ -->
+<section id="section-home" class="section active">
+  <h1>🐉 Last Way Fandom Wiki</h1>
+  <p style="color: var(--text-dim); margin-bottom: 24px; font-size: 14px;">Официальная энциклопедия вселенной Драгона Мс</p>
+
+  <div class="featured-section">
+    <h2>
+      <span>📖 Произведения</span>
+      <button class="btn btn-small" onclick="showSection('admin'); showAdminTab('home-editor');">⚙️ Настроить порядок</button>
+    </h2>
+    <div class="featured-grid" id="featured-grid"></div>
+  </div>
+
+  <div class="featured-section">
+    <h2>⏳ Хронология событий</h2>
+    <div class="timeline" id="timeline-container"></div>
+  </div>
 </section>
 
 <section id="section-books" class="section">
@@ -181,7 +212,7 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
       <div style="display: flex; gap: 6px;">
         <button class="btn btn-small" onclick="prevPage()">← Назад</button>
         <button class="btn btn-small" onclick="nextPage()">Вперёд →</button>
-        <button class="btn btn-small" onclick="showSection('books')">✕</button>
+        <button class="btn btn-small" onclick="showSection('books')"></button>
       </div>
     </div>
     <div class="reader-content" id="reader-content"></div>
@@ -195,7 +226,6 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
 
 <section id="section-characters" class="section">
   <h1>👥 Персонажи Вселенной</h1>
-  <p style="color: var(--text-dim); font-size: 13px;">Добавляй персонажей через Dev-панель → База Лора</p>
   <div class="lore-grid" id="lore-characters"></div>
 </section>
 <section id="section-locations" class="section">
@@ -213,21 +243,23 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
 </section>
 
 <section id="section-admin" class="section">
-  <h1>⚙️ Visual Book Core Engine v4.0 PRO</h1>
+  <h1>⚙️ Visual Book Core Engine v5.0</h1>
   <div style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;">
     <button class="btn btn-primary" onclick="showAdminTab('books')">📚 Книги</button>
     <button class="btn" onclick="showAdminTab('lore')">📖 База Лора</button>
-    <button class="btn" onclick="showAdminTab('backup')"> Бэкап / Хостинг</button>
+    <button class="btn" onclick="showAdminTab('home-editor')">🏠 Главная</button>
+    <button class="btn" onclick="showAdminTab('backup')">💾 Хостинг</button>
   </div>
 
+  <!-- КНИГИ -->
   <div id="admin-tab-books">
     <div class="admin-layout">
       <div>
         <div class="admin-panel">
-          <h3>📥 Импорт книги из Word (.docx)</h3>
-          <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 12px;">Перетащи файл Word. Заголовки "Heading 1" станут главами.</p>
+          <h3> Импорт из Word (.docx)</h3>
+          <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 12px;">Перетащи файл. Заголовки "Heading 1" станут главами.</p>
           <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
-            <div style="font-size: 40px; margin-bottom: 8px;">📄</div>
+            <div style="font-size: 40px; margin-bottom: 8px;"></div>
             <div>Перетащи .docx файл сюда</div>
           </div>
           <input type="file" id="file-input" accept=".docx" style="display: none;" onchange="handleFileSelect(event)">
@@ -250,16 +282,18 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
       </div>
       <div>
         <div class="admin-panel">
-          <h3>📚 Мои книги</h3>
+          <h3> Мои книги</h3>
           <div id="admin-book-list" style="display: flex; flex-direction: column; gap: 8px; max-height: 450px; overflow-y: auto;"></div>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- ЛОР -->
   <div id="admin-tab-lore" style="display: none;">
     <div class="admin-panel">
-      <h3>➕ Добавить запись в Лор (Fandom-style)</h3>
+      <h3 id="lore-form-title">➕ Добавить запись в Лор</h3>
+      <input type="hidden" id="lore-edit-id" value="">
       <div class="form-group">
         <label>Тип записи</label>
         <select class="form-input" id="lore-type">
@@ -271,6 +305,13 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
       <div class="form-group"><label>Название</label><input type="text" class="form-input" id="lore-name" placeholder="Например: АВП Лапки"></div>
       <div class="form-group"><label>Картинка (из папки img/)</label><input type="text" class="form-input" id="lore-img" placeholder="lapki.jpg"></div>
       <div class="form-group"><label>Краткое описание (для инфобокса)</label><textarea class="form-input" id="lore-short" placeholder="Легендарное оружие..."></textarea></div>
+
+      <div class="form-group">
+        <label>Плашки инфобокса (Статус, Локация, Группировка и т.д.)</label>
+        <div class="dynamic-fields" id="dynamic-fields"></div>
+        <button class="btn btn-small" onclick="addDynamicField()"> Добавить плашку</button>
+      </div>
+
       <div class="form-group">
         <label>Категории (через запятую)</label>
         <input type="text" class="form-input" id="lore-categories" placeholder="Оружие, Легендарное, Last Way">
@@ -286,9 +327,11 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
           <button onclick="insertLoreLink()" style="background: var(--accent); color: #fff;">🔗 Ссылка на сущность</button>
         </div>
         <div class="editor-content" id="lore-editor" contenteditable="true" style="min-height: 200px;"></div>
-        <p style="font-size: 11px; color: var(--text-dim); margin-top: 6px;">💡 Используй кнопку "🔗 Ссылка на сущность" чтобы вставить кликабельную ссылку на другого персонажа/локацию/предмет.</p>
       </div>
-      <button class="btn btn-primary" onclick="saveLoreEntry()"> Сохранить в базу лора</button>
+      <div style="display: flex; gap: 8px;">
+        <button class="btn btn-primary" onclick="saveLoreEntry()">💾 Сохранить</button>
+        <button class="btn" onclick="resetLoreForm()" id="lore-cancel-btn" style="display:none;">✕ Отмена редактирования</button>
+      </div>
       <div id="lore-status"></div>
     </div>
     <div class="admin-panel">
@@ -297,28 +340,49 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
     </div>
   </div>
 
+  <!-- РЕДАКТОР ГЛАВНОЙ -->
+  <div id="admin-tab-home-editor" style="display: none;">
+    <div class="admin-panel">
+      <h3>🏠 Настройка главной страницы</h3>
+      <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 12px;">
+        Добавляй книги на главную и меняй их порядок. Изменения сохранятся для всех пользователей (после экспорта library.json).
+      </p>
+      <div class="form-group">
+        <label>Добавить книгу на главную</label>
+        <select class="form-input" id="featured-book-select"></select>
+      </div>
+      <button class="btn btn-primary" onclick="addToFeatured()">➕ Добавить на главную</button>
+
+      <h3 style="margin-top: 20px;">📋 Порядок на главной</h3>
+      <div id="featured-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
+    </div>
+  </div>
+
+  <!-- ХОСТИНГ -->
   <div id="admin-tab-backup" style="display: none;">
     <div class="admin-panel">
-      <h3>📦 Экспорт для хостинга (чтобы книги были у всех)</h3>
+      <h3> Экспорт для хостинга</h3>
       <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 12px;">
-        Чтобы книги были доступны всем посетителям сайта без бэкапов, загрузи этот JSON файл на хостинг рядом с <code>dragonmswiki.html</code> под именем <code>library.json</code>. Сайт автоматически подтянет книги оттуда.
+        Скачай library.json и загрузи его на GitHub рядом с index.html. Сайт автоматически подтянет книги для всех.
       </p>
       <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-        <button class="btn btn-primary" onclick="exportLibraryJSON()"> Скачать library.json</button>
-        <button class="btn" onclick="exportFullJSON()">🗃️ Полный бэкап (книги + лор)</button>
+        <button class="btn btn-primary" onclick="exportLibraryJSON()">️ Скачать library.json</button>
+        <button class="btn" onclick="exportFullJSON()">️ Полный бэкап</button>
         <button class="btn" onclick="document.getElementById('import-file').click()">⬆️ Импорт бэкапа</button>
         <input type="file" id="import-file" accept=".json" style="display: none;" onchange="importJSON(event)">
         <button class="btn btn-danger" onclick="clearAllData()">🗑️ Очистить всё</button>
       </div>
     </div>
     <div class="admin-panel">
-      <h3>ℹ️ Инструкция по хостингу</h3>
-      <ol style="font-size: 12px; color: var(--text-dim); padding-left: 20px; line-height: 1.8;">
-        <li>Создай репозиторий на GitHub</li>
-        <li>Загрузи туда <code>dragonmswiki.html</code> и папку <code>img/</code></li>
-        <li>Нажми "Скачать library.json" и загрузи его в корень репозитория</li>
-        <li>Включи GitHub Pages в настройках репозитория</li>
-        <li>Готово! Сайт будет доступен всем, книги подтянутся автоматически</li>
+      <h3>🌐 Инструкция по бесплатному хостингу (GitHub Pages)</h3>
+      <ol style="font-size: 12px; color: var(--text-dim); padding-left: 20px; line-height: 1.9;">
+        <li>Зарегистрируйся на <b>github.com</b> (бесплатно)</li>
+        <li>Создай новый репозиторий (кнопка "New"), назови например <code>dragonms-wiki</code>, сделай Public</li>
+        <li>Нажми "uploading an existing file" и загрузи: <code>index.html</code> (это твой dragonmswiki.html, переименуй!), папку <code>img/</code> и <code>library.json</code></li>
+        <li>В репозитории зайди в <b>Settings → Pages</b>, выбери ветку <b>main</b> и папку <b>/ (root)</b>, нажми Save</li>
+        <li>Подожди 1-2 минуты. Сверху появится ссылка вида <code>https://твой-ник.github.io/dragonms-wiki/</code></li>
+        <li>Скинь ссылку другу — он откроет и будет читать книги!</li>
+        <li>Когда добавишь новые книги — снова нажми "Скачать library.json" и обнови файл в репозитории</li>
       </ol>
     </div>
   </div>
@@ -339,11 +403,12 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
         <button onclick="execCmd('underline')"><u>U</u></button>
         <button onclick="execCmd('formatBlock', 'H2')">H2</button>
         <button onclick="execCmd('formatBlock', 'P')">¶</button>
+        <button onclick="insertLoreLinkInEditor()" style="background: var(--accent); color: #fff;">🔗 Лор-ссылка</button>
       </div>
       <div class="editor-content" id="editor-content" contenteditable="true" oninput="updateCharCount()"></div>
       <div style="margin-top: 8px; font-size: 11px; color: var(--text-dim);">Символов: <span id="char-count">0</span> | Страниц: <span id="page-count">0</span></div>
       <div style="margin-top: 12px; display: flex; gap: 6px;">
-        <button class="btn btn-primary" onclick="saveChapter()">💾 Сохранить главу</button>
+        <button class="btn btn-primary" onclick="saveChapter()"> Сохранить главу</button>
       </div>
       <div id="editor-status"></div>
     </div>
@@ -357,8 +422,12 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
 <div class="toast" id="toast">💾 Сохранено!</div>
 
 <script>
-const STORAGE_KEY = 'dragonms_library_v4';
-let state = { books: [], lore: { characters: [], locations: [], items: [] } };
+const STORAGE_KEY = 'dragonms_library_v5';
+let state = {
+  books: [],
+  lore: { characters: [], locations: [], items: [] },
+  featured: [] // массив ID книг в порядке отображения на главной
+};
 let currentBookId = null, currentChapterIdx = 0, currentPage = 0, pages = [];
 let editingBookId = null, editingChapterId = null;
 let lastLoreSection = 'characters';
@@ -372,6 +441,7 @@ function loadData() {
       const parsed = JSON.parse(raw);
       state.books = parsed.books || [];
       state.lore = parsed.lore || { characters: [], locations: [], items: [] };
+      state.featured = parsed.featured || [];
     }
   } catch(e) { console.error('Load error', e); }
 }
@@ -379,7 +449,7 @@ function saveData() {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     showToast();
-  } catch(e) { alert('Ошибка сохранения! Используй экспорт JSON.'); }
+  } catch(e) { alert('Ошибка сохранения!'); }
 }
 function showToast() {
   const t = document.getElementById('toast');
@@ -387,7 +457,6 @@ function showToast() {
   setTimeout(() => t.classList.remove('show'), 2000);
 }
 
-// Подгрузка книг с сервера (library.json)
 async function loadFromServer() {
   try {
     const response = await fetch('library.json');
@@ -396,12 +465,11 @@ async function loadFromServer() {
       if (data.books && data.books.length > 0) {
         state.books = data.books;
         if (data.lore) state.lore = data.lore;
-        console.log('Книги загружены с сервера');
+        if (data.featured) state.featured = data.featured;
+        console.log('Данные загружены с сервера');
       }
     }
-  } catch(e) {
-    console.log('library.json не найден, используем localStorage');
-  }
+  } catch(e) { console.log('library.json не найден, используем localStorage'); }
 }
 
 function showSection(name) {
@@ -412,16 +480,17 @@ function showSection(name) {
   const link = document.querySelector(`.nav-link[data-section="${name}"]`);
   if (link) link.classList.add('active');
 
+  if (name === 'home') { renderFeatured(); renderTimeline(); }
   if (name === 'books') renderBooks();
-  if (name === 'timeline') renderTimeline();
   if (name === 'characters' || name === 'locations' || name === 'items') renderLoreGrid(name);
   if (name === 'admin') { renderAdminBookList(); renderAdminLoreList(); }
   window.scrollTo(0, 0);
 }
 
 function showAdminTab(tab) {
-  ['books', 'lore', 'backup'].forEach(t => document.getElementById('admin-tab-'+t).style.display = 'none');
+  ['books', 'lore', 'home-editor', 'backup'].forEach(t => document.getElementById('admin-tab-'+t).style.display = 'none');
   document.getElementById('admin-tab-'+tab).style.display = 'block';
+  if (tab === 'home-editor') renderFeaturedEditor();
 }
 
 function setTheme(t) {
@@ -439,7 +508,7 @@ function setTheme(t) {
 
 function togglePetals() {
   petalsEnabled = !petalsEnabled;
-  document.getElementById('petals-btn').textContent = petalsEnabled ? '🌸 Лепестки: ВКЛ' : ' Лепестки: ВЫКЛ';
+  document.getElementById('petals-btn').textContent = petalsEnabled ? ' Лепестки: ВКЛ' : '🌸 Лепестки: ВЫКЛ';
   if (petalsEnabled) startPetals(); else stopPetals();
   localStorage.setItem('dragonms_petals', petalsEnabled);
 }
@@ -460,19 +529,19 @@ function startPetals() {
 }
 function stopPetals() { clearInterval(petalInterval); petalInterval = null; document.querySelectorAll('.petal').forEach(p => p.remove()); }
 
-// Хронология (как в старом коде)
+// ===== ГЛАВНАЯ =====
 const DEFAULT_TIMELINE = [
-  { era: 'Часть 1', title: 'Друзья навсегда', desc: 'Глубокая психологическая история взаимоотношений Максима и Драгона. Трагические события в Токио под бесконечным японским дождем.', img: 'img/cover_friendsforever.jpg', type: 'book', bookId: 'friendsforever' },
-  { era: 'Часть 2', title: 'Легенда об АВП Лапки 1', desc: 'Драгон Мс собирает легендарный первоначальный состав клуба Last Way. Зарождение мифологии священного оружия.', img: 'img/cover_lapki1.jpg', type: 'book', bookId: 'lapki1' },
-  { era: 'Эра Лапки 1 — Начало', title: 'Основание Клуба Last Way', desc: 'Драгон Мс собирает легендарный состав. Старт эпохи шиза-рассказов и зарождение мифологии оружия.', img: 'img/cover_lapki1.jpg', type: 'info' },
-  { era: 'Часть 3', title: 'Легенда об АВП Лапки 2: Пророчество', desc: 'Кризисная веха, повествующая о тяжелом ментальном упадке Драгона и жестком шантаже со стороны Империи Капибар.', img: 'img/cover_lapki2.jpg', type: 'book', bookId: 'lapki2' },
-  { era: 'Эра Лапки 2 — Лето 2023', title: 'Застой Капибары и Тильт', desc: 'Возвращение АВП. Совместные ламповые игры в Рафт и Гаррис Мод. Растущий тильт Капибары из-за FaceIt.', img: 'img/capybara.jpg', type: 'info' },
-  { era: 'Эра Лапки 2 — Осень 2023', title: 'Потеря АВП Лапки и Раскол', desc: 'Игра против Симпла. Выключение света. Стримснайпер Valerchik34 крадет винтовку. Ссора и распад команды.', img: 'img/cover_lapki2.jpg', type: 'info' }
+  { era: 'Часть 1', title: 'Друзья навсегда', desc: 'Глубокая психологическая история взаимоотношений Максима и Драгона. Трагические события в Токио.', img: 'img/cover_friendsforever.jpg' },
+  { era: 'Часть 2', title: 'Легенда об АВП Лапки 1', desc: 'Драгон Мс собирает легендарный состав клуба Last Way. Зарождение мифологии оружия.', img: 'img/cover_lapki1.jpg' },
+  { era: 'Эра Лапки 1', title: 'Основание Клуба', desc: 'Старт эпохи шиза-рассказов.', img: 'img/cover_lapki1.jpg' },
+  { era: 'Часть 3', title: 'Легенда об АВП Лапки 2', desc: 'Кризис Драгона и шантаж Империи Капибар.', img: 'img/cover_lapki2.jpg' },
+  { era: 'Лето 2023', title: 'Застой Капибары', desc: 'Ламповые игры в Рафт и Garry\'s Mod.', img: 'img/capybara.jpg' },
+  { era: 'Осень 2023', title: 'Потеря АВП и Раскол', desc: 'Стримснайпер Valerchik34 крадёт винтовку.', img: 'img/cover_lapki2.jpg' }
 ];
 
 function renderTimeline() {
   document.getElementById('timeline-container').innerHTML = DEFAULT_TIMELINE.map(item => `
-    <div class="timeline-item"><div class="timeline-card" onclick="${item.type === 'book' ? `openBook('${item.bookId}')` : ''}">
+    <div class="timeline-item"><div class="timeline-card">
       <img src="${item.img}" onerror="this.style.display='none'">
       <div class="timeline-era">${item.era}</div>
       <div class="timeline-title">${item.title}</div>
@@ -481,11 +550,79 @@ function renderTimeline() {
   `).join('');
 }
 
+function renderFeatured() {
+  const grid = document.getElementById('featured-grid');
+  if (state.featured.length === 0) {
+    grid.innerHTML = '<p style="color:var(--text-dim); grid-column:1/-1; text-align:center; padding:32px;">На главной пока нет произведений. Добавь их через Dev-панель → Главная.</p>';
+    return;
+  }
+  grid.innerHTML = state.featured.map(bookId => {
+    const book = state.books.find(b => b.id === bookId);
+    if (!book) return '';
+    return `
+      <div class="featured-card" onclick="openBook('${book.id}')">
+        <img src="img/${book.cover || 'dragon.jpg'}" onerror="this.src='img/dragon.jpg'">
+        <div class="featured-card-info">
+          <div class="featured-card-title">${book.title}</div>
+          <div class="featured-card-meta">${(book.chapters || []).length} глав</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderFeaturedEditor() {
+  const select = document.getElementById('featured-book-select');
+  const available = state.books.filter(b => !state.featured.includes(b.id));
+  select.innerHTML = available.length ? available.map(b => `<option value="${b.id}">${b.title}</option>`).join('') : '<option>Нет доступных книг</option>';
+
+  const list = document.getElementById('featured-list');
+  if (state.featured.length === 0) {
+    list.innerHTML = '<p style="color:var(--text-dim)">На главной пока ничего нет</p>';
+    return;
+  }
+  list.innerHTML = state.featured.map((bookId, idx) => {
+    const book = state.books.find(b => b.id === bookId);
+    if (!book) return '';
+    return `
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; background:var(--bg); border:1px solid var(--border); border-radius:7px;">
+        <div><b style="font-size:13px">${idx+1}. ${book.title}</b></div>
+        <div style="display:flex; gap:5px;">
+          <button class="btn btn-icon" onclick="moveFeatured(${idx}, -1)" ${idx===0?'disabled':''}>↑</button>
+          <button class="btn btn-icon" onclick="moveFeatured(${idx}, 1)" ${idx===state.featured.length-1?'disabled':''}>↓</button>
+          <button class="btn btn-icon btn-danger" onclick="removeFeatured(${idx})"></button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function addToFeatured() {
+  const bookId = document.getElementById('featured-book-select').value;
+  if (!bookId) return;
+  state.featured.push(bookId);
+  saveData();
+  renderFeaturedEditor();
+}
+function removeFeatured(idx) {
+  state.featured.splice(idx, 1);
+  saveData();
+  renderFeaturedEditor();
+}
+function moveFeatured(idx, dir) {
+  const newIdx = idx + dir;
+  if (newIdx < 0 || newIdx >= state.featured.length) return;
+  [state.featured[idx], state.featured[newIdx]] = [state.featured[newIdx], state.featured[idx]];
+  saveData();
+  renderFeaturedEditor();
+}
+
+// ===== КНИГИ =====
 function renderBooks() {
   const search = (document.getElementById('book-search').value || '').toLowerCase();
   const filtered = state.books.filter(b => b.title.toLowerCase().includes(search));
   const grid = document.getElementById('books-grid');
-  if (filtered.length === 0) { grid.innerHTML = '<p style="color:var(--text-dim); grid-column:1/-1; text-align:center; padding:32px;">Книг нет. Загрузи через Dev-панель или library.json.</p>'; return; }
+  if (filtered.length === 0) { grid.innerHTML = '<p style="color:var(--text-dim); grid-column:1/-1; text-align:center; padding:32px;">Книг нет.</p>'; return; }
   grid.innerHTML = filtered.map(book => `
     <div class="book-card" onclick="openBook('${book.id}')">
       <img class="book-cover" src="img/${book.cover || 'dragon.jpg'}" onerror="this.src='img/dragon.jpg'">
@@ -544,7 +681,7 @@ function prevPage() {
   else if (currentChapterIdx > 0) { currentChapterIdx--; currentPage = 0; renderReader(); }
 }
 
-// Импорт Word
+// ===== ИМПОРТ WORD =====
 const dropZone = document.getElementById('drop-zone');
 ['dragenter', 'dragover'].forEach(e => dropZone.addEventListener(e, ev => { ev.preventDefault(); dropZone.classList.add('dragover'); }));
 ['dragleave', 'drop'].forEach(e => dropZone.addEventListener(e, ev => { ev.preventDefault(); dropZone.classList.remove('dragover'); }));
@@ -604,14 +741,20 @@ function renderAdminBookList() {
     </div>
   `).join('');
 }
-function deleteBook(id) { if(confirm('Удалить?')) { state.books = state.books.filter(b => b.id !== id); saveData(); renderAdminBookList(); } }
+function deleteBook(id) {
+  if(!confirm('Удалить?')) return;
+  state.books = state.books.filter(b => b.id !== id);
+  state.featured = state.featured.filter(bid => bid !== id);
+  saveData(); renderAdminBookList();
+}
 function createEmptyBook() {
   const title = document.getElementById('quick-title').value.trim(); if (!title) return alert('Введи название');
   const cover = document.getElementById('quick-cover').value.trim() || 'dragon.jpg';
   state.books.push({ id: 'book_' + Date.now(), title, cover, chapters: [], createdAt: new Date().toISOString() });
-  saveData(); document.getElementById('quick-title').value = ''; renderAdminBookList();
+  saveData(); document.getElementById('quick-title').value = ''; document.getElementById('quick-cover').value = ''; renderAdminBookList();
 }
 
+// ===== РЕДАКТОР КНИГ =====
 function openEditor(bookId) {
   editingBookId = bookId; editingChapterId = null;
   const book = state.books.find(b => b.id === bookId);
@@ -661,35 +804,116 @@ function updateCharCount() {
   document.getElementById('page-count').textContent = Math.ceil(text / 4000) || 0;
 }
 
-// Лор с перекрёстными ссылками
+// ===== ЛОР С РЕДАКТИРОВАНИЕМ И ПЛАШКАМИ =====
+function addDynamicField(label = '', value = '') {
+  const container = document.getElementById('dynamic-fields');
+  const div = document.createElement('div');
+  div.className = 'dynamic-field';
+  div.innerHTML = `
+    <input type="text" class="form-input field-label" placeholder="Название (Статус)" value="${label}" style="flex:1">
+    <input type="text" class="form-input field-value" placeholder="Значение (Жив)" value="${value}" style="flex:1.5">
+    <button class="btn btn-icon btn-danger" onclick="this.parentElement.remove()"></button>
+  `;
+  container.appendChild(div);
+}
+
+function getDynamicFields() {
+  const fields = [];
+  document.querySelectorAll('.dynamic-field').forEach(div => {
+    const label = div.querySelector('.field-label').value.trim();
+    const value = div.querySelector('.field-value').value.trim();
+    if (label && value) fields.push({ label, value });
+  });
+  return fields;
+}
+
 function saveLoreEntry() {
+  const editId = document.getElementById('lore-edit-id').value;
   const type = document.getElementById('lore-type').value;
   const name = document.getElementById('lore-name').value.trim();
   const img = document.getElementById('lore-img').value.trim() || 'dragon.jpg';
   const short = document.getElementById('lore-short').value.trim();
+  const fields = getDynamicFields();
   const categories = document.getElementById('lore-categories').value.trim();
   const full = document.getElementById('lore-editor').innerHTML;
   if (!name || !full) return alert('Заполни название и текст!');
 
-  state.lore[type].push({ id: 'lore_' + Date.now(), name, img, short, categories: categories ? categories.split(',').map(c => c.trim()) : [], full, createdAt: new Date().toISOString() });
-  saveData(); renderAdminLoreList();
+  const entry = {
+    id: editId || 'lore_' + Date.now(),
+    name, img, short,
+    fields,
+    categories: categories ? categories.split(',').map(c => c.trim()) : [],
+    full,
+    updatedAt: new Date().toISOString()
+  };
 
-  document.getElementById('lore-name').value = ''; document.getElementById('lore-img').value = '';
-  document.getElementById('lore-short').value = ''; document.getElementById('lore-categories').value = '';
+  if (editId) {
+    // Редактирование: удаляем старую запись из всех типов
+    ['characters', 'locations', 'items'].forEach(t => {
+      state.lore[t] = state.lore[t].filter(i => i.id !== editId);
+    });
+  }
+
+  state.lore[type].push(entry);
+  saveData(); renderAdminLoreList(); resetLoreForm();
+
+  const s = document.getElementById('lore-status'); s.className = 'status success'; s.textContent = '✅ Сохранено!'; setTimeout(() => s.textContent = '', 2500);
+}
+
+function editLoreEntry(id) {
+  let item = null, type = null;
+  ['characters', 'locations', 'items'].forEach(t => {
+    const found = state.lore[t].find(i => i.id === id);
+    if (found) { item = found; type = t; }
+  });
+  if (!item) return;
+
+  document.getElementById('lore-edit-id').value = item.id;
+  document.getElementById('lore-type').value = type;
+  document.getElementById('lore-name').value = item.name;
+  document.getElementById('lore-img').value = item.img;
+  document.getElementById('lore-short').value = item.short || '';
+  document.getElementById('lore-categories').value = (item.categories || []).join(', ');
+  document.getElementById('lore-editor').innerHTML = item.full;
+  document.getElementById('lore-form-title').textContent = '✏️ Редактирование: ' + item.name;
+  document.getElementById('lore-cancel-btn').style.display = 'inline-flex';
+
+  // Заполняем плашки
+  document.getElementById('dynamic-fields').innerHTML = '';
+  (item.fields || []).forEach(f => addDynamicField(f.label, f.value));
+
+  showAdminTab('lore');
+  document.querySelector('.admin-panel').scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetLoreForm() {
+  document.getElementById('lore-edit-id').value = '';
+  document.getElementById('lore-name').value = '';
+  document.getElementById('lore-img').value = '';
+  document.getElementById('lore-short').value = '';
+  document.getElementById('lore-categories').value = '';
   document.getElementById('lore-editor').innerHTML = '';
-  const s = document.getElementById('lore-status'); s.className = 'status success'; s.textContent = '✅ Запись добавлена!'; setTimeout(() => s.textContent = '', 2500);
+  document.getElementById('dynamic-fields').innerHTML = '';
+  document.getElementById('lore-form-title').textContent = '➕ Добавить запись в Лор';
+  document.getElementById('lore-cancel-btn').style.display = 'none';
 }
 
 function renderAdminLoreList() {
   const list = document.getElementById('admin-lore-list');
-  const all = [...state.lore.characters, ...state.lore.locations, ...state.lore.items];
+  const all = [];
+  ['characters', 'locations', 'items'].forEach(t => {
+    state.lore[t].forEach(i => all.push({...i, type: t}));
+  });
   if (all.length === 0) { list.innerHTML = '<p style="color:var(--text-dim)">Записей нет</p>'; return; }
   list.innerHTML = all.map(item => {
-    const type = state.lore.characters.includes(item) ? 'Персонаж' : state.lore.locations.includes(item) ? 'Локация' : 'Предмет';
+    const typeLabel = item.type === 'characters' ? 'Персонаж' : item.type === 'locations' ? 'Локация' : 'Предмет';
     return `
     <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; background:var(--bg); border:1px solid var(--border); border-radius:7px;">
-      <div><b style="font-size:13px">${item.name}</b> <small style="color:var(--text-dim)">(${type})</small></div>
-      <button class="btn btn-small btn-danger" onclick="deleteLore('${item.id}')">🗑️</button>
+      <div><b style="font-size:13px">${item.name}</b> <small style="color:var(--text-dim)">(${typeLabel})</small></div>
+      <div style="display:flex; gap:5px;">
+        <button class="btn btn-small" onclick="editLoreEntry('${item.id}')">✏️</button>
+        <button class="btn btn-small btn-danger" onclick="deleteLore('${item.id}')">🗑️</button>
+      </div>
     </div>`;
   }).join('');
 }
@@ -704,7 +928,7 @@ function renderLoreGrid(type) {
   lastLoreSection = type;
   const container = document.getElementById('lore-' + type);
   const items = state.lore[type];
-  if (items.length === 0) { container.innerHTML = '<p style="color:var(--text-dim); grid-column:1/-1; text-align:center; padding:32px;">Раздел пуст. Добавь записи через Dev-панель.</p>'; return; }
+  if (items.length === 0) { container.innerHTML = '<p style="color:var(--text-dim); grid-column:1/-1; text-align:center; padding:32px;">Раздел пуст. Добавь через Dev-панель.</p>'; return; }
   container.innerHTML = items.map(item => `
     <div class="lore-card" onclick="openLoreArticle('${type}', '${item.id}')">
       <img src="img/${item.img}" onerror="this.src='img/dragon.jpg'">
@@ -717,13 +941,27 @@ function openLoreArticle(type, id) {
   const item = state.lore[type].find(i => i.id === id); if (!item) return;
   lastLoreSection = type;
   const typeLabel = type === 'characters' ? 'Персонаж' : type === 'locations' ? 'Локация' : 'Предмет';
+
+  let fieldsHtml = '';
+  if (item.fields && item.fields.length > 0) {
+    fieldsHtml = item.fields.map(f => `
+      <div class="info-row">
+        <span class="info-label">${f.label}:</span>
+        <span class="info-value">${f.value}</span>
+      </div>
+    `).join('');
+  }
+
   document.getElementById('wiki-layout-content').innerHTML = `
     <div class="wiki-infobox">
       <img src="img/${item.img}" onerror="this.src='img/dragon.jpg'">
       <h3>${item.name}</h3>
-      <div class="short-desc">${item.short}</div>
-      <div class="info-row"><span>Тип:</span><span>${typeLabel}</span></div>
-      <div class="info-row"><span>Вселенная:</span><span>Last Way</span></div>
+      ${item.short ? `<div class="short-desc">${item.short}</div>` : ''}
+      <div class="info-row">
+        <span class="info-label">Тип:</span>
+        <span class="info-value">${typeLabel}</span>
+      </div>
+      ${fieldsHtml}
       ${item.categories && item.categories.length ? `<div class="categories"><small style="color:var(--text-dim)">Категории:</small><br>${item.categories.map(c => `<span class="category-tag">${c}</span>`).join('')}</div>` : ''}
     </div>
     <div class="wiki-main">
@@ -734,22 +972,36 @@ function openLoreArticle(type, id) {
   showSection('lore-view');
 }
 
-// Обработка ссылок на сущности в тексте
+// ДЕЛЕГИРОВАНИЕ СОБЫТИЙ ДЛЯ ЛОР-ССЫЛОК (ИСПРАВЛЕНИЕ)
+document.addEventListener('click', function(e) {
+  const link = e.target.closest('.lore-link');
+  if (link) {
+    e.preventDefault();
+    e.stopPropagation();
+    const id = link.getAttribute('data-lore-id');
+    const type = link.getAttribute('data-lore-type');
+    if (id && type) openLoreArticle(type, id);
+  }
+});
+
 function processLoreLinks(html) {
-  // Заменяем <a class="lore-link" data-lore-id="..." data-lore-type="...">Имя</a> на кликабельные
-  return html.replace(/<a\s+class="lore-link"\s+data-lore-id="([^"]+)"\s+data-lore-type="([^"]+)">([^<]+)<\/a>/g,
-    (match, id, type, name) => `<a class="lore-link" onclick="openLoreArticle('${type}', '${id}')">${name}</a>`);
+  return html.replace(/<a\s+class="lore-link"\s+data-lore-id="([^"]+)"\s+data-lore-type="([^"]+)"[^>]*>([^<]*)<\/a>/g,
+    '<a class="lore-link" data-lore-id="$1" data-lore-type="$2">$3</a>');
 }
 
-function insertLoreLink() {
-  const allItems = [
+function getAllLoreItems() {
+  return [
     ...state.lore.characters.map(i => ({...i, type: 'characters'})),
     ...state.lore.locations.map(i => ({...i, type: 'locations'})),
     ...state.lore.items.map(i => ({...i, type: 'items'}))
   ];
+}
+
+function insertLoreLink() {
+  const allItems = getAllLoreItems();
   if (allItems.length === 0) return alert('Сначала добавь персонажей/локации/предметы!');
 
-  const options = allItems.map((item, i) => `${i+1}. ${item.name} (${item.type === 'characters' ? 'Персонаж' : item.type === 'locations' ? 'Локация' : 'Предмет'})`).join('\n');
+  const options = allItems.map((item, i) => `${i+1}. ${item.name} (${item.type === 'characters' ? 'Перс' : item.type === 'locations' ? 'Лок' : 'Пред'})`).join('\n');
   const choice = prompt(`Выбери сущность (введи номер):\n${options}`);
   if (!choice) return;
   const idx = parseInt(choice) - 1;
@@ -760,9 +1012,25 @@ function insertLoreLink() {
   document.execCommand('insertHTML', false, html);
 }
 
+function insertLoreLinkInEditor() {
+  const allItems = getAllLoreItems();
+  if (allItems.length === 0) return alert('Сначала добавь сущности в базу лора!');
+
+  const options = allItems.map((item, i) => `${i+1}. ${item.name}`).join('\n');
+  const choice = prompt(`Выбери сущность для ссылки (введи номер):\n${options}`);
+  if (!choice) return;
+  const idx = parseInt(choice) - 1;
+  if (idx < 0 || idx >= allItems.length) return alert('Неверный номер');
+
+  const item = allItems[idx];
+  const html = `<a class="lore-link" data-lore-id="${item.id}" data-lore-type="${item.type}">${item.name}</a>`;
+  document.execCommand('insertHTML', false, html);
+  document.getElementById('editor-content').focus();
+}
+
 function execCmdLore(cmd, val) { document.execCommand(cmd, false, val); document.getElementById('lore-editor').focus(); }
 
-// Экспорт для хостинга
+// ===== ЭКСПОРТ =====
 function exportLibraryJSON() {
   const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'library.json'; a.click();
@@ -778,8 +1046,12 @@ function importJSON(e) {
   reader.onload = ev => {
     try {
       const data = JSON.parse(ev.target.result);
-      if (confirm(`Импортировать ${data.books?.length || 0} книг и лор?`)) {
-        state = { books: data.books || [], lore: data.lore || { characters: [], locations: [], items: [] } };
+      if (confirm(`Импортировать ${data.books?.length || 0} книг?`)) {
+        state = {
+          books: data.books || [],
+          lore: data.lore || { characters: [], locations: [], items: [] },
+          featured: data.featured || []
+        };
         saveData(); renderAdminBookList(); renderAdminLoreList(); alert('✅ Импорт завершён!');
       }
     } catch(err) { alert('❌ Ошибка: ' + err.message); }
@@ -787,13 +1059,16 @@ function importJSON(e) {
   reader.readAsText(file);
 }
 function clearAllData() {
-  if (confirm('Удалить ВСЁ?')) { state = { books: [], lore: { characters: [], locations: [], items: [] } }; saveData(); renderAdminBookList(); renderAdminLoreList(); }
+  if (!confirm('Удалить ВСЁ?')) return;
+  if (!confirm('Точно-точно?')) return;
+  state = { books: [], lore: { characters: [], locations: [], items: [] }, featured: [] };
+  saveData(); renderAdminBookList(); renderAdminLoreList();
 }
 
-// Старт
+// СТАРТ
 (async function init() {
   loadData();
-  await loadFromServer(); // Пытаемся загрузить с сервера
+  await loadFromServer();
   const savedTheme = localStorage.getItem('dragonms_theme') || 'dark';
   setTheme(savedTheme);
   petalsEnabled = localStorage.getItem('dragonms_petals') === 'true';
@@ -802,6 +1077,7 @@ function clearAllData() {
     document.getElementById('petals-btn').textContent = '🌸 Лепестки: ВКЛ';
     startPetals();
   }
+  renderFeatured();
   renderTimeline();
 })();
 </script>
