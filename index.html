@@ -16,8 +16,8 @@
   --reader-font-size: 16px;
 }
 [data-theme="light"] { --bg:#f5f5f7; --bg-2:#fff; --bg-3:#eee; --text:#1d1d1f; --text-dim:#6e6e73; --border:#d2d2d7; --content-bg: rgba(255,255,255,0.92); }
-[data-theme="sakura"] { 
-  --bg: rgba(42, 26, 36, 0.92); --bg-2: rgba(58, 36, 51, 0.95); --bg-3: rgba(74, 46, 66, 0.95); 
+[data-theme="sakura"] {
+  --bg: rgba(42, 26, 36, 0.92); --bg-2: rgba(58, 36, 51, 0.95); --bg-3: rgba(74, 46, 66, 0.95);
   --text: #ffe4f0; --text-dim: #d4a0b7; --accent: #ff7eb3; --accent-2: #ff9ec7; --border: #5a3a4a;
   --content-bg: rgba(42, 26, 36, 0.92);
 }
@@ -25,10 +25,10 @@
 
 * { box-sizing: border-box; }
 
-body { 
-  background: var(--bg); color: var(--text); 
-  font-family: -apple-system, 'Segoe UI', Roboto, sans-serif; 
-  line-height: 1.6; min-height: 100vh; margin: 0; 
+body {
+  background: var(--bg); color: var(--text);
+  font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6; min-height: 100vh; margin: 0;
   transition: background 0.5s;
   position: relative;
 }
@@ -95,8 +95,8 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
 
 /* Читалка */
 .reader-container { max-width: 720px; margin: 0 auto; position: relative; }
-.reader-panel { 
-  background: var(--content-bg); 
+.reader-panel {
+  background: var(--content-bg);
   backdrop-filter: blur(15px);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -275,7 +275,7 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
 <section id="section-home" class="section active">
   <h1>🐉 Last Way Fandom Wiki</h1>
   <p style="color: var(--text-dim); margin-bottom: 24px; font-size: 14px;">Официальная энциклопедия вселенной Драгона Мс</p>
-  
+
   <h2>⏳ Хронология произведений</h2>
   <p style="color: var(--text-dim); font-size: 13px; margin-bottom: 20px;">Наведи на карточку — появятся кнопки ↑↓ для изменения порядка</p>
   <div class="timeline" id="timeline-container"></div>
@@ -305,7 +305,7 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
           <button class="btn btn-small btn-danger" onclick="showSection('home')" title="Выйти из читалки">✕ Выход</button>
         </div>
       </div>
-      
+
       <!-- Поиск по книге -->
       <div id="search-panel" style="display: none; margin-bottom: 12px;">
         <div class="search-bar">
@@ -314,7 +314,7 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
         </div>
         <div class="search-results" id="search-results"></div>
       </div>
-      
+
       <div class="reader-content" id="reader-content"></div>
       <div class="reader-nav bottom">
         <button class="btn" onclick="prevPage()">← Предыдущая</button>
@@ -525,8 +525,8 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
 
 <script>
 const STORAGE_KEY = 'dragonms_library_v6';
-let state = { 
-  books: [], 
+let state = {
+  books: [],
   lore: { characters: [], locations: [], items: [] },
   backgrounds: [],
   bookOrder: []
@@ -565,19 +565,48 @@ function showToast() {
 
 async function loadFromServer() {
   try {
-    const response = await fetch('library.json');
+    // Определяем правильный путь (работает и в корне, и в подпапке)
+    const basePath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
+    const url = basePath + '/library.json?v=' + Date.now(); // ?v= ломает кэш
+
+    console.log('Пытаемся загрузить:', url);
+
+    const response = await fetch(url, { cache: 'no-store' });
+
     if (response.ok) {
       const data = await response.json();
+      console.log('Данные с сервера:', data);
+
       if (data.books && data.books.length > 0) {
         state.books = data.books;
         if (data.lore) state.lore = data.lore;
         if (data.backgrounds) state.backgrounds = data.backgrounds;
         if (data.bookOrder) state.bookOrder = data.bookOrder;
         else state.bookOrder = state.books.map(b => b.id);
-        console.log('Данные загружены с сервера');
+        
+        // Сохраняем в localStorage, чтобы работало офлайн
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+
+        console.log('✅ Загружено книг:', state.books.length);
+        showToastMessage('✅ Загружено ' + state.books.length + ' книг с сервера');
+      } else {
+        console.log('️ Файл library.json пустой или без книг');
+        showToastMessage('️ library.json пустой');
       }
+    } else {
+      console.log('⚠️ library.json не найден (статус ' + response.status + ')');
     }
-  } catch(e) { console.log('library.json не найден'); }
+  } catch(e) {
+    console.log('❌ Ошибка загрузки library.json:', e);
+    showToastMessage('❌ Не удалось загрузить library.json');
+  }
+}
+
+function showToastMessage(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
 }
 
 function showSection(name) {
@@ -648,12 +677,12 @@ function stopPetals() { clearInterval(petalInterval); petalInterval = null; docu
 function openBgModal() {
   const grid = document.getElementById('bg-grid');
   const currentBg = localStorage.getItem('dragonms_current_bg');
-  
+
   if (state.backgrounds.length === 0) {
     grid.innerHTML = '<p style="color:var(--text-dim); grid-column:1/-1; text-align:center; padding:20px;">Нет доступных фонов. Добавь произведения с обложками.</p>';
   } else {
     grid.innerHTML = state.backgrounds.map(bg => `
-      <div class="bg-option ${currentBg === bg.id ? 'active' : ''}" 
+      <div class="bg-option ${currentBg === bg.id ? 'active' : ''}"
            style="background-image: url('img/${bg.img}')"
            onclick="setBg('${bg.id}')">
         <div class="bg-option-name">${bg.name}</div>
@@ -690,12 +719,12 @@ function applyBg() {
 // ===== ТАЙМЛАЙН С ПОРЯДКОМ =====
 function renderTimeline() {
   const container = document.getElementById('timeline-container');
-  
+
   state.books.forEach(book => {
     if (!state.bookOrder.includes(book.id)) state.bookOrder.push(book.id);
   });
   state.bookOrder = state.bookOrder.filter(id => state.books.find(b => b.id === id));
-  
+
   const items = state.bookOrder.map(bookId => {
     const book = state.books.find(b => b.id === bookId);
     if (!book) return null;
@@ -707,12 +736,12 @@ function renderTimeline() {
       img: book.cover || 'dragon.jpg'
     };
   }).filter(Boolean);
-  
+
   if (items.length === 0) {
     container.innerHTML = '<div class="timeline-empty">📚 Пока нет произведений. Добавь первое через Dev-панель!</div>';
     return;
   }
-  
+
   container.innerHTML = items.map((item, idx) => `
     <div class="timeline-item">
       <div class="timeline-card" onclick="openBook('${item.bookId}')">
@@ -758,7 +787,7 @@ function openBook(bookId) {
   const book = state.books.find(b => b.id === bookId);
   if (!book || !book.chapters || book.chapters.length === 0) { alert('Книга пустая!'); return; }
   currentBookId = bookId;
-  
+
   const savedPos = localStorage.getItem('reading_pos_' + bookId);
   if (savedPos) {
     const pos = JSON.parse(savedPos);
@@ -768,7 +797,7 @@ function openBook(bookId) {
     currentChapterIdx = 0;
     currentPage = 0;
   }
-  
+
   showSection('reader');
   renderReader();
 }
@@ -787,11 +816,11 @@ function renderReader() {
   const chapter = book.chapters[currentChapterIdx];
   document.getElementById('reader-book-title').textContent = book.title;
   document.getElementById('reader-chapter-title').textContent = chapter.title || `Глава ${currentChapterIdx + 1}`;
-  
+
   pages = splitIntoPages(chapter.content, 4000);
   if (currentPage >= pages.length) currentPage = pages.length - 1;
   if (currentPage < 0) currentPage = 0;
-  
+
   document.getElementById('reader-content').innerHTML = pages[currentPage] || '<p>Пусто</p>';
   document.getElementById('page-info').textContent = `Стр. ${currentPage + 1} из ${pages.length} • Гл. ${currentChapterIdx + 1}/${book.chapters.length}`;
   document.querySelector('.reader-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -817,8 +846,8 @@ function nextPage() {
   hideLoreTooltip();
   const book = state.books.find(b => b.id === currentBookId);
   if (currentPage < pages.length - 1) { currentPage++; renderReader(); }
-  else if (currentChapterIdx < book.chapters.length - 1) { 
-    currentChapterIdx++; currentPage = 0; 
+  else if (currentChapterIdx < book.chapters.length - 1) {
+    currentChapterIdx++; currentPage = 0;
     renderReader();
   }
   else { alert('🎉 Книга прочитана!'); }
@@ -850,7 +879,7 @@ function searchInBook() {
   const query = document.getElementById('book-search-input').value.toLowerCase().trim();
   const results = document.getElementById('search-results');
   if (!query) { results.innerHTML = ''; return; }
-  
+
   const book = state.books.find(b => b.id === currentBookId);
   const found = [];
   book.chapters.forEach((ch, chIdx) => {
@@ -863,7 +892,7 @@ function searchInBook() {
       found.push({ chIdx, snippet, query });
     }
   });
-  
+
   if (found.length === 0) {
     results.innerHTML = '<div style="color:var(--text-dim); font-size:12px; padding:8px;">Ничего не найдено</div>';
   } else {
@@ -887,7 +916,7 @@ function renderToc() {
     <div class="toc-chapter ${i === currentChapterIdx ? 'active' : ''}" onclick="jumpToChapter(${i})">
       <div class="toc-chapter-title">${i+1}. ${ch.title || 'Глава ' + (i+1)}</div>
       <div class="toc-pages">
-        ${Array.from({length: numPages}, (_, p) => 
+        ${Array.from({length: numPages}, (_, p) =>
           `<span class="toc-page ${i===currentChapterIdx && p===currentPage ? 'active' : ''}" onclick="event.stopPropagation(); jumpToPage(${i}, ${p})">стр.${p+1}</span>`
         ).join('')}
       </div>
@@ -939,19 +968,19 @@ function saveConvertedBook() {
   const cover = prompt('Обложка (из img/):', 'dragon.jpg') || 'dragon.jpg';
   const era = prompt('Эра/часть (для таймлайна):', 'Часть 1') || 'Без эры';
   const description = prompt('Краткое описание:', '') || '';
-  
-  const book = { 
+
+  const book = {
     id: 'book_' + Date.now(), title, cover, era, description,
-    chapters: pendingBook.chapters.map((c, i) => ({ id: 'ch_'+Date.now()+'_'+i, title: c.title, content: c.content })), 
-    createdAt: new Date().toISOString() 
+    chapters: pendingBook.chapters.map((c, i) => ({ id: 'ch_'+Date.now()+'_'+i, title: c.title, content: c.content })),
+    createdAt: new Date().toISOString()
   };
   state.books.push(book);
   state.bookOrder.push(book.id);
-  
+
   if (!state.backgrounds.find(b => b.img === cover)) {
     state.backgrounds.push({ id: 'bg_' + Date.now(), img: cover, name: title });
   }
-  
+
   saveData(); pendingBook = null;
   document.getElementById('preview-section').style.display = 'none';
   renderAdminBookList();
@@ -971,11 +1000,11 @@ function renderAdminBookList() {
     </div>
   `).join('');
 }
-function deleteBook(id) { 
-  if(!confirm('Удалить?')) return; 
-  state.books = state.books.filter(b => b.id !== id); 
+function deleteBook(id) {
+  if(!confirm('Удалить?')) return;
+  state.books = state.books.filter(b => b.id !== id);
   state.bookOrder = state.bookOrder.filter(bid => bid !== id);
-  saveData(); renderAdminBookList(); 
+  saveData(); renderAdminBookList();
 }
 function createEmptyBook() {
   const title = document.getElementById('quick-title').value.trim(); if (!title) return alert('Введи название');
@@ -985,13 +1014,13 @@ function createEmptyBook() {
   const book = { id: 'book_' + Date.now(), title, cover, era, description: desc, chapters: [], createdAt: new Date().toISOString() };
   state.books.push(book);
   state.bookOrder.push(book.id);
-  
+
   if (!state.backgrounds.find(b => b.img === cover)) {
     state.backgrounds.push({ id: 'bg_' + Date.now(), img: cover, name: title });
   }
-  
-  saveData(); 
-  document.getElementById('quick-title').value = ''; 
+
+  saveData();
+  document.getElementById('quick-title').value = '';
   document.getElementById('quick-cover').value = '';
   document.getElementById('quick-era').value = '';
   document.getElementById('quick-desc').value = '';
@@ -1023,8 +1052,8 @@ function renderEditorChapterList() {
 function loadChapter(id) {
   const book = state.books.find(b => b.id === editingBookId);
   const ch = book.chapters.find(c => c.id === id); if (!ch) return;
-  editingChapterId = id; 
-  document.getElementById('chapter-title').value = ch.title; 
+  editingChapterId = id;
+  document.getElementById('chapter-title').value = ch.title;
   document.getElementById('chapter-cover').value = ch.cover || '';
   document.getElementById('editor-content').innerHTML = ch.content;
   updateCharCount();
@@ -1034,9 +1063,9 @@ function saveChapter() {
   const title = document.getElementById('chapter-title').value.trim() || 'Без названия';
   const cover = document.getElementById('chapter-cover').value.trim() || '';
   const content = document.getElementById('editor-content').innerHTML;
-  if (editingChapterId) { 
-    const ch = book.chapters.find(c => c.id === editingChapterId); 
-    if(ch) { ch.title = title; ch.content = content; ch.cover = cover; } 
+  if (editingChapterId) {
+    const ch = book.chapters.find(c => c.id === editingChapterId);
+    if(ch) { ch.title = title; ch.content = content; ch.cover = cover; }
   }
   else { book.chapters.push({ id: 'ch_' + Date.now(), title, content, cover }); }
   saveData(); renderEditorChapterList();
@@ -1088,7 +1117,7 @@ function saveLoreEntry() {
   const categories = document.getElementById('lore-categories').value.trim();
   const full = document.getElementById('lore-editor').innerHTML;
   if (!name || !full) return alert('Заполни название и текст!');
-  
+
   const entry = { id: editId || 'lore_' + Date.now(), name, img, short, fields, categories: categories ? categories.split(',').map(c => c.trim()) : [], full, updatedAt: new Date().toISOString() };
 
   if (editId) {
@@ -1096,7 +1125,7 @@ function saveLoreEntry() {
   }
   state.lore[type].push(entry);
   saveData(); renderAdminLoreList(); resetLoreForm();
-  
+
   const s = document.getElementById('lore-status'); s.className = 'status success'; s.textContent = '✅ Сохранено!'; setTimeout(() => s.textContent = '', 2500);
 }
 
@@ -1178,7 +1207,7 @@ function openLoreArticle(type, id) {
   const item = state.lore[type].find(i => i.id === id); if (!item) return;
   lastLoreSection = type;
   const typeLabel = type === 'characters' ? 'Персонаж' : type === 'locations' ? 'Локация' : 'Предмет';
-  
+
   let fieldsHtml = '';
   if (item.fields && item.fields.length > 0) {
     fieldsHtml = item.fields.map(f => `<div class="info-row"><span class="info-label">${f.label}:</span><span class="info-value">${f.value}</span></div>`).join('');
@@ -1209,7 +1238,7 @@ function showLoreTooltip(e, id, type) {
     if (found) item = found;
   });
   if (!item) return;
-  
+
   const tooltip = document.getElementById('lore-tooltip');
   tooltip.innerHTML = `
     <img src="img/${item.img}" onerror="this.style.display='none'">
@@ -1217,12 +1246,12 @@ function showLoreTooltip(e, id, type) {
     <p>${item.short || 'Описание отсутствует'}</p>
     <div class="click-hint">Нажмите для перехода к статье</div>
   `;
-  
+
   const rect = e.target.getBoundingClientRect();
   tooltip.style.left = (rect.right + 10) + 'px';
   tooltip.style.top = rect.top + 'px';
   tooltip.classList.add('show');
-  
+
   setTimeout(() => {
     const tRect = tooltip.getBoundingClientRect();
     if (tRect.right > window.innerWidth) {
@@ -1314,8 +1343,8 @@ function importJSON(e) {
     try {
       const data = JSON.parse(ev.target.result);
       if (confirm(`Импортировать ${data.books?.length || 0} книг?`)) {
-        state = { 
-          books: data.books || [], 
+        state = {
+          books: data.books || [],
           lore: data.lore || { characters: [], locations: [], items: [] },
           backgrounds: data.backgrounds || [],
           bookOrder: data.bookOrder || (data.books || []).map(b => b.id)
@@ -1329,7 +1358,7 @@ function importJSON(e) {
 function clearAllData() {
   if (!confirm('Удалить ВСЁ?')) return;
   if (!confirm('Точно-точно?')) return;
-  state = { books: [], lore: { characters: [], locations: [], items: [] }, backgrounds: [], bookOrder: [] }; 
+  state = { books: [], lore: { characters: [], locations: [], items: [] }, backgrounds: [], bookOrder: [] };
   saveData(); renderAdminBookList(); renderAdminLoreList();
 }
 
@@ -1338,7 +1367,7 @@ document.addEventListener('keydown', e => {
   if (document.getElementById('section-reader').classList.contains('active')) {
     if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextPage(); }
     if (e.key === 'ArrowLeft') { e.preventDefault(); prevPage(); }
-    if (e.key === 'Escape') { 
+    if (e.key === 'Escape') {
       const toc = document.getElementById('toc-sidebar');
       if (toc.classList.contains('open')) toggleToc();
       else { const sp = document.getElementById('search-panel'); if (sp.style.display === 'block') toggleSearch(); }
@@ -1360,14 +1389,14 @@ document.addEventListener('click', function(e) {
   await loadFromServer();
   const savedTheme = localStorage.getItem('dragonms_theme') || 'dark';
   setTheme(savedTheme);
-  
+
   petalsEnabled = localStorage.getItem('dragonms_petals') === 'true';
   if (savedTheme === 'sakura') {
     document.getElementById('petals-btn').style.display = 'block';
     document.getElementById('petals-btn').textContent = petalsEnabled ? ' Лепестки: ВКЛ' : '🌸 Лепестки: ВЫКЛ';
     if (petalsEnabled) startPetals();
   }
-  
+
   const savedFont = localStorage.getItem('reader_font_size');
   if (savedFont) {
     savedFontSize = parseInt(savedFont);
@@ -1375,7 +1404,7 @@ document.addEventListener('click', function(e) {
     document.getElementById('font-size-slider').value = savedFont;
     document.getElementById('font-size-value').textContent = savedFont;
   }
-  
+
   applyBg();
   renderTimeline();
 })();
