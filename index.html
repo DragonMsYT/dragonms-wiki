@@ -439,6 +439,70 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
   .theme-btn { width: 36px; height: 36px; }
   .mobile-menu .theme-row .theme-btn { width: 48px; height: 48px; }
 }
+/* ===== Редизайн хронологии и читалки ===== */
+.hero-section { min-height: clamp(300px, 42vw, 520px); border: 1px solid rgba(255,255,255,.08); border-radius: 28px; margin: 18px 0 46px; background: radial-gradient(ellipse at 72% 28%, rgba(255,45,85,.22), transparent 34%), radial-gradient(ellipse at 20% 80%, rgba(94,92,230,.2), transparent 38%), linear-gradient(135deg, rgba(19,19,31,.96), rgba(10,10,15,.88)); box-shadow: 0 28px 80px rgba(0,0,0,.24); }
+.hero-title { font-size: clamp(38px, 7vw, 76px); line-height: 1.05; max-width: 900px; margin-inline: auto; text-wrap: balance; }
+.hero-subtitle { font-size: clamp(16px, 2vw, 20px); line-height: 1.75; max-width: 660px; }
+#section-home > h2 { font-size: clamp(24px, 3vw, 34px); margin: 0 0 8px; }
+.timeline-hint { color: var(--text-dim); max-width: 680px; margin: 0 0 28px; }
+.timeline { position: relative; display: flex; flex-direction: column; gap: 30px; padding: 14px 0 28px; }
+.timeline::before { left: 50%; width: 2px; background: linear-gradient(to bottom, transparent, var(--accent), var(--accent-2), transparent); opacity: .75; }
+.timeline-item { width: 50%; padding: 12px 42px 12px 0; margin: 0; }
+.timeline-item:nth-child(even) { left: 50%; padding: 12px 0 12px 42px; }
+.timeline-item::before { top: 38px; width: 15px; height: 15px; background: var(--accent); border: 4px solid var(--bg); box-shadow: 0 0 0 1px var(--accent), 0 0 24px rgba(255,45,85,.45); }
+.timeline-item:nth-child(odd)::before { right: -8px; }
+.timeline-item:nth-child(even)::before { left: -8px; }
+.timeline-card { position: relative; display: flex; flex-direction: column; width: 100%; min-height: 360px; padding: 0; overflow: hidden; border: 1px solid var(--border); border-radius: 20px; background: var(--content-bg); color: var(--text); text-align: left; font: inherit; cursor: pointer; box-shadow: var(--shadow); isolation: isolate; transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease; }
+.timeline-card:hover, .timeline-card:focus-visible { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 20px 48px rgba(0,0,0,.34), 0 0 0 3px rgba(255,45,85,.13); outline: none; }
+.timeline-image-wrap { position: relative; height: clamp(190px, 23vw, 270px); overflow: hidden; background: var(--bg-3); }
+.timeline-image-wrap::after { content: ''; position: absolute; inset: 25% 0 0; background: linear-gradient(transparent, rgba(10,10,15,.78)); }
+.timeline-card img { display: block; width: 100%; height: 100%; object-fit: cover; margin: 0; border-radius: 0; transition: transform .5s ease; }
+.timeline-card:hover img { transform: scale(1.045); }
+.timeline-copy { position: relative; z-index: 1; display: grid; gap: 7px; padding: 19px 21px 22px; }
+.timeline-date { color: var(--accent); font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.timeline-era { color: var(--text-dim); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+.timeline-title { font-size: clamp(19px, 2vw, 24px); line-height: 1.2; margin: 0; }
+.timeline-desc { color: var(--text-dim); font-size: 14px; line-height: 1.65; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.timeline-order-controls { z-index: 3; top: 10px; right: 10px; opacity: 1; }
+.timeline-order-controls button { width: 34px; height: 34px; background: rgba(10,10,15,.78); border: 1px solid rgba(255,255,255,.18); backdrop-filter: blur(8px); }
+.timeline-order-controls button:disabled { opacity: .35; cursor: default; }
+.timeline-empty { width: min(100% - 24px, 720px); margin: 0 auto; border: 1px dashed var(--border); border-radius: 18px; background: var(--content-bg); }
+.reader-container { max-width: 980px; scroll-margin-top: 82px; }
+.reader-panel { padding: clamp(16px, 4vw, 42px); border-radius: 20px; }
+.reader-nav { position: sticky; top: 68px; z-index: 10; background: var(--content-bg); backdrop-filter: blur(16px); padding: 12px 0; }
+.reader-title { font-size: clamp(17px, 3vw, 23px); line-height: 1.3; }
+.reader-chapter { font-size: 13px; margin-top: 3px; }
+.reader-content { max-width: 70ch; margin: 0 auto; font-size: var(--reader-font-size); line-height: 1.95; padding: clamp(20px, 5vw, 56px) 0; min-height: 52vh; }
+.reader-content p { margin: 0 0 1.25em; }
+.reader-content h1, .reader-content h2, .reader-content h3 { line-height: 1.3; margin: 1.8em 0 .8em; }
+.reader-content img { display: block; margin: 1.8em auto; }
+.reader-nav.bottom { position: static; border-top: 1px solid var(--border); border-bottom: 0; background: transparent; backdrop-filter: none; }
+.reader-panel[data-reader-theme="paper"] { --content-bg: #f3ead8; --text: #332b21; --text-dim: #716453; --border: #d6c9b5; --bg: #e9dfcc; --bg-2: #f3ead8; --bg-3: #e5dac5; color: #332b21; }
+.reader-panel[data-reader-theme="night"] { --content-bg: #11131b; --text: #e6e7ef; --text-dim: #a0a4b6; --border: #292d3a; --bg: #0d0e14; --bg-2: #11131b; --bg-3: #1a1d29; color: #e6e7ef; }
+.reader-theme-controls { display: inline-flex; align-items: center; gap: 4px; padding: 3px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg-2); }
+.reader-theme-controls button { border: 0; border-radius: 7px; padding: 7px 9px; color: var(--text-dim); background: transparent; cursor: pointer; font: inherit; font-size: 12px; }
+.reader-theme-controls button[aria-pressed="true"] { background: var(--bg-3); color: var(--text); }
+@media (max-width: 700px) {
+  .section { padding: 20px 14px; }
+  .hero-section { min-height: 320px; margin: 8px 0 34px; border-radius: 20px; padding: 44px 18px; }
+  .timeline { gap: 18px; padding-left: 22px; }
+  .timeline::before { left: 7px; transform: none; }
+  .timeline-item, .timeline-item:nth-child(even) { left: 0; width: 100%; padding: 8px 0; }
+  .timeline-item::before, .timeline-item:nth-child(odd)::before, .timeline-item:nth-child(even)::before { left: -22px; right: auto; top: 32px; }
+  .timeline-card { min-height: 0; border-radius: 16px; }
+  .timeline-image-wrap { height: clamp(180px, 58vw, 260px); }
+  .timeline-copy { padding: 16px; }
+  .timeline-order-controls { right: 8px; top: 8px; }
+  .reader-panel { padding: 14px; border-radius: 16px; }
+  .reader-nav { top: 56px; align-items: flex-start; }
+  .reader-nav > div:last-child { gap: 5px !important; }
+  .reader-nav .btn { min-height: 40px; padding: 8px 10px; }
+  .reader-content { min-height: 55vh; line-height: 1.85; }
+  .font-size-control { flex-wrap: nowrap; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
 </style>
 </head>
 <body data-theme="dark">
@@ -502,7 +566,7 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
   </div>
   
   <h2>⏳ Хронология произведений</h2>
-  <p style="color: var(--text-dim); font-size: 13px; margin-bottom: 20px;">Наведи на карточку — появятся кнопки ↑↓ для изменения порядка</p>
+  <p class="timeline-hint">История мира — от ранних событий к поздним. Откройте карточку, чтобы перейти к произведению. Даты можно задать в редакторе сайта.</p>
   <div class="timeline" id="timeline-container"></div>
 </section>
 
@@ -518,6 +582,7 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
       <div class="reader-nav">
         <div><div class="reader-title" id="reader-book-title">—</div><div class="reader-chapter" id="reader-chapter-title">Глава 1</div></div>
         <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
+          <div class="reader-theme-controls" aria-label="Цвет читалки"><button type="button" data-reader-theme-choice="default" onclick="setReaderTheme('default')" aria-pressed="true">Тёмная</button><button type="button" data-reader-theme-choice="night" onclick="setReaderTheme('night')" aria-pressed="false">Ночь</button><button type="button" data-reader-theme-choice="paper" onclick="setReaderTheme('paper')" aria-pressed="false">Бумага</button></div>
           <div class="font-size-control">
             <span>🔤</span>
             <input type="range" id="font-size-slider" min="12" max="24" value="16" oninput="changeFontSize(this.value)">
@@ -616,8 +681,9 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
         <div class="admin-panel">
           <h3>✏️ Быстрое создание книги</h3>
           <div class="form-group"><label>Название</label><input type="text" class="form-input" id="quick-title"></div>
-          <div class="form-group"><label>Обложка (из папки img/)</label><input type="text" class="form-input" id="quick-cover" placeholder="dragon.jpg"></div>
-          <div class="form-group"><label>Эра/часть (для таймлайна)</label><input type="text" class="form-input" id="quick-era" placeholder="Часть 1"></div>
+          <div class="form-group"><label>Обложка (из папки img/)</label><input type="text" class="form-input" id="quick-cover" placeholder="dragon.png"></div>
+          <div class="form-group"><label>Эра или часть</label><input type="text" class="form-input" id="quick-era" placeholder="Часть 1"></div>
+          <div class="form-group"><label>Дата событий для хронологии</label><input type="text" class="form-input" id="quick-timeline-date" placeholder="Например: 2045 год или осень 2045"></div>
           <div class="form-group"><label>Краткое описание</label><textarea class="form-input" id="quick-desc" placeholder="О чём произведение..."></textarea></div>
           <button class="btn btn-primary" onclick="createEmptyBook()">➕ Создать</button>
         </div>
@@ -980,30 +1046,41 @@ function renderTimeline() {
     return {
       bookId: book.id,
       era: book.era || 'Без эры',
+      date: book.timelineDate || book.eventDate || book.date || '',
       title: book.title,
       desc: book.description || 'Описание отсутствует',
-      img: book.cover || 'dragon.jpg'
+      img: book.cover || 'dragon.png',
+      order: state.bookOrder.indexOf(bookId)
     };
-  }).filter(Boolean);
+  }).filter(Boolean).sort((a, b) => {
+    const yearA = timelineYear(a.date), yearB = timelineYear(b.date);
+    if (yearA !== null && yearB !== null && yearA !== yearB) return yearA - yearB;
+    if (yearA !== null && yearB === null) return -1;
+    if (yearA === null && yearB !== null) return 1;
+    return a.order - b.order;
+  });
   
   if (items.length === 0) {
-    container.innerHTML = '<div class="timeline-empty">📚 Пока нет произведений. Добавь первое через Dev-панель!</div>';
+    container.innerHTML = '<div class="timeline-empty">Пока в хронологии нет произведений. Добавьте книгу и дату событий в панели управления.</div>';
     return;
   }
   
-  container.innerHTML = items.map((item, idx) => `
-    <div class="timeline-item">
-      <div class="timeline-card" onclick="openBook('${item.bookId}')">
-        <div class="timeline-order-controls">
-          <button onclick="event.stopPropagation(); moveBook(${idx}, -1)" ${idx===0?'disabled':''} title="Вверх">↑</button>
-          <button onclick="event.stopPropagation(); moveBook(${idx}, 1)" ${idx===items.length-1?'disabled':''} title="Вниз">↓</button>
-        </div>
-        <img src="img/${item.img}" onerror="this.src='img/dragon.jpg'">
-        <div class="timeline-era">${item.era}</div>
-        <div class="timeline-title">${item.title}</div>
-        <div class="timeline-desc">${item.desc}</div>
-      </div>
-    </div>
+  container.innerHTML = items.map(item => `
+    <article class="timeline-item">
+      <button type="button" class="timeline-card" onclick="openBook('${item.bookId}')" aria-label="Открыть произведение: ${item.title}">
+        <span class="timeline-image-wrap"><img loading="lazy" src="img/${item.img}" alt="Обложка «${item.title}»" onerror="this.onerror=null;this.src='img/dragon.png'"></span>
+        <span class="timeline-copy">
+          ${item.date ? `<span class="timeline-date">${item.date}</span>` : ''}
+          <span class="timeline-era">${item.era}</span>
+          <span class="timeline-title">${item.title}</span>
+          <span class="timeline-desc">${item.desc}</span>
+        </span>
+      </button>
+      ${item.date ? '':`<div class="timeline-order-controls" aria-label="Изменить порядок карточки">
+        <button type="button" onclick="moveBook(${item.order}, -1)" ${item.order===0?'disabled':''} title="Переместить выше" aria-label="Переместить выше">↑</button>
+        <button type="button" onclick="moveBook(${item.order}, 1)" ${item.order===state.bookOrder.length-1?'disabled':''} title="Переместить ниже" aria-label="Переместить ниже">↓</button>
+      </div>`}
+    </article>
   `).join('');
 }
 
@@ -1016,6 +1093,11 @@ function moveBook(idx, dir) {
 }
 
 // ===== КНИГИ =====
+function timelineYear(value) {
+  const match = String(value || '').match(/-?\d{1,6}/);
+  return match ? Number(match[0]) : null;
+}
+
 function renderBooks() {
   const search = (document.getElementById('book-search').value || '').toLowerCase();
   const filtered = state.books.filter(b => b.title.toLowerCase().includes(search));
@@ -1023,7 +1105,7 @@ function renderBooks() {
   if (filtered.length === 0) { grid.innerHTML = '<p style="color:var(--text-dim); grid-column:1/-1; text-align:center; padding:32px;">Книг нет.</p>'; return; }
   grid.innerHTML = filtered.map(book => `
     <div class="book-card" onclick="openBook('${book.id}')" style="background:var(--content-bg); backdrop-filter:blur(10px); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; cursor:pointer; transition:all 0.3s;">
-      <img class="book-cover" src="img/${book.cover || 'dragon.jpg'}" onerror="this.src='img/dragon.jpg'" style="width:100%; height:280px; object-fit:cover; background:var(--bg-3);">
+      <img class="book-cover" src="img/${book.cover || 'dragon.png'}" onerror="this.src='img/dragon.png'" style="width:100%; height:280px; object-fit:cover; background:var(--bg-3);">
       <div class="book-info" style="padding:12px;">
         <div class="book-title" style="font-size:14px; font-weight:700; margin-bottom:4px;">${book.title}</div>
         <div class="book-meta" style="font-size:11px; color:var(--text-dim);">${(book.chapters || []).length} глав</div>
@@ -1062,7 +1144,10 @@ function saveReadingPosition() {
 
 function renderReader() {
   const book = state.books.find(b => b.id === currentBookId);
+  if (!book || !book.chapters || !book.chapters.length) return;
+  currentChapterIdx = Math.max(0, Math.min(currentChapterIdx, book.chapters.length - 1));
   const chapter = book.chapters[currentChapterIdx];
+  setReaderTheme(localStorage.getItem('reader_theme') || 'default');
   document.getElementById('reader-book-title').textContent = book.title;
   document.getElementById('reader-chapter-title').textContent = chapter.title || `Глава ${currentChapterIdx + 1}`;
   
@@ -1072,7 +1157,7 @@ function renderReader() {
   
   document.getElementById('reader-content').innerHTML = pages[currentPage] || '<p>Пусто</p>';
   document.getElementById('page-info').textContent = `Стр. ${currentPage + 1} из ${pages.length} • Гл. ${currentChapterIdx + 1}/${book.chapters.length}`;
-  document.querySelector('.reader-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.querySelector('.reader-container').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
   renderToc();
   saveReadingPosition();
   updateReadingProgress();
@@ -1118,6 +1203,18 @@ function updateReadingProgress() {
 }
 
 // Размер шрифта
+function setReaderTheme(theme) {
+  const allowed = ['default', 'night', 'paper'];
+  const selected = allowed.includes(theme) ? theme : 'default';
+  const panel = document.querySelector('.reader-panel');
+  if (!panel) return;
+  panel.dataset.readerTheme = selected;
+  localStorage.setItem('reader_theme', selected);
+  document.querySelectorAll('[data-reader-theme-choice]').forEach(button => {
+    button.setAttribute('aria-pressed', String(button.dataset.readerThemeChoice === selected));
+  });
+}
+
 function changeFontSize(size) {
   savedFontSize = parseInt(size);
   document.documentElement.style.setProperty('--reader-font-size', size + 'px');
@@ -1282,12 +1379,13 @@ function splitByHeadings(html) {
 function saveConvertedBook() {
   if (!pendingBook) return;
   const title = prompt('Название книги:', pendingBook.fileName); if (!title) return;
-  const cover = prompt('Обложка (из img/):', 'dragon.jpg') || 'dragon.jpg';
+  const cover = prompt('Обложка (из img/):', 'dragon.png') || 'dragon.png';
   const era = prompt('Эра/часть (для таймлайна):', 'Часть 1') || 'Без эры';
   const description = prompt('Краткое описание:', '') || '';
+  const timelineDate = prompt('Дата или период событий (можно оставить пустым):', '') || '';
   
   const book = { 
-    id: 'book_' + Date.now(), title, cover, era, description,
+    id: 'book_' + Date.now(), title, cover, era, timelineDate, description,
     chapters: pendingBook.chapters.map((c, i) => ({ id: 'ch_'+Date.now()+'_'+i, title: c.title, content: c.content })), 
     createdAt: new Date().toISOString() 
   };
@@ -1304,13 +1402,25 @@ function saveConvertedBook() {
 }
 function cancelConversion() { pendingBook = null; document.getElementById('preview-section').style.display = 'none'; }
 
+function editBookTimeline(bookId) {
+  const book = state.books.find(item => item.id === bookId);
+  if (!book) return;
+  const value = prompt('Дата или период событий (например: 2045 год, осень 2045). Оставьте пустым, чтобы убрать дату:', book.timelineDate || book.eventDate || book.date || '');
+  if (value === null) return;
+  book.timelineDate = value.trim();
+  saveData();
+  renderAdminBookList();
+  renderTimeline();
+}
+
 function renderAdminBookList() {
   const list = document.getElementById('admin-book-list');
   if (state.books.length === 0) { list.innerHTML = '<p style="color:var(--text-dim)">Нет книг</p>'; return; }
   list.innerHTML = state.books.map(book => `
     <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; background:var(--bg); border:1px solid var(--border); border-radius:7px;">
-      <div><b style="font-size:13px">${book.title}</b><br><small style="color:var(--text-dim)">${(book.chapters||[]).length} глав • ${book.era || ''}</small></div>
+      <div><b style="font-size:13px">${book.title}</b><br><small style="color:var(--text-dim)">${(book.chapters||[]).length} глав • ${book.era || ''} • ${book.timelineDate ? '🗓️ ' + book.timelineDate : 'дата не задана'}</small></div>
       <div style="display:flex; gap:5px;">
+        <button class="btn btn-small" onclick="editBookTimeline('${book.id}')" title="Задать дату в хронологии" aria-label="Задать дату в хронологии">🗓️</button>
         <button class="btn btn-small" onclick="openEditor('${book.id}')">✏️</button>
         <button class="btn btn-small btn-danger" onclick="deleteBook('${book.id}')">🗑️</button>
       </div>
@@ -1325,10 +1435,11 @@ function deleteBook(id) {
 }
 function createEmptyBook() {
   const title = document.getElementById('quick-title').value.trim(); if (!title) return alert('Введи название');
-  const cover = document.getElementById('quick-cover').value.trim() || 'dragon.jpg';
+  const cover = document.getElementById('quick-cover').value.trim() || 'dragon.png';
   const era = document.getElementById('quick-era').value.trim() || 'Без эры';
   const desc = document.getElementById('quick-desc').value.trim() || '';
-  const book = { id: 'book_' + Date.now(), title, cover, era, description: desc, chapters: [], createdAt: new Date().toISOString() };
+  const timelineDate = document.getElementById('quick-timeline-date').value.trim();
+  const book = { id: 'book_' + Date.now(), title, cover, era, timelineDate, description: desc, chapters: [], createdAt: new Date().toISOString() };
   state.books.push(book);
   state.bookOrder.push(book.id);
   
@@ -1340,6 +1451,7 @@ function createEmptyBook() {
   document.getElementById('quick-title').value = ''; 
   document.getElementById('quick-cover').value = '';
   document.getElementById('quick-era').value = '';
+  document.getElementById('quick-timeline-date').value = '';
   document.getElementById('quick-desc').value = '';
   renderAdminBookList();
 }
@@ -1428,7 +1540,7 @@ function saveLoreEntry() {
   const editId = document.getElementById('lore-edit-id').value;
   const type = document.getElementById('lore-type').value;
   const name = document.getElementById('lore-name').value.trim();
-  const img = document.getElementById('lore-img').value.trim() || 'dragon.jpg';
+  const img = document.getElementById('lore-img').value.trim() || 'dragon.png';
   const short = document.getElementById('lore-short').value.trim();
   const fields = getDynamicFields();
   const categories = document.getElementById('lore-categories').value.trim();
@@ -1513,7 +1625,7 @@ function renderLoreGrid(type) {
   if (items.length === 0) { container.innerHTML = '<p style="color:var(--text-dim); grid-column:1/-1; text-align:center; padding:32px;">Раздел пуст.</p>'; return; }
   container.innerHTML = items.map(item => `
     <div class="lore-card" onclick="openLoreArticle('${type}', '${item.id}')">
-      <img src="img/${item.img}" onerror="this.src='img/dragon.jpg'">
+      <img src="img/${item.img}" onerror="this.src='img/dragon.png'">
       <div class="lore-card-info"><div class="lore-card-title">${item.name}</div></div>
     </div>
   `).join('');
@@ -1532,7 +1644,7 @@ function openLoreArticle(type, id) {
 
   document.getElementById('wiki-layout-content').innerHTML = `
     <div class="wiki-infobox">
-      <img src="img/${item.img}" onerror="this.src='img/dragon.jpg'">
+      <img src="img/${item.img}" onerror="this.src='img/dragon.png'">
       <h3>${item.name}</h3>
       ${item.short ? `<div class="short-desc">${item.short}</div>` : ''}
       <div class="info-row"><span class="info-label">Тип:</span><span class="info-value">${typeLabel}</span></div>
@@ -1688,6 +1800,17 @@ document.addEventListener('keydown', e => {
       if (toc.classList.contains('open')) toggleToc();
       else if (document.getElementById('search-modal').classList.contains('open')) closeSearchModal();
     }
+  }
+});
+
+document.addEventListener('keydown', event => {
+  const searchOpen = document.getElementById('search-modal')?.classList.contains('open');
+  const tocOpen = document.getElementById('toc-sidebar')?.classList.contains('open');
+  if (document.getElementById('section-reader')?.classList.contains('active') && !searchOpen && !tocOpen && !event.altKey && !event.ctrlKey && !event.metaKey) {
+    const target = event.target;
+    if (target && /INPUT|TEXTAREA|SELECT/.test(target.tagName)) return;
+    if (event.key === 'ArrowRight' || event.key === 'PageDown') { event.preventDefault(); nextPage(); }
+    if (event.key === 'ArrowLeft' || event.key === 'PageUp') { event.preventDefault(); prevPage(); }
   }
 });
 
