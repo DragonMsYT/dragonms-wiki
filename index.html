@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
 <title>Last Way Fandom Wiki</title>
+<meta name="description" content="Произведения Драгона Мс, порядок чтения и энциклопедия Last Way. Актуальные тексты, старые редакции и авторские материалы.">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <style>
 :root {
@@ -503,6 +504,28 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+.library-summary { color:var(--text-dim); margin-top:24px; }
+.home-actions,.library-filters { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:18px 0 30px; }
+.library-filters label { display:grid; gap:5px; color:var(--text-dim); font-size:13px; }
+.library-filters .form-input { min-width:210px; }
+.book-status { display:inline-block; border:1px solid var(--border); border-radius:20px; padding:4px 10px; font-size:11px; line-height:1.5; color:var(--text); background:var(--bg-3); width:fit-content; }
+.book-description { color:var(--text-dim); font-size:13px; line-height:1.65; margin:6px 0 0; }
+.lore-card-short { color:var(--text-dim); font-size:13px; line-height:1.6; margin:8px 0 0; }
+.lore-grid { margin-top:24px; }
+.lore-card { background:var(--content-bg); }
+.reader-book-meta { padding:16px 0 24px; border-bottom:1px solid var(--border); font-size:13px; color:var(--text-dim); }
+.reader-book-meta p { margin:12px 0; }
+.reader-book-meta a,.wiki-main a { color:var(--accent); }
+.reader-content .lore-link { color:var(--accent); text-decoration:underline; text-underline-offset:3px; cursor:pointer; }
+.reader-content .lore-link:hover { color:var(--text); }
+[data-reader-theme="paper"] .reader-content .lore-link { color:#9d2341; }
+.reader-content img { display:block; max-width:100%; height:auto; max-height:80vh; object-fit:contain; margin:24px auto; }
+.spoiler-details { border-top:1px solid var(--border); border-bottom:1px solid var(--border); margin:24px 0; padding:18px 0; }
+.spoiler-details summary,.reader-book-meta summary { cursor:pointer; color:var(--text); font-weight:600; }
+.spoiler-details[open] summary { margin-bottom:20px; }
+.lore-scope { color:var(--text-dim); font-size:13px; }
+.book-card:focus-visible,.lore-card:focus-visible { outline:2px solid var(--accent); outline-offset:4px; }
+@media(max-width:600px) { .library-filters { align-items:stretch; } .library-filters label,.library-filters select { width:100%; } .reader-book-meta { line-height:1.7; } }
 </style>
 </head>
 <body data-theme="dark">
@@ -565,14 +588,18 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
     </div>
   </div>
   
-  <h2>⏳ Хронология произведений</h2>
-  <p class="timeline-hint">История мира — от ранних событий к поздним. Откройте карточку, чтобы перейти к произведению. Даты можно задать в редакторе сайта.</p>
+  <p id="library-summary" class="library-summary" role="status">Загружаем библиотеку…</p>
+  <div class="home-actions"><button class="btn btn-primary" onclick="openBook('book_8f306e589126')">Начать с «Потерянных в океане»</button><button class="btn" onclick="showSection('books')">Все произведения и редакции</button></div>
+  <h2>⏳ Основная история · порядок чтения</h2>
+  <p class="timeline-hint">Порядок событий и чтения не совпадает с годом редакции. «Сыны Японии» читаются между главами II и III третьих «Лапок». Ремейк первых «Лапок» и третья часть ещё пишутся; «Застрявшие в лесу» ожидают переработки. «Друзья навсегда» содержат спойлеры к будущему финалу.</p>
   <div class="timeline" id="timeline-container"></div>
 </section>
 
 <section id="section-books" class="section">
   <h1>📚 Читальный зал Драгона</h1>
+  <p class="timeline-hint">Архив от 9 ноября 2026 года. Основная история, самостоятельные линии и ранние тексты сохранены отдельно от старых редакций и рабочих заметок. В произведениях встречаются ненормативная лексика, насилие и тяжёлые темы.</p>
   <input type="text" class="form-input" id="book-search" placeholder="🔍 Поиск по книгам..." oninput="renderBooks()" style="margin-bottom: 16px;">
+  <div class="library-filters"><label>Раздел <select id="book-collection" class="form-input" onchange="renderBooks()"><option value="">Все разделы</option><option>Основная история</option><option>Отдельные линии</option><option>Школьные истории</option><option>Другие произведения</option><option>Короткие истории</option><option>Старые редакции</option><option>Авторские материалы</option></select></label><label>Готовность <select id="book-status-filter" class="form-input" onchange="renderBooks()"><option value="">Все тексты</option><option value="unfinished">Незавершённые и фрагменты</option><option value="rewrite">Ожидают переработки</option></select></label><span id="book-result-count" role="status"></span></div>
   <div class="books-grid" id="books-grid"></div>
 </section>
 
@@ -596,6 +623,7 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
         </div>
       </div>
       
+      <div id="reader-book-meta" class="reader-book-meta"></div>
       <div class="reader-content" id="reader-content"></div>
       <div class="reader-nav bottom">
         <button class="btn" onclick="prevPage()">← Предыдущая</button>
@@ -623,7 +651,7 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
 <div class="toc-sidebar" id="toc-sidebar">
   <div class="toc-header">
     <h3>📑 Оглавление</h3>
-    <button class="btn btn-small" onclick="toggleToc()"></button>
+    <button class="btn btn-small" onclick="toggleToc()" aria-label="Закрыть оглавление">✕</button>
   </div>
   <div id="toc-content"></div>
 </div>
@@ -633,19 +661,24 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
 
 <section id="section-characters" class="section">
   <h1>👥 Персонажи Вселенной</h1>
+  <p class="timeline-hint">Статьи описывают вымышленные образы из произведений. Подробности сюжета скрыты под предупреждением о спойлерах.</p>
+  <input id="lore-search-characters" class="form-input" placeholder="Поиск персонажа…" aria-label="Поиск персонажа" oninput="renderLoreGrid('characters')">
   <div class="lore-grid" id="lore-characters"></div>
 </section>
 <section id="section-locations" class="section">
   <h1>📍 Локации и Базы</h1>
+  <input id="lore-search-locations" class="form-input" placeholder="Поиск локации…" aria-label="Поиск локации" oninput="renderLoreGrid('locations')">
   <div class="lore-grid" id="lore-locations"></div>
 </section>
 <section id="section-items" class="section">
   <h1>⚔️ Предметы и Артефакты</h1>
+  <input id="lore-search-items" class="form-input" placeholder="Поиск предмета…" aria-label="Поиск предмета" oninput="renderLoreGrid('items')">
   <div class="lore-grid" id="lore-items"></div>
 </section>
 
 <section id="section-lore-view" class="section">
   <button class="btn" onclick="showSection(lastLoreSection)" style="margin-bottom: 16px;">← Назад к списку</button>
+  <button id="lore-return-book" class="btn" hidden onclick="openBook(currentBookId)" style="margin-bottom:16px;">Вернуться к чтению</button>
   <div class="wiki-layout" id="wiki-layout-content"></div>
 </section>
 
@@ -820,6 +853,13 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
 
 <script>
 const STORAGE_KEY = 'dragonms_library_v6';
+function escapeHTML(value) { return String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function writeRoute(value) { if (location.hash !== '#' + value) history.replaceState(null, '', '#' + value); }
+function updateLibrarySummary() {
+  const count = Object.values(state.lore).reduce((n, list) => n + list.length, 0);
+  const date = (state.updatedAt || '2026-11-10').split('-').reverse().join('.');
+  document.getElementById('library-summary').textContent = state.books.length ? `${state.books.length} записей библиотеки · ${count} статьи о мире · обновлено ${date}` : 'Не удалось загрузить библиотеку. Обновите страницу, когда соединение восстановится.';
+}
 let state = { 
   books: [], 
   lore: { characters: [], locations: [], items: [] },
@@ -871,7 +911,9 @@ async function loadFromServer() {
         if (data.backgrounds) state.backgrounds = data.backgrounds;
         if (data.bookOrder) state.bookOrder = data.bookOrder;
         else state.bookOrder = state.books.map(b => b.id);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        state.contentVersion = data.contentVersion;
+        state.updatedAt = data.updatedAt;
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (error) { console.warn('Библиотека загружена, но не поместилась в локальный кэш.'); }
         console.log('✅ Загружено книг:', state.books.length);
       }
     }
@@ -929,7 +971,9 @@ function showSection(name) {
   if (name === 'admin') { renderAdminBookList(); renderAdminLoreList(); }
   if (name !== 'reader') {
     document.getElementById('reading-progress').classList.remove('active');
+    document.getElementById('toc-sidebar').classList.remove('open');
   }
+  if (!['reader', 'lore-view'].includes(name)) writeRoute(name);
   window.scrollTo(0, 0);
 }
 
@@ -1042,7 +1086,7 @@ function renderTimeline() {
   
   const items = state.bookOrder.map(bookId => {
     const book = state.books.find(b => b.id === bookId);
-    if (!book) return null;
+    if (!book || (book.collection && book.collection !== 'Основная история')) return null;
     return {
       bookId: book.id,
       era: book.era || 'Без эры',
@@ -1051,12 +1095,9 @@ function renderTimeline() {
       desc: book.description || 'Описание отсутствует',
       img: book.cover || 'dragon.png',
       order: state.bookOrder.indexOf(bookId)
+      ,status: book.status || ''
     };
   }).filter(Boolean).sort((a, b) => {
-    const yearA = timelineYear(a.date), yearB = timelineYear(b.date);
-    if (yearA !== null && yearB !== null && yearA !== yearB) return yearA - yearB;
-    if (yearA !== null && yearB === null) return -1;
-    if (yearA === null && yearB !== null) return 1;
     return a.order - b.order;
   });
   
@@ -1071,7 +1112,7 @@ function renderTimeline() {
         <span class="timeline-image-wrap"><img loading="lazy" src="img/${item.img}" alt="Обложка «${item.title}»" onerror="this.onerror=null;this.src='img/dragon.png'"></span>
         <span class="timeline-copy">
           ${item.date ? `<span class="timeline-date">${item.date}</span>` : ''}
-          <span class="timeline-era">${item.era}</span>
+          <span class="timeline-era">${item.era}</span><span class="book-status">${escapeHTML(item.status)}</span>
           <span class="timeline-title">${item.title}</span>
           <span class="timeline-desc">${item.desc}</span>
         </span>
@@ -1100,17 +1141,23 @@ function timelineYear(value) {
 
 function renderBooks() {
   const search = (document.getElementById('book-search').value || '').toLowerCase();
-  const filtered = state.books.filter(b => b.title.toLowerCase().includes(search));
+  const collection = document.getElementById('book-collection').value;
+  const status = document.getElementById('book-status-filter').value;
+  const unfinished = /не завершено|фрагмент|продолжение|заготовка|рабочие заметки/i;
+  const filtered = state.books.filter(b => `${b.title} ${b.description || ''}`.toLowerCase().includes(search) && (!collection || b.collection === collection) && (!status || (status === 'rewrite' ? /переработка/i.test(b.status) : unfinished.test(b.status))));
+  document.getElementById('book-result-count').textContent = `Найдено: ${filtered.length}`;
   const grid = document.getElementById('books-grid');
   if (filtered.length === 0) { grid.innerHTML = '<p style="color:var(--text-dim); grid-column:1/-1; text-align:center; padding:32px;">Книг нет.</p>'; return; }
   grid.innerHTML = filtered.map(book => `
-    <div class="book-card" onclick="openBook('${book.id}')" style="background:var(--content-bg); backdrop-filter:blur(10px); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; cursor:pointer; transition:all 0.3s;">
-      <img class="book-cover" src="img/${book.cover || 'dragon.png'}" onerror="this.src='img/dragon.png'" style="width:100%; height:280px; object-fit:cover; background:var(--bg-3);">
+    <button type="button" class="book-card" onclick="openBook('${book.id}')" style="background:var(--content-bg); color:var(--text); text-align:left; font:inherit; padding:0; backdrop-filter:blur(10px); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; cursor:pointer; transition:all 0.3s;">
+      <img loading="lazy" alt="Обложка: ${escapeHTML(book.title)}" class="book-cover" src="img/${book.cover || 'dragon.png'}" onerror="this.onerror=null;this.src='img/dragon.png'" style="width:100%; height:220px; object-fit:cover; background:var(--bg-3);">
       <div class="book-info" style="padding:12px;">
-        <div class="book-title" style="font-size:14px; font-weight:700; margin-bottom:4px;">${book.title}</div>
-        <div class="book-meta" style="font-size:11px; color:var(--text-dim);">${(book.chapters || []).length} глав</div>
+        <div class="book-title" style="font-size:16px; font-weight:700; margin-bottom:8px;">${escapeHTML(book.title)}</div>
+        <span class="book-status">${escapeHTML(book.status || '')}</span>
+        <div class="book-meta" style="font-size:12px; color:var(--text-dim); margin:8px 0;">${escapeHTML(book.collection || book.era || '')} · ${(book.chapters || []).length} разд.</div>
+        <p class="book-description">${escapeHTML(book.description || '')}</p>
       </div>
-    </div>
+    </button>
   `).join('');
 }
 
@@ -1118,12 +1165,12 @@ function openBook(bookId) {
   const book = state.books.find(b => b.id === bookId);
   if (!book || !book.chapters || book.chapters.length === 0) { alert('Книга пустая!'); return; }
   currentBookId = bookId;
+  writeRoute('book=' + encodeURIComponent(bookId));
   
   const savedPos = localStorage.getItem('reading_pos_' + bookId);
   if (savedPos) {
-    const pos = JSON.parse(savedPos);
-    currentChapterIdx = pos.chapter || 0;
-    currentPage = pos.page || 0;
+    try { const pos = JSON.parse(savedPos); currentChapterIdx = Math.max(0, Number(pos.chapter) || 0); currentPage = Math.max(0, Number(pos.page) || 0); }
+    catch { currentChapterIdx = 0; currentPage = 0; }
   } else {
     currentChapterIdx = 0;
     currentPage = 0;
@@ -1150,13 +1197,14 @@ function renderReader() {
   setReaderTheme(localStorage.getItem('reader_theme') || 'default');
   document.getElementById('reader-book-title').textContent = book.title;
   document.getElementById('reader-chapter-title').textContent = chapter.title || `Глава ${currentChapterIdx + 1}`;
+  document.getElementById('reader-book-meta').innerHTML = `<span class="book-status">${escapeHTML(book.status || '')}</span><p>${escapeHTML(book.description || '')}</p><details><summary>Издание и исходные файлы</summary><p>${(book.sourcePaths || []).map(escapeHTML).join('<br>')}</p>${book.sourceFile ? `<a href="${book.sourceFile}" download>Скачать исходный ${book.sourceFile.endsWith('.docx') ? 'DOCX' : 'TXT'}</a>` : ''}${(book.additionalFiles || []).map(f => `<p><a href="${f.url}" download>${escapeHTML(f.label)}</a></p>`).join('')}<p>Текст сохранён в авторской редакции. Номера страниц внутри исходного содержания относятся к Word, а не к страницам читалки.</p></details>`;
   
   pages = splitIntoPages(chapter.content, 4000);
   if (currentPage >= pages.length) currentPage = pages.length - 1;
   if (currentPage < 0) currentPage = 0;
   
   document.getElementById('reader-content').innerHTML = pages[currentPage] || '<p>Пусто</p>';
-  document.getElementById('page-info').textContent = `Стр. ${currentPage + 1} из ${pages.length} • Гл. ${currentChapterIdx + 1}/${book.chapters.length}`;
+  document.getElementById('page-info').textContent = `Стр. ${currentPage + 1} из ${pages.length} • Разд. ${currentChapterIdx + 1}/${book.chapters.length}`;
   document.querySelector('.reader-container').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
   renderToc();
   saveReadingPosition();
@@ -1174,6 +1222,11 @@ function splitIntoPages(html, maxChars) {
     else { current += block.outerHTML; currentLen += text.length; }
   });
   if (current) pages.push(current);
+  // Avoid a final page containing only an orphaned sentence.
+  if (pages.length > 1) {
+    const tail = document.createElement('div'); tail.innerHTML = pages[pages.length - 1];
+    if ((tail.textContent || '').length < maxChars * .15 && !tail.querySelector('img')) pages.splice(pages.length - 2, 2, pages[pages.length - 2] + pages[pages.length - 1]);
+  }
   return pages.length > 0 ? pages : ['<p>Пусто</p>'];
 }
 
@@ -1621,13 +1674,14 @@ function deleteLore(id) {
 function renderLoreGrid(type) {
   lastLoreSection = type;
   const container = document.getElementById('lore-' + type);
-  const items = state.lore[type];
+  const query = (document.getElementById('lore-search-' + type)?.value || '').toLowerCase();
+  const items = state.lore[type].filter(item => `${item.name} ${item.short}`.toLowerCase().includes(query));
   if (items.length === 0) { container.innerHTML = '<p style="color:var(--text-dim); grid-column:1/-1; text-align:center; padding:32px;">Раздел пуст.</p>'; return; }
   container.innerHTML = items.map(item => `
-    <div class="lore-card" onclick="openLoreArticle('${type}', '${item.id}')">
-      <img src="img/${item.img}" onerror="this.src='img/dragon.png'">
-      <div class="lore-card-info"><div class="lore-card-title">${item.name}</div></div>
-    </div>
+    <button type="button" class="lore-card" onclick="openLoreArticle('${type}', '${item.id}')" style="color:var(--text);font:inherit;text-align:left;padding:0;cursor:pointer;">
+      <img loading="lazy" src="img/${item.img}" alt="${escapeHTML(item.name)}" onerror="this.onerror=null;this.src='img/dragon.png'">
+      <div class="lore-card-info"><div class="lore-card-title">${escapeHTML(item.name)}</div><p class="lore-card-short">${escapeHTML(item.short || '')}</p></div>
+    </button>
   `).join('');
 }
 
@@ -1635,6 +1689,8 @@ function openLoreArticle(type, id) {
   hideLoreTooltip();
   const item = state.lore[type].find(i => i.id === id); if (!item) return;
   lastLoreSection = type;
+  writeRoute('lore=' + encodeURIComponent(type) + '/' + encodeURIComponent(id));
+  document.getElementById('lore-return-book').hidden = !currentBookId;
   const typeLabel = type === 'characters' ? 'Персонаж' : type === 'locations' ? 'Локация' : 'Предмет';
   
   let fieldsHtml = '';
@@ -1720,7 +1776,7 @@ document.addEventListener('mouseout', function(e) {
 });
 
 function processLoreLinks(html) {
-  return html.replace(/<a\s+class="lore-link"\s+data-lore-id="([^"]+)"\s+data-lore-type="([^"]+)"[^>]*>([^<]*)<\/a>/g, '<a class="lore-link" data-lore-id="$1" data-lore-type="$2">$3</a>');
+  return html.replace(/<a\s+class="lore-link"\s+data-lore-id="([^"]+)"\s+data-lore-type="([^"]+)"[^>]*>([^<]*)<\/a>/g, '<a class="lore-link" data-lore-id="$1" data-lore-type="$2" href="#lore=$2/$1">$3</a>');
 }
 
 function getAllLoreItems() {
@@ -1851,7 +1907,16 @@ document.addEventListener('click', function(e) {
   
   applyBg();
   renderTimeline();
+  updateLibrarySummary();
+  openRoute();
 })();
+function openRoute() {
+  const route = location.hash.slice(1);
+  if (route.startsWith('book=')) { const id = decodeURIComponent(route.slice(5)); if (state.books.some(b => b.id === id)) openBook(id); }
+  else if (route.startsWith('lore=')) { const [type, id] = decodeURIComponent(route.slice(5)).split('/'); if (state.lore[type]?.some(i => i.id === id)) openLoreArticle(type, id); }
+  else if (['home','books','characters','locations','items'].includes(route)) showSection(route);
+}
+window.addEventListener('hashchange', openRoute);
 </script>
 </body>
 </html>
