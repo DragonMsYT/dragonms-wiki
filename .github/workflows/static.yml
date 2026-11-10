@@ -48,7 +48,4 @@ jobs:
           path: '.'
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v5
-        with:
-          # The archive can take longer than the default 10 minutes to sync.
-          timeout: '1200000'
+        uses: actions/deploy-pages@v4
