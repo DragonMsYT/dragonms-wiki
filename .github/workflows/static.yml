@@ -41,11 +41,13 @@ jobs:
           package-manager-cache: false
       - name: Validate library and links
         run: node scripts/validate-library.mjs
+      - name: Build lightweight Pages package
+        run: node scripts/build-pages.mjs
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
-          path: '.'
+          # Images and source documents are served directly from the repository.
+          path: '_site'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
