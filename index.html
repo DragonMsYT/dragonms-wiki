@@ -1197,7 +1197,7 @@ function renderReader() {
   setReaderTheme(localStorage.getItem('reader_theme') || 'default');
   document.getElementById('reader-book-title').textContent = book.title;
   document.getElementById('reader-chapter-title').textContent = chapter.title || `Глава ${currentChapterIdx + 1}`;
-  document.getElementById('reader-book-meta').innerHTML = `<span class="book-status">${escapeHTML(book.status || '')}</span><p>${escapeHTML(book.description || '')}</p><details><summary>Издание и исходные файлы</summary><p>${(book.sourcePaths || []).map(escapeHTML).join('<br>')}</p>${book.sourceFile ? `<a href="${book.sourceFile}" download>Скачать исходный ${book.sourceFile.endsWith('.docx') ? 'DOCX' : 'TXT'}</a>` : ''}${(book.additionalFiles || []).map(f => `<p><a href="${f.url}" download>${escapeHTML(f.label)}</a></p>`).join('')}<p>Текст сохранён в авторской редакции. Номера страниц внутри исходного содержания относятся к Word, а не к страницам читалки.</p></details>`;
+  document.getElementById('reader-book-meta').innerHTML = `<span class="book-status">${escapeHTML(book.status || '')}</span><p>${escapeHTML(book.description || '')}</p><details><summary>Издание и исходные файлы</summary><p>${(book.sourcePaths || []).map(escapeHTML).join('<br>')}</p>${book.sourceFile ? `<a href="${book.sourceFile}" download>Скачать исходный ${book.sourceFile.split('.').pop().toUpperCase()}</a>` : ''}${(book.additionalFiles || []).map(f => `<p><a href="${f.url}" download>${escapeHTML(f.label)}</a></p>`).join('')}<p>Текст сохранён в авторской редакции. Номера страниц внутри исходного содержания относятся к Word, а не к страницам читалки.</p></details>`;
   
   pages = splitIntoPages(chapter.content, 4000);
   if (currentPage >= pages.length) currentPage = pages.length - 1;

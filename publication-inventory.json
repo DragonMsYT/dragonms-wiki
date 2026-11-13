@@ -288,5 +288,13 @@
     "bookId": "book_21df4b2e0d2d",
     "chars": 1947,
     "sections": 1
+  },
+  {
+    "source": "Лучший фф Драгона за 2026.pdf",
+    "disposition": "published",
+    "bookId": "book_d51dbbe6a7b7",
+    "chars": 9981,
+    "sections": 1,
+    "updatedAt": "2026-11-13"
   }
 ]
