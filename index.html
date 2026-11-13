@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
 <title>Last Way Fandom Wiki</title>
 <meta name="description" content="Произведения Драгона Мс, порядок чтения и энциклопедия Last Way. Актуальные тексты, старые редакции и авторские материалы.">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <style>
 :root {
   --bg: #0a0a0f; --bg-2: #13131f; --bg-3: #1c1c2e;
@@ -17,8 +16,8 @@
   --reader-font-size: 16px;
 }
 [data-theme="light"] { --bg:#f5f5f7; --bg-2:#fff; --bg-3:#eee; --text:#1d1d1f; --text-dim:#6e6e73; --border:#d2d2d7; --content-bg: rgba(255,255,255,0.92); }
-[data-theme="sakura"] { 
-  --bg: rgba(42, 26, 36, 0.92); --bg-2: rgba(58, 36, 51, 0.95); --bg-3: rgba(74, 46, 66, 0.95); 
+[data-theme="sakura"] {
+  --bg: rgba(42, 26, 36, 0.92); --bg-2: rgba(58, 36, 51, 0.95); --bg-3: rgba(74, 46, 66, 0.95);
   --text: #ffe4f0; --text-dim: #d4a0b7; --accent: #ff7eb3; --accent-2: #ff9ec7; --border: #5a3a4a;
   --content-bg: rgba(42, 26, 36, 0.92);
 }
@@ -26,10 +25,10 @@
 
 * { box-sizing: border-box; }
 
-body { 
-  background: var(--bg); color: var(--text); 
-  font-family: -apple-system, 'Segoe UI', Roboto, sans-serif; 
-  line-height: 1.6; min-height: 100vh; margin: 0; 
+body {
+  background: var(--bg); color: var(--text);
+  font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6; min-height: 100vh; margin: 0;
   transition: background 0.5s;
   position: relative;
   overflow-x: hidden;
@@ -56,28 +55,26 @@ body[data-theme="light"]:not(.custom-bg) { background: #f5f5f7; }
 body[data-theme="snow"]:not(.custom-bg) { background: radial-gradient(ellipse at top, var(--bg-2) 0%, var(--bg) 50%); }
 body[data-theme="sakura"]:not(.custom-bg) { background: linear-gradient(rgba(20, 10, 15, 0.7), rgba(20, 10, 15, 0.85)), url('img/mitsuko-background-v2.webp') center/cover fixed no-repeat; }
 
-.petal { position: fixed; top: -10vh; z-index: 1; pointer-events: none; background: #ffb7c5; border-radius: 150% 0 150% 0; animation: fall linear infinite; }
-@keyframes fall { 0% { transform: translateY(0) rotate(0deg) translateX(0); opacity: 1; } 100% { transform: translateY(110vh) rotate(360deg) translateX(100px); opacity: 0; } }
 
 /* ===== НАВБАР (увеличенные кнопки) ===== */
-.navbar { 
-  position: sticky; top: 0; z-index: 100; 
-  background: rgba(10,10,15,0.95); 
-  backdrop-filter: blur(20px); 
-  border-bottom: 1px solid var(--border); 
-  padding: 14px 24px; 
+.navbar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(10,10,15,0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 24px;
   display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
 }
 .logo { font-weight: 800; font-size: 20px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; }
 .nav-links { display: flex; gap: 8px; flex-wrap: wrap; }
-.nav-link { 
-  padding: 8px 14px; 
-  border-radius: 8px; 
-  cursor: pointer; 
-  color: var(--text-dim); 
-  font-size: 14px; 
-  font-weight: 500; 
-  transition: all 0.2s; 
+.nav-link {
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--text-dim);
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
   border: 1px solid transparent;
   white-space: nowrap;
 }
@@ -87,7 +84,7 @@ body[data-theme="sakura"]:not(.custom-bg) { background: linear-gradient(rgba(20,
 .theme-btn { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--border); cursor: pointer; transition: transform 0.2s; }
 .theme-btn:hover { transform: scale(1.15); }
 .theme-btn.dark { background: #0a0a0f; } .theme-btn.light { background: #f5f5f7; } .theme-btn.sakura { background: #ff7eb3; } .theme-btn.snow { background: #64d2ff; }
-.petals-toggle, .bg-toggle { padding: 6px 12px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg-2); color: var(--text); font-size: 12px; cursor: pointer; }
+.bg-toggle { padding: 6px 12px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg-2); color: var(--text); font-size: 12px; cursor: pointer; }
 
 /* Бургер-меню (скрыто на ПК) */
 .burger { display: none; width: 36px; height: 36px; flex-direction: column; justify-content: center; align-items: center; gap: 5px; cursor: pointer; background: var(--bg-2); border: 1px solid var(--border); border-radius: 8px; }
@@ -109,15 +106,15 @@ body[data-theme="sakura"]:not(.custom-bg) { background: linear-gradient(rgba(20,
   overflow-y: auto;
 }
 .mobile-menu.open { display: flex; }
-.mobile-menu .nav-link { 
-  font-size: 18px; 
-  padding: 14px 18px; 
+.mobile-menu .nav-link {
+  font-size: 18px;
+  padding: 14px 18px;
   text-align: center;
   background: var(--bg-2);
   border: 1px solid var(--border);
 }
-.mobile-menu .theme-row { 
-  display: flex; justify-content: center; gap: 12px; 
+.mobile-menu .theme-row {
+  display: flex; justify-content: center; gap: 12px;
   padding: 20px 0; border-top: 1px solid var(--border); margin-top: 12px;
 }
 .mobile-menu .theme-row .theme-btn { width: 44px; height: 44px; }
@@ -185,8 +182,8 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
 
 /* Читалка */
 .reader-container { max-width: 720px; margin: 0 auto; position: relative; }
-.reader-panel { 
-  background: var(--content-bg); 
+.reader-panel {
+  background: var(--content-bg);
   backdrop-filter: blur(15px);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -285,10 +282,10 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
 .search-result-chapter { font-weight: 700; color: var(--accent); font-size: 14px; }
 .search-result-page { font-size: 11px; color: var(--text-dim); background: var(--bg); padding: 2px 8px; border-radius: 10px; }
 .search-result-context { font-size: 13px; color: var(--text); line-height: 1.6; }
-.search-result-context .highlight { 
-  background: var(--accent); 
-  color: #fff; 
-  padding: 1px 4px; 
+.search-result-context .highlight {
+  background: var(--accent);
+  color: #fff;
+  padding: 1px 4px;
   border-radius: 3px;
   font-weight: 600;
 }
@@ -340,9 +337,6 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
 .lore-card-info { padding: 10px; } .lore-card-title { font-weight: 700; font-size: 14px; }
 
 /* Админка */
-.admin-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-@media (max-width: 800px) { .admin-layout { grid-template-columns: 1fr; } }
-.admin-panel { background: var(--content-bg); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); margin-bottom: 16px; }
 .form-group { margin-bottom: 14px; } .form-group label { display: block; font-size: 12px; color: var(--text-dim); margin-bottom: 5px; font-weight: 600; }
 .form-input, .form-textarea, .form-select { width: 100%; padding: 9px 11px; border-radius: 7px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-size: 13px; font-family: inherit; }
 .form-input:focus, .form-textarea:focus { outline: none; border-color: var(--accent); }
@@ -358,10 +352,6 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
 .btn-danger { color: #ff453a; border-color: #ff453a; } .btn-danger:hover { background: rgba(255,69,58,0.1); }
 .btn-icon { width: 32px; height: 32px; padding: 0; justify-content: center; }
 
-.editor-toolbar { display: flex; gap: 4px; padding: 7px; background: var(--bg); border: 1px solid var(--border); border-radius: 7px 7px 0 0; flex-wrap: wrap; }
-.editor-toolbar button { padding: 6px 10px; background: transparent; border: 1px solid transparent; color: var(--text); border-radius: 4px; cursor: pointer; font-size: 12px; }
-.editor-toolbar button:hover { background: var(--bg-3); }
-.editor-content { min-height: 250px; padding: 14px; background: var(--bg); border: 1px solid var(--border); border-top: none; border-radius: 0 0 7px 7px; font-size: 14px; line-height: 1.7; outline: none; }
 
 .dynamic-fields { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
 .dynamic-field { display: flex; gap: 6px; align-items: center; }
@@ -399,24 +389,24 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
 @media (max-width: 768px) {
   .navbar { padding: 10px 14px; gap: 10px; }
   .nav-links { display: none; }
-  .nav-right .petals-toggle, .nav-right .bg-toggle { display: none; }
+  .nav-right .bg-toggle { display: none; }
   .burger { display: flex; }
-  
+
   .section { padding: 16px 14px; }
   h1 { font-size: 24px; }
   h2 { font-size: 20px; }
-  
+
   .hero-title { font-size: 32px; }
   .hero-subtitle { font-size: 15px; }
   .hero-section { min-height: 220px; padding: 40px 16px; }
-  
-  .timeline::before { left: 16px; } 
+
+  .timeline::before { left: 16px; }
   .timeline-item { width: 100%; left: 0 !important; padding-left: 40px; text-align: left !important; padding-right: 16px; }
   .timeline-item::before { left: 9px !important; right: auto !important; }
   .timeline-card img { height: 140px; }
-  
+
   .toc-sidebar { width: 100%; right: -100%; }
-  
+
   .reader-panel { padding: 16px; }
   .reader-nav { flex-direction: column; align-items: stretch; gap: 10px; }
   .reader-nav > div:first-child { text-align: center; }
@@ -424,12 +414,11 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
   .reader-nav .btn { flex: 1; min-width: 0; justify-content: center; padding: 10px 8px; font-size: 13px; }
   .font-size-control { justify-content: center; width: 100%; }
   .font-size-control input[type="range"] { width: 120px; }
-  
+
   .wiki-layout { grid-template-columns: 1fr; }
   .wiki-infobox { position: static; }
-  
-  .admin-layout { grid-template-columns: 1fr; }
-  
+
+
   .btn { padding: 10px 14px; font-size: 14px; }
   .btn-small { padding: 8px 12px; font-size: 13px; }
 }
@@ -508,24 +497,65 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
 .home-actions,.library-filters { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:18px 0 30px; }
 .library-filters label { display:grid; gap:5px; color:var(--text-dim); font-size:13px; }
 .library-filters .form-input { min-width:210px; }
-.book-status { display:inline-block; border:1px solid var(--border); border-radius:20px; padding:4px 10px; font-size:11px; line-height:1.5; color:var(--text); background:var(--bg-3); width:fit-content; }
 .book-description { color:var(--text-dim); font-size:13px; line-height:1.65; margin:6px 0 0; }
 .lore-card-short { color:var(--text-dim); font-size:13px; line-height:1.6; margin:8px 0 0; }
 .lore-grid { margin-top:24px; }
 .lore-card { background:var(--content-bg); }
-.reader-book-meta { padding:16px 0 24px; border-bottom:1px solid var(--border); font-size:13px; color:var(--text-dim); }
-.reader-book-meta p { margin:12px 0; }
-.reader-book-meta a,.wiki-main a { color:var(--accent); }
-.reader-content .lore-link { color:var(--accent); text-decoration:underline; text-underline-offset:3px; cursor:pointer; }
-.reader-content .lore-link:hover { color:var(--text); }
-[data-reader-theme="paper"] .reader-content .lore-link { color:#9d2341; }
+.wiki-main a { color:var(--accent); }
 .reader-content img { display:block; max-width:100%; height:auto; max-height:80vh; object-fit:contain; margin:24px auto; }
 .spoiler-details { border-top:1px solid var(--border); border-bottom:1px solid var(--border); margin:24px 0; padding:18px 0; }
-.spoiler-details summary,.reader-book-meta summary { cursor:pointer; color:var(--text); font-weight:600; }
+.spoiler-details summary { cursor:pointer; color:var(--text); font-weight:600; }
 .spoiler-details[open] summary { margin-bottom:20px; }
 .lore-scope { color:var(--text-dim); font-size:13px; }
 .book-card:focus-visible,.lore-card:focus-visible { outline:2px solid var(--accent); outline-offset:4px; }
-@media(max-width:600px) { .library-filters { align-items:stretch; } .library-filters label,.library-filters select { width:100%; } .reader-book-meta { line-height:1.7; } }
+
+/* Small, consistent controls for reading and navigation. */
+button, select, input { font: inherit; }
+button:focus-visible, select:focus-visible, input:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+button:disabled { opacity: .4; cursor: default; }
+.navbar { background: var(--content-bg); gap: 12px; padding: 12px 20px; }
+.nav-link { background: transparent; font-family: inherit; }
+.logo { border: 0; padding: 4px 0; }
+.nav-link { min-height: 44px; }
+.theme-btn { flex-shrink: 0; }
+.mobile-menu { background: var(--bg); }
+.effects-control { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim); }
+.effect-select, .bg-toggle { min-height: 44px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg-2); color: var(--text); padding: 8px 10px; }
+.btn { min-height: 44px; padding: 10px 16px; border-radius: 10px; justify-content: center; }
+.btn:hover:enabled { background: var(--bg-3); border-color: var(--accent); }
+.reader-heading { margin-bottom: 18px; }
+.reader-toolbar { position: static; display: flex; gap: 10px; justify-content: flex-start; border: 0; padding: 0; margin-bottom: 14px; }
+.reader-settings { background: var(--bg-2); border: 1px solid var(--border); border-radius: 12px; }
+.reader-settings summary { min-height: 48px; padding: 12px 16px; cursor: pointer; color: var(--text-dim); }
+.reader-settings-body { display: flex; flex-wrap: wrap; align-items: center; gap: 20px; padding: 8px 16px 18px; }
+.font-size-control { display: grid; gap: 8px; font-size: 13px; }
+.font-size-inputs { display: flex; align-items: center; gap: 10px; }
+.font-size-control input[type="range"] { width: clamp(80px, 16vw, 160px); min-height: 44px; accent-color: var(--accent); cursor: pointer; }
+#font-size-value { min-width: 42px; font-variant-numeric: tabular-nums; }
+.reader-theme-controls { flex-wrap: wrap; }
+.reader-theme-controls button { min-height: 44px; padding: 8px 12px; }
+.reader-nav.bottom { display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px; align-items: center; }
+#page-info { text-align: center; }
+.toc-sidebar { width: min(380px, 100%); right: 0; transform: translateX(100%); visibility: hidden; transition: transform .25s, visibility .25s; }
+.toc-sidebar.open { transform: translateX(0); visibility: visible; }
+.toc-header { position: sticky; top: -20px; background: var(--content-bg); padding: 12px 0; z-index: 1; }
+.toc-chapter { display: flex; flex-direction: column; gap: 6px; width: 100%; text-align: left; font: inherit; color: var(--text); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin: 0 0 10px; background: var(--bg-2); cursor: pointer; }
+.toc-chapter small { color: var(--text-dim); }
+.toc-chapter.active { border-color: var(--accent); background: var(--bg-3); }
+.toc-backdrop { display: none; position: fixed; inset: 0; z-index: 199; background: rgba(0,0,0,.5); }
+.toc-backdrop.open { display: block; }
+.ambient-particle { position: fixed; top: -20px; pointer-events: none; z-index: 1; animation: ambient-fall linear forwards; opacity: .55; }
+.ambient-particle.sakura { background: #eeb0c4; border-radius: 90% 0 90% 20%; }
+.ambient-particle.snow { background: #cfe4ef; border-radius: 50%; box-shadow: 0 0 5px #ffffff55; }
+.ambient-particle.fireflies { background: #e8d88d; border-radius: 50%; box-shadow: 0 0 12px #e8d88d; animation-name: ambient-rise; }
+@keyframes ambient-fall { to { transform: translate(var(--drift), 105vh) rotate(220deg); opacity: 0; } }
+@keyframes ambient-rise { from { transform: translateY(100vh); opacity: 0; } 30% { opacity: .5; } to { transform: translate(var(--drift), 0); opacity: 0; } }
+@media(max-width: 1100px) { .navbar { flex-wrap: wrap; } .nav-right { flex-wrap: wrap; } }
+@media(max-width: 768px) { .nav-right .effects-control { display: none; } .navbar { padding: 8px 14px; } .burger { width: 44px; height: 44px; } .reader-toolbar .btn { flex: 1 1 auto; } .reader-settings-body { padding: 8px 12px 14px; gap: 14px; } .font-size-control { width: 100%; } .font-size-inputs { justify-content: space-between; } .font-size-control input[type="range"] { width: auto; flex: 1; min-width: 60px; } .reader-nav.bottom { grid-template-columns: 1fr 1fr; gap: 10px; } #page-info { grid-column: 1 / -1; grid-row: 1; } .reader-nav.bottom .btn { min-height: 48px; } }
+@media(prefers-reduced-motion: reduce) { .ambient-particle { display: none; } }
+.reader-toolbar { flex-direction: row; align-items: center; }
+.font-size-control { align-items: stretch; }
+@media(max-width:768px) { .nav-right > .theme-btn { display: none; } }
 </style>
 </head>
 <body data-theme="dark">
@@ -536,45 +566,43 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
 </div>
 
 <nav class="navbar">
-  <div class="logo" onclick="showSection('home')">🐉 LAST WAY</div>
+  <button type="button" class="logo" onclick="showSection('home')"> LAST WAY</button>
   <div class="nav-links">
-    <div class="nav-link active" data-section="home" onclick="showSection('home')">🏠 Главная</div>
-    <div class="nav-link" data-section="books" onclick="showSection('books')"> Читальный зал</div>
-    <div class="nav-link" data-section="characters" onclick="showSection('characters')">👥 Персонажи</div>
-    <div class="nav-link" data-section="locations" onclick="showSection('locations')"> Локации</div>
-    <div class="nav-link" data-section="items" onclick="showSection('items')">⚔️ Предметы</div>
-    <div class="nav-link" data-section="admin" onclick="showSection('admin')">️ Dev</div>
+    <button type="button" class="nav-link active" data-section="home" onclick="showSection('home')"> Главная</button>
+    <button type="button" class="nav-link" data-section="books" onclick="showSection('books')"> Читальный зал</button>
+    <button type="button" class="nav-link" data-section="characters" onclick="showSection('characters')"> Персонажи</button>
+    <button type="button" class="nav-link" data-section="locations" onclick="showSection('locations')"> Локации</button>
+    <button type="button" class="nav-link" data-section="items" onclick="showSection('items')"> Предметы</button>
   </div>
   <div class="nav-right">
-    <button class="petals-toggle" id="petals-btn" onclick="togglePetals()" style="display:none;">🌸 Лепестки: ВЫКЛ</button>
-    <button class="bg-toggle" onclick="openBgModal()">🖼️ Фон</button>
-    <div class="theme-btn dark" onclick="setTheme('dark')" title="Тёмная"></div>
-    <div class="theme-btn light" onclick="setTheme('light')" title="Светлая"></div>
-    <div class="theme-btn sakura" onclick="setTheme('sakura')" title="Сакура"></div>
-    <div class="theme-btn snow" onclick="setTheme('snow')" title="Снежная"></div>
-    <div class="burger" id="burger" onclick="toggleMobileMenu()">
+    <label class="effects-control">Эффекты <select class="effect-select" aria-label="Фоновые эффекты" onchange="setEffect(this.value)"><option value="off">Выключены</option><option value="sakura">Сакура</option><option value="snow">Снег</option><option value="fireflies">Светлячки</option></select></label>
+    <button class="bg-toggle" onclick="openBgModal()"> Фон</button>
+    <button type="button" class="theme-btn dark" onclick="setTheme('dark')" title="Тёмная" aria-label="Тема: тёмная"></button>
+    <button type="button" class="theme-btn light" onclick="setTheme('light')" title="Светлая" aria-label="Тема: светлая"></button>
+    <button type="button" class="theme-btn sakura" onclick="setTheme('sakura')" title="Сакура" aria-label="Тема: сакура"></button>
+    <button type="button" class="theme-btn snow" onclick="setTheme('snow')" title="Снежная" aria-label="Тема: снежная"></button>
+    <button type="button" class="burger" id="burger" aria-label="Открыть меню" aria-expanded="false" onclick="toggleMobileMenu()">
       <span></span><span></span><span></span>
-    </div>
+    </button>
   </div>
 </nav>
 
 <!-- Мобильное меню -->
 <div class="mobile-menu" id="mobile-menu">
-  <div class="nav-link" data-section="home" onclick="mobileNav('home')"> Главная</div>
-  <div class="nav-link" data-section="books" onclick="mobileNav('books')">📚 Читальный зал</div>
-  <div class="nav-link" data-section="characters" onclick="mobileNav('characters')">👥 Персонажи</div>
-  <div class="nav-link" data-section="locations" onclick="mobileNav('locations')">📍 Локации</div>
-  <div class="nav-link" data-section="items" onclick="mobileNav('items')">⚔️ Предметы</div>
-  <div class="nav-link" data-section="admin" onclick="mobileNav('admin')">⚙️ Dev</div>
+  <button type="button" class="nav-link" data-section="home" onclick="mobileNav('home')"> Главная</button>
+  <button type="button" class="nav-link" data-section="books" onclick="mobileNav('books')"> Читальный зал</button>
+  <button type="button" class="nav-link" data-section="characters" onclick="mobileNav('characters')"> Персонажи</button>
+  <button type="button" class="nav-link" data-section="locations" onclick="mobileNav('locations')"> Локации</button>
+  <button type="button" class="nav-link" data-section="items" onclick="mobileNav('items')"> Предметы</button>
   <div style="display: flex; justify-content: center; gap: 10px; margin-top: 12px;">
-    <button class="petals-toggle" id="petals-btn-mobile" onclick="togglePetals()" style="display:none;">🌸 Лепестки: ВЫКЛ</button>
-    <button class="bg-toggle" onclick="openBgModal(); closeMobileMenu();">🖼️ Фон</button>
+    <label class="effects-control">Эффекты <select class="effect-select" aria-label="Фоновые эффекты" onchange="setEffect(this.value)"><option value="off">Выключены</option><option value="sakura">Сакура</option><option value="snow">Снег</option><option value="fireflies">Светлячки</option></select></label>
+    <button class="bg-toggle" onclick="openBgModal(); closeMobileMenu();"> Фон</button>
   </div>
   <div class="theme-row">
-    <div class="theme-btn dark" onclick="setTheme('dark')"></div>
-    <div class="theme-btn light" onclick="setTheme('light')"></div>
-    <div class="theme-btn sakura" onclick="setTheme('sakura')"></div>
-    <div class="theme-btn snow" onclick="setTheme('snow')"></div>
+    <button type="button" class="theme-btn dark" onclick="setTheme('dark')" aria-label="Тема: тёмная"></button>
+    <button type="button" class="theme-btn light" onclick="setTheme('light')" aria-label="Тема: светлая"></button>
+    <button type="button" class="theme-btn sakura" onclick="setTheme('sakura')" aria-label="Тема: сакура"></button>
+    <button type="button" class="theme-btn snow" onclick="setTheme('snow')" aria-label="Тема: снежная"></button>
   </div>
 </div>
 
@@ -583,22 +611,22 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
   <div class="hero-section" id="hero-section">
     <div class="hero-bg" id="hero-bg"></div>
     <div class="hero-content" id="hero-content">
-      <div class="hero-title">🐉 Last Way Fandom Wiki</div>
+      <div class="hero-title"> Last Way Fandom Wiki</div>
       <div class="hero-subtitle">Официальная энциклопедия вселенной Драгона Мс. Хроники, персонажи, артефакты и легенды.</div>
     </div>
   </div>
-  
+
   <p id="library-summary" class="library-summary" role="status">Загружаем библиотеку…</p>
   <div class="home-actions"><button class="btn btn-primary" onclick="openBook('book_8f306e589126')">Начать с «Потерянных в океане»</button><button class="btn" onclick="showSection('books')">Все завершённые произведения</button></div>
-  <h2>⏳ Основная история · порядок чтения</h2>
+  <h2> Основная история · порядок чтения</h2>
   <p class="timeline-hint">В библиотеке представлены завершённые произведения. Первая часть «Лапок» доступна в оригинальной редакции 2023 года. Порядок событий и чтения не совпадает с годом редакции; «Друзья навсегда» раскрывают будущие события основной истории.</p>
   <div class="timeline" id="timeline-container"></div>
 </section>
 
 <section id="section-books" class="section">
-  <h1>📚 Читальный зал Драгона</h1>
+  <h1> Читальный зал Драгона</h1>
   <p class="timeline-hint">Завершённые произведения: основная история, самостоятельные линии и школьные истории. В произведениях встречаются ненормативная лексика, насилие и тяжёлые темы.</p>
-  <input type="text" class="form-input" id="book-search" placeholder="🔍 Поиск по книгам..." oninput="renderBooks()" style="margin-bottom: 16px;">
+  <input type="text" class="form-input" id="book-search" placeholder=" Поиск по книгам..." oninput="renderBooks()" style="margin-bottom: 16px;">
   <div class="library-filters"><label>Раздел <select id="book-collection" class="form-input" onchange="renderBooks()"><option value="">Все разделы</option><option>Основная история</option><option>Отдельные линии</option><option>Школьные истории</option><option>Другие произведения</option></select></label><span id="book-result-count" role="status"></span></div>
   <div class="books-grid" id="books-grid"></div>
 </section>
@@ -606,29 +634,33 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
 <section id="section-reader" class="section">
   <div class="reader-container">
     <div class="reader-panel">
-      <div class="reader-nav">
-        <div><div class="reader-title" id="reader-book-title">—</div><div class="reader-chapter" id="reader-chapter-title">Глава 1</div></div>
-        <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
-          <div class="reader-theme-controls" aria-label="Цвет читалки"><button type="button" data-reader-theme-choice="default" onclick="setReaderTheme('default')" aria-pressed="true">Тёмная</button><button type="button" data-reader-theme-choice="night" onclick="setReaderTheme('night')" aria-pressed="false">Ночь</button><button type="button" data-reader-theme-choice="paper" onclick="setReaderTheme('paper')" aria-pressed="false">Бумага</button></div>
-          <div class="font-size-control">
-            <span>🔤</span>
-            <input type="range" id="font-size-slider" min="12" max="24" value="16" oninput="changeFontSize(this.value)">
-            <span id="font-size-value">16</span>
-          </div>
-          <button class="btn btn-small" onclick="prevPage()">← Назад</button>
-          <button class="btn btn-small" onclick="nextPage()">Вперёд →</button>
-          <button class="btn" onclick="toggleToc()" title="Открыть оглавление книги">📑 Оглавление</button>
-          <button class="btn" onclick="openSearchModal()" title="Поиск по тексту книги">🔍 Поиск</button>
-          <button class="btn btn-small btn-danger" onclick="showSection('home')" title="Выйти из читалки">✕ Выход</button>
-        </div>
+      <header class="reader-heading"><div class="reader-title" id="reader-book-title">—</div><div class="reader-chapter" id="reader-chapter-title"></div></header>
+      <div class="reader-nav reader-toolbar">
+        <button class="btn" id="toc-toggle" onclick="toggleToc()" aria-controls="toc-sidebar" aria-expanded="false">Оглавление</button>
+        <button class="btn" onclick="openSearchModal()">Поиск по книге</button>
+        <button class="btn" onclick="showSection('books')">К книгам</button>
       </div>
-      
-      <div id="reader-book-meta" class="reader-book-meta"></div>
+      <details class="reader-settings">
+        <summary>Настройки чтения</summary>
+        <div class="reader-settings-body">
+          <div class="font-size-control">
+            <label for="font-size-slider">Размер текста</label>
+            <div class="font-size-inputs">
+              <button class="btn" id="font-smaller" onclick="changeFontSize(savedFontSize - 1)" aria-label="Уменьшить шрифт">A−</button>
+              <input type="range" id="font-size-slider" min="12" max="28" value="16" oninput="changeFontSize(this.value)">
+              <button class="btn" id="font-larger" onclick="changeFontSize(savedFontSize + 1)" aria-label="Увеличить шрифт">A+</button>
+              <output id="font-size-value" for="font-size-slider">16 px</output>
+            </div>
+          </div>
+          <div class="reader-theme-controls" role="group" aria-label="Цвет страницы"><button type="button" data-reader-theme-choice="default" onclick="setReaderTheme('default')" aria-pressed="true">Как на сайте</button><button type="button" data-reader-theme-choice="night" onclick="setReaderTheme('night')" aria-pressed="false">Ночь</button><button type="button" data-reader-theme-choice="paper" onclick="setReaderTheme('paper')" aria-pressed="false">Бумага</button></div>
+        </div>
+      </details>
+
       <div class="reader-content" id="reader-content"></div>
       <div class="reader-nav bottom">
-        <button class="btn" onclick="prevPage()">← Предыдущая</button>
+        <button class="btn" data-page-direction="prev" onclick="prevPage()">← Назад</button>
         <div id="page-info" style="color: var(--text-dim); font-size: 13px;">Стр. 1</div>
-        <button class="btn" onclick="nextPage()">Следующая →</button>
+        <button class="btn" data-page-direction="next" onclick="nextPage()">Далее →</button>
       </div>
     </div>
   </div>
@@ -648,30 +680,31 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
 </div>
 
 <!-- Боковая панель оглавления -->
-<div class="toc-sidebar" id="toc-sidebar">
+<div class="toc-backdrop" id="toc-backdrop" onclick="toggleToc(false)"></div>
+<aside class="toc-sidebar" id="toc-sidebar" role="dialog" aria-modal="true" aria-label="Оглавление" inert>
   <div class="toc-header">
-    <h3>📑 Оглавление</h3>
+    <h3> Оглавление</h3>
     <button class="btn btn-small" onclick="toggleToc()" aria-label="Закрыть оглавление">✕</button>
   </div>
   <div id="toc-content"></div>
-</div>
+</aside>
 
 <!-- Tooltip для лор-ссылок -->
 <div class="lore-tooltip" id="lore-tooltip"></div>
 
 <section id="section-characters" class="section">
-  <h1>👥 Персонажи Вселенной</h1>
+  <h1> Персонажи Вселенной</h1>
   <p class="timeline-hint">Статьи описывают вымышленные образы из произведений. Подробности сюжета скрыты под предупреждением о спойлерах.</p>
   <input id="lore-search-characters" class="form-input" placeholder="Поиск персонажа…" aria-label="Поиск персонажа" oninput="renderLoreGrid('characters')">
   <div class="lore-grid" id="lore-characters"></div>
 </section>
 <section id="section-locations" class="section">
-  <h1>📍 Локации и Базы</h1>
+  <h1> Локации и Базы</h1>
   <input id="lore-search-locations" class="form-input" placeholder="Поиск локации…" aria-label="Поиск локации" oninput="renderLoreGrid('locations')">
   <div class="lore-grid" id="lore-locations"></div>
 </section>
 <section id="section-items" class="section">
-  <h1>⚔️ Предметы и Артефакты</h1>
+  <h1> Предметы и Артефакты</h1>
   <input id="lore-search-items" class="form-input" placeholder="Поиск предмета…" aria-label="Поиск предмета" oninput="renderLoreGrid('items')">
   <div class="lore-grid" id="lore-items"></div>
 </section>
@@ -682,174 +715,19 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
   <div class="wiki-layout" id="wiki-layout-content"></div>
 </section>
 
-<section id="section-admin" class="section">
-  <h1>⚙️ Visual Book Core Engine v6.2</h1>
-  <div style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;">
-    <button class="btn btn-primary" onclick="showAdminTab('books')"> Книги</button>
-    <button class="btn" onclick="showAdminTab('lore')"> База Лора</button>
-    <button class="btn" onclick="showAdminTab('backup')">💾 Хостинг</button>
-  </div>
-
-  <div id="admin-tab-books">
-    <div class="admin-layout">
-      <div>
-        <div class="admin-panel">
-          <h3>📥 Импорт из Word (.docx)</h3>
-          <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 12px;">Перетащи файл. Заголовки "Heading 1" станут главами.</p>
-          <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
-            <div style="font-size: 40px; margin-bottom: 8px;">📄</div>
-            <div>Перетащи .docx файл сюда</div>
-          </div>
-          <input type="file" id="file-input" accept=".docx" style="display: none;" onchange="handleFileSelect(event)">
-          <div id="conversion-status"></div>
-          <div id="preview-section" style="display: none; margin-top: 16px;">
-            <h3>👁️ Предпросмотр</h3>
-            <div class="preview-box" id="preview-box" style="background: var(--bg); border: 1px solid var(--border); border-radius: 7px; padding: 12px; max-height: 250px; overflow-y: auto; margin-top: 10px;"></div>
-            <div style="margin-top: 10px; display: flex; gap: 6px;">
-              <button class="btn btn-primary" onclick="saveConvertedBook()">💾 Сохранить книгу</button>
-              <button class="btn" onclick="cancelConversion()"> Отмена</button>
-            </div>
-          </div>
-        </div>
-        <div class="admin-panel">
-          <h3>✏️ Быстрое создание книги</h3>
-          <div class="form-group"><label>Название</label><input type="text" class="form-input" id="quick-title"></div>
-          <div class="form-group"><label>Обложка (из папки img/)</label><input type="text" class="form-input" id="quick-cover" placeholder="dragon.png"></div>
-          <div class="form-group"><label>Эра или часть</label><input type="text" class="form-input" id="quick-era" placeholder="Часть 1"></div>
-          <div class="form-group"><label>Дата событий для хронологии</label><input type="text" class="form-input" id="quick-timeline-date" placeholder="Например: 2045 год или осень 2045"></div>
-          <div class="form-group"><label>Краткое описание</label><textarea class="form-input" id="quick-desc" placeholder="О чём произведение..."></textarea></div>
-          <button class="btn btn-primary" onclick="createEmptyBook()">➕ Создать</button>
-        </div>
-      </div>
-      <div>
-        <div class="admin-panel">
-          <h3>📚 Мои книги</h3>
-          <div id="admin-book-list" style="display: flex; flex-direction: column; gap: 8px; max-height: 450px; overflow-y: auto;"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="admin-tab-lore" style="display: none;">
-    <div class="admin-panel">
-      <h3 id="lore-form-title">➕ Добавить запись в Лор</h3>
-      <input type="hidden" id="lore-edit-id" value="">
-      <div class="form-group">
-        <label>Тип записи</label>
-        <select class="form-input" id="lore-type">
-          <option value="characters">👥 Персонаж</option>
-          <option value="locations"> Локация</option>
-          <option value="items">⚔️ Предмет</option>
-        </select>
-      </div>
-      <div class="form-group"><label>Название</label><input type="text" class="form-input" id="lore-name" placeholder="Например: АВП Лапки"></div>
-      <div class="form-group"><label>Картинка (из папки img/)</label><input type="text" class="form-input" id="lore-img" placeholder="lapki.jpg"></div>
-      <div class="form-group"><label>Краткое описание</label><textarea class="form-input" id="lore-short" placeholder="Легендарное оружие..."></textarea></div>
-      <div class="form-group">
-        <label>Плашки инфобокса (Статус, Локация, Группировка)</label>
-        <div class="dynamic-fields" id="dynamic-fields"></div>
-        <button class="btn btn-small" onclick="addDynamicField()">➕ Добавить плашку</button>
-      </div>
-      <div class="form-group">
-        <label>Категории (через запятую)</label>
-        <input type="text" class="form-input" id="lore-categories" placeholder="Оружие, Легендарное">
-      </div>
-      <div class="form-group">
-        <label>Подробный текст статьи</label>
-        <div class="editor-toolbar">
-          <button onclick="execCmdLore('bold')"><b>B</b></button>
-          <button onclick="execCmdLore('italic')"><i>I</i></button>
-          <button onclick="execCmdLore('underline')"><u>U</u></button>
-          <button onclick="execCmdLore('formatBlock', 'H2')">H2</button>
-          <button onclick="execCmdLore('formatBlock', 'P')">¶</button>
-          <button onclick="insertLoreLink()" style="background: var(--accent); color: #fff;">🔗 Ссылка на сущность</button>
-        </div>
-        <div class="editor-content" id="lore-editor" contenteditable="true" style="min-height: 200px;"></div>
-      </div>
-      <div style="display: flex; gap: 8px;">
-        <button class="btn btn-primary" onclick="saveLoreEntry()">💾 Сохранить</button>
-        <button class="btn" onclick="resetLoreForm()" id="lore-cancel-btn" style="display:none;">✕ Отмена</button>
-      </div>
-      <div id="lore-status"></div>
-    </div>
-    <div class="admin-panel">
-      <h3>📋 Существующие записи</h3>
-      <div id="admin-lore-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
-    </div>
-  </div>
-
-  <div id="admin-tab-backup" style="display: none;">
-    <div class="admin-panel">
-      <h3>📦 Экспорт для хостинга</h3>
-      <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 12px;">Скачай library.json и загрузи его на GitHub рядом с index.html.</p>
-      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-        <button class="btn btn-primary" onclick="exportLibraryJSON()">📥 Скачать library.json</button>
-        <button class="btn" onclick="exportFullJSON()">🗃️ Полный бэкап</button>
-        <button class="btn" onclick="document.getElementById('import-file').click()">⬆️ Импорт бэкапа</button>
-        <input type="file" id="import-file" accept=".json" style="display: none;" onchange="importJSON(event)">
-        <button class="btn btn-danger" onclick="clearAllData()">️ Очистить всё</button>
-      </div>
-    </div>
-    <div class="admin-panel">
-      <h3> Инструкция по GitHub Pages</h3>
-      <ol style="font-size: 12px; color: var(--text-dim); padding-left: 20px; line-height: 1.9;">
-        <li>Зарегистрируйся на <b>github.com</b></li>
-        <li>Создай репозиторий (например <code>dragonms-wiki</code>), сделай Public</li>
-        <li>Загрузи: <code>index.html</code>, папку <code>img/</code>, <code>library.json</code></li>
-        <li>Settings → Pages → Source: GitHub Actions → Configure (Static HTML) → Commit</li>
-        <li>Сайт будет по адресу <code>https://твой-ник.github.io/название-репо/</code></li>
-      </ol>
-    </div>
-  </div>
-</section>
-
-<!-- РЕДАКТОР КНИГ -->
-<section id="section-editor" class="section">
-  <div style="max-width: 850px; margin: 0 auto;">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-      <h1 id="editor-book-title">Редактор</h1>
-      <button class="btn" onclick="showSection('admin')">← Назад</button>
-    </div>
-    <div class="admin-panel">
-      <h3>Глава книги</h3>
-      <div class="form-group"><label>Название главы</label><input type="text" class="form-input" id="chapter-title"></div>
-      <div class="form-group"><label>Обложка главы (из img/, необязательно)</label><input type="text" class="form-input" id="chapter-cover" placeholder="cover_chapter1.jpg"></div>
-      <div class="editor-toolbar">
-        <button onclick="execCmd('bold')"><b>B</b></button>
-        <button onclick="execCmd('italic')"><i>I</i></button>
-        <button onclick="execCmd('underline')"><u>U</u></button>
-        <button onclick="execCmd('formatBlock', 'H2')">H2</button>
-        <button onclick="execCmd('formatBlock', 'P')">¶</button>
-        <button onclick="insertLoreLinkInEditor()" style="background: var(--accent); color: #fff;">🔗 Лор-ссылка</button>
-      </div>
-      <div class="editor-content" id="editor-content" contenteditable="true" oninput="updateCharCount()"></div>
-      <div style="margin-top: 8px; font-size: 11px; color: var(--text-dim);">Символов: <span id="char-count">0</span> | Страниц: <span id="page-count">0</span></div>
-      <div style="margin-top: 12px; display: flex; gap: 6px;">
-        <button class="btn btn-primary" onclick="saveChapter()"> Сохранить главу</button>
-      </div>
-      <div id="editor-status"></div>
-    </div>
-    <div class="admin-panel">
-      <h3>📑 Главы этой книги</h3>
-      <div id="editor-chapter-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
-    </div>
-  </div>
-</section>
-
 <!-- Модалка выбора фона -->
 <div class="modal-overlay" id="bg-modal" onclick="if(event.target===this)closeBgModal()">
   <div class="modal">
-    <h3>🖼️ Выбрать фон сайта</h3>
+    <h3> Выбрать фон сайта</h3>
     <p style="font-size: 12px; color: var(--text-dim); margin-bottom: 16px;">Выбери обложку произведения в качестве фона.</p>
     <div class="bg-grid" id="bg-grid"></div>
     <div style="margin-top: 16px; display: flex; gap: 8px;">
-      <button class="btn" onclick="clearBg()">❌ Убрать фон</button>
+      <button class="btn" onclick="clearBg()"> Убрать фон</button>
       <button class="btn btn-primary" onclick="closeBgModal()">Закрыть</button>
     </div>
   </div>
 </div>
 
-<div class="toast" id="toast">💾 Сохранено!</div>
 
 <script>
 const STORAGE_KEY = 'dragonms_library_v6';
@@ -860,16 +738,16 @@ function updateLibrarySummary() {
   const date = (state.updatedAt || '2026-11-10').split('-').reverse().join('.');
   document.getElementById('library-summary').textContent = state.books.length ? `${state.books.length} записей библиотеки · ${count} статьи о мире · обновлено ${date}` : 'Не удалось загрузить библиотеку. Обновите страницу, когда соединение восстановится.';
 }
-let state = { 
-  books: [], 
+let state = {
+  books: [],
   lore: { characters: [], locations: [], items: [] },
   backgrounds: [],
   bookOrder: []
 };
 let currentBookId = null, currentChapterIdx = 0, currentPage = 0, pages = [];
-let editingBookId = null, editingChapterId = null;
 let lastLoreSection = 'characters';
-let petalsEnabled = false, petalInterval;
+let effectInterval;
+const motionPreference = matchMedia('(prefers-reduced-motion: reduce)');
 let savedFontSize = 16;
 
 function loadData() {
@@ -886,18 +764,6 @@ function loadData() {
     }
   } catch(e) { console.error('Load error', e); }
 }
-function saveData() {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    showToast();
-  } catch(e) { alert('Ошибка сохранения! Возможно localStorage переполнен.'); }
-}
-function showToast() {
-  const t = document.getElementById('toast');
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2000);
-}
-
 async function loadFromServer() {
   try {
     const basePath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
@@ -914,21 +780,23 @@ async function loadFromServer() {
         state.contentVersion = data.contentVersion;
         state.updatedAt = data.updatedAt;
         try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (error) { console.warn('Библиотека загружена, но не поместилась в локальный кэш.'); }
-        console.log('✅ Загружено книг:', state.books.length);
+        console.log(' Загружено книг:', state.books.length);
       }
     }
-  } catch(e) { console.log('❌ Ошибка загрузки library.json:', e); }
+  } catch(e) { console.log(' Ошибка загрузки library.json:', e); }
 }
 
 // ===== МОБИЛЬНОЕ МЕНЮ =====
 function toggleMobileMenu() {
   document.getElementById('mobile-menu').classList.toggle('open');
   document.getElementById('burger').classList.toggle('open');
+  document.getElementById('burger').setAttribute('aria-expanded', String(document.getElementById('mobile-menu').classList.contains('open')));
   document.body.style.overflow = document.getElementById('mobile-menu').classList.contains('open') ? 'hidden' : '';
 }
 function closeMobileMenu() {
   document.getElementById('mobile-menu').classList.remove('open');
   document.getElementById('burger').classList.remove('open');
+  document.getElementById('burger').setAttribute('aria-expanded', 'false');
   document.body.style.overflow = '';
 }
 function mobileNav(section) {
@@ -955,6 +823,7 @@ window.addEventListener('scroll', () => {
 });
 
 function showSection(name) {
+  if (!['home','books','reader','characters','locations','items','lore-view'].includes(name)) name = 'home';
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
   const section = document.getElementById('section-' + name);
@@ -968,80 +837,53 @@ function showSection(name) {
   if (name === 'home') renderTimeline();
   if (name === 'books') renderBooks();
   if (name === 'characters' || name === 'locations' || name === 'items') renderLoreGrid(name);
-  if (name === 'admin') { renderAdminBookList(); renderAdminLoreList(); }
   if (name !== 'reader') {
     document.getElementById('reading-progress').classList.remove('active');
-    document.getElementById('toc-sidebar').classList.remove('open');
+    toggleToc(false);
   }
   if (!['reader', 'lore-view'].includes(name)) writeRoute(name);
   window.scrollTo(0, 0);
 }
 
-function showAdminTab(tab) {
-  ['books', 'lore', 'backup'].forEach(t => document.getElementById('admin-tab-'+t).style.display = 'none');
-  document.getElementById('admin-tab-'+tab).style.display = 'block';
-}
-
 function setTheme(t) {
-  document.body.setAttribute('data-theme', t);
-  localStorage.setItem('dragonms_theme', t);
-  const petalsBtn = document.getElementById('petals-btn');
-  const petalsBtnMobile = document.getElementById('petals-btn-mobile');
-  if (t === 'sakura') {
-    if (petalsBtn) petalsBtn.style.display = 'block';
-    if (petalsBtnMobile) petalsBtnMobile.style.display = 'block';
-    if (petalsEnabled) {
-      if (petalsBtn) petalsBtn.textContent = ' Лепестки: ВКЛ';
-      if (petalsBtnMobile) petalsBtnMobile.textContent = '🌸 Лепестки: ВКЛ';
-      startPetals();
-    } else {
-      if (petalsBtn) petalsBtn.textContent = '🌸 Лепестки: ВЫКЛ';
-      if (petalsBtnMobile) petalsBtnMobile.textContent = '🌸 Лепестки: ВЫКЛ';
-    }
-  } else {
-    if (petalsBtn) petalsBtn.style.display = 'none';
-    if (petalsBtnMobile) petalsBtnMobile.style.display = 'none';
-    stopPetals();
-  }
+  const theme = ['dark', 'light', 'sakura', 'snow'].includes(t) ? t : 'dark';
+  document.body.dataset.theme = theme;
+  localStorage.setItem('dragonms_theme', theme);
+  document.querySelectorAll('.theme-btn').forEach(button => button.setAttribute('aria-pressed', String(button.classList.contains(theme))));
 }
 
-function togglePetals() {
-  petalsEnabled = !petalsEnabled;
-  const btn = document.getElementById('petals-btn');
-  const btnMobile = document.getElementById('petals-btn-mobile');
-  const text = petalsEnabled ? '🌸 Лепестки: ВКЛ' : '🌸 Лепестки: ВЫКЛ';
-  if (btn) btn.textContent = text;
-  if (btnMobile) btnMobile.textContent = text;
-  if (petalsEnabled) startPetals(); else stopPetals();
-  localStorage.setItem('dragonms_petals', petalsEnabled);
+function setEffect(value) {
+  const effect = ['sakura', 'snow', 'fireflies'].includes(value) ? value : 'off';
+  localStorage.setItem('dragonms_effect', effect);
+  document.querySelectorAll('.effect-select').forEach(select => select.value = effect);
+  clearInterval(effectInterval);
+  document.querySelectorAll('.ambient-particle').forEach(node => node.remove());
+  if (effect === 'off' || motionPreference.matches || document.hidden) return;
+  effectInterval = setInterval(() => {
+    if (document.querySelectorAll('.ambient-particle').length >= 32) return;
+    const particle = document.createElement('div');
+    particle.className = 'ambient-particle ' + effect;
+    particle.setAttribute('aria-hidden', 'true');
+    const duration = 10 + Math.random() * 8;
+    const size = effect === 'snow' ? 3 + Math.random() * 5 : 5 + Math.random() * 6;
+    particle.style.cssText = 'left:' + Math.random() * 100 + 'vw;width:' + size + 'px;height:' + size + 'px;animation-duration:' + duration + 's;--drift:' + (Math.random() * 160 - 80) + 'px';
+    particle.addEventListener('animationend', () => particle.remove(), {once:true});
+    document.body.appendChild(particle);
+  }, 650);
 }
-
-function startPetals() {
-  if (petalInterval) return;
-  petalInterval = setInterval(() => {
-    const petal = document.createElement('div');
-    petal.className = 'petal';
-    petal.style.left = Math.random() * 100 + 'vw';
-    petal.style.width = (Math.random() * 10 + 5) + 'px';
-    petal.style.height = petal.style.width;
-    petal.style.animationDuration = (Math.random() * 3 + 4) + 's';
-    petal.style.opacity = Math.random() * 0.5 + 0.5;
-    document.body.appendChild(petal);
-    setTimeout(() => petal.remove(), 7000);
-  }, 300);
-}
-function stopPetals() { clearInterval(petalInterval); petalInterval = null; document.querySelectorAll('.petal').forEach(p => p.remove()); }
+motionPreference.addEventListener('change', () => setEffect(localStorage.getItem('dragonms_effect')));
+document.addEventListener('visibilitychange', () => setEffect(localStorage.getItem('dragonms_effect')));
 
 // ===== ФОН =====
 function openBgModal() {
   const grid = document.getElementById('bg-grid');
   const currentBg = localStorage.getItem('dragonms_current_bg');
-  
+
   if (state.backgrounds.length === 0) {
     grid.innerHTML = '<p style="color:var(--text-dim); grid-column:1/-1; text-align:center; padding:20px;">Нет доступных фонов. Добавь произведения с обложками.</p>';
   } else {
     grid.innerHTML = state.backgrounds.map(bg => `
-      <div class="bg-option ${currentBg === bg.id ? 'active' : ''}" 
+      <div class="bg-option ${currentBg === bg.id ? 'active' : ''}"
            style="background-image: url('img/${bg.img}')"
            onclick="setBg('${bg.id}')">
         <div class="bg-option-name">${bg.name}</div>
@@ -1078,12 +920,12 @@ function applyBg() {
 // ===== ТАЙМЛАЙН =====
 function renderTimeline() {
   const container = document.getElementById('timeline-container');
-  
+
   state.books.forEach(book => {
     if (!state.bookOrder.includes(book.id)) state.bookOrder.push(book.id);
   });
   state.bookOrder = state.bookOrder.filter(id => state.books.find(b => b.id === id));
-  
+
   const items = state.bookOrder.map(bookId => {
     const book = state.books.find(b => b.id === bookId);
     if (!book || (book.collection && book.collection !== 'Основная история')) return null;
@@ -1100,37 +942,26 @@ function renderTimeline() {
   }).filter(Boolean).sort((a, b) => {
     return a.order - b.order;
   });
-  
+
   if (items.length === 0) {
     container.innerHTML = '<div class="timeline-empty">Пока в хронологии нет произведений. Добавьте книгу и дату событий в панели управления.</div>';
     return;
   }
-  
+
   container.innerHTML = items.map(item => `
     <article class="timeline-item">
       <button type="button" class="timeline-card" onclick="openBook('${item.bookId}')" aria-label="Открыть произведение: ${item.title}">
         <span class="timeline-image-wrap"><img loading="lazy" src="img/${item.img}" alt="Обложка «${item.title}»" onerror="this.onerror=null;this.src='img/dragon.png'"></span>
         <span class="timeline-copy">
           ${item.date ? `<span class="timeline-date">${item.date}</span>` : ''}
-          <span class="timeline-era">${item.era}</span><span class="book-status">${escapeHTML(item.status)}</span>
+          <span class="timeline-era">${item.era}</span>
           <span class="timeline-title">${item.title}</span>
           <span class="timeline-desc">${item.desc}</span>
         </span>
       </button>
-      ${item.date ? '':`<div class="timeline-order-controls" aria-label="Изменить порядок карточки">
-        <button type="button" onclick="moveBook(${item.order}, -1)" ${item.order===0?'disabled':''} title="Переместить выше" aria-label="Переместить выше">↑</button>
-        <button type="button" onclick="moveBook(${item.order}, 1)" ${item.order===state.bookOrder.length-1?'disabled':''} title="Переместить ниже" aria-label="Переместить ниже">↓</button>
-      </div>`}
+
     </article>
   `).join('');
-}
-
-function moveBook(idx, dir) {
-  const newIdx = idx + dir;
-  if (newIdx < 0 || newIdx >= state.bookOrder.length) return;
-  [state.bookOrder[idx], state.bookOrder[newIdx]] = [state.bookOrder[newIdx], state.bookOrder[idx]];
-  saveData();
-  renderTimeline();
 }
 
 // ===== КНИГИ =====
@@ -1151,7 +982,7 @@ function renderBooks() {
       <img loading="lazy" alt="Обложка: ${escapeHTML(book.title)}" class="book-cover" src="img/${book.cover || 'dragon.png'}" onerror="this.onerror=null;this.src='img/dragon.png'" style="width:100%; height:220px; object-fit:cover; background:var(--bg-3);">
       <div class="book-info" style="padding:12px;">
         <div class="book-title" style="font-size:16px; font-weight:700; margin-bottom:8px;">${escapeHTML(book.title)}</div>
-        <span class="book-status">${escapeHTML(book.status || '')}</span>
+
         <div class="book-meta" style="font-size:12px; color:var(--text-dim); margin:8px 0;">${escapeHTML(book.collection || book.era || '')} · ${(book.chapters || []).length} разд.</div>
         <p class="book-description">${escapeHTML(book.description || '')}</p>
       </div>
@@ -1164,7 +995,7 @@ function openBook(bookId) {
   if (!book || !book.chapters || book.chapters.length === 0) { alert('Книга пустая!'); return; }
   currentBookId = bookId;
   writeRoute('book=' + encodeURIComponent(bookId));
-  
+
   const savedPos = localStorage.getItem('reading_pos_' + bookId);
   if (savedPos) {
     try { const pos = JSON.parse(savedPos); currentChapterIdx = Math.max(0, Number(pos.chapter) || 0); currentPage = Math.max(0, Number(pos.page) || 0); }
@@ -1173,7 +1004,7 @@ function openBook(bookId) {
     currentChapterIdx = 0;
     currentPage = 0;
   }
-  
+
   showSection('reader');
   renderReader();
 }
@@ -1195,18 +1026,24 @@ function renderReader() {
   setReaderTheme(localStorage.getItem('reader_theme') || 'default');
   document.getElementById('reader-book-title').textContent = book.title;
   document.getElementById('reader-chapter-title').textContent = chapter.title || `Глава ${currentChapterIdx + 1}`;
-  document.getElementById('reader-book-meta').innerHTML = `<span class="book-status">${escapeHTML(book.status || '')}</span><p>${escapeHTML(book.description || '')}</p><details><summary>Издание и исходные файлы</summary><p>${(book.sourcePaths || []).map(escapeHTML).join('<br>')}</p>${book.sourceFile ? `<a href="${book.sourceFile}" download>Скачать исходный ${book.sourceFile.split('.').pop().toUpperCase()}</a>` : ''}${(book.additionalFiles || []).map(f => `<p><a href="${f.url}" download>${escapeHTML(f.label)}</a></p>`).join('')}<p>Текст сохранён в авторской редакции. Номера страниц внутри исходного содержания относятся к Word, а не к страницам читалки.</p></details>`;
-  
-  pages = splitIntoPages(chapter.content, 4000);
+
+  pages = splitIntoPages(readingHTML(chapter.content), 4000);
   if (currentPage >= pages.length) currentPage = pages.length - 1;
   if (currentPage < 0) currentPage = 0;
-  
+
   document.getElementById('reader-content').innerHTML = pages[currentPage] || '<p>Пусто</p>';
   document.getElementById('page-info').textContent = `Стр. ${currentPage + 1} из ${pages.length} • Разд. ${currentChapterIdx + 1}/${book.chapters.length}`;
   document.querySelector('.reader-container').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
   renderToc();
   saveReadingPosition();
   updateReadingProgress();
+}
+
+function readingHTML(html) {
+  const fragment = document.createElement('template');
+  fragment.innerHTML = html || '';
+  fragment.content.querySelectorAll('a, .lore-link, [data-lore-id]').forEach(link => link.replaceWith(...link.childNodes));
+  return fragment.innerHTML;
 }
 
 function splitIntoPages(html, maxChars) {
@@ -1232,16 +1069,16 @@ function nextPage() {
   hideLoreTooltip();
   const book = state.books.find(b => b.id === currentBookId);
   if (currentPage < pages.length - 1) { currentPage++; renderReader(); }
-  else if (currentChapterIdx < book.chapters.length - 1) { 
-    currentChapterIdx++; currentPage = 0; 
+  else if (currentChapterIdx < book.chapters.length - 1) {
+    currentChapterIdx++; currentPage = 0;
     renderReader();
   }
-  else { alert('🎉 Книга прочитана!'); }
+  else { alert(' Книга прочитана!'); }
 }
 function prevPage() {
   hideLoreTooltip();
   if (currentPage > 0) { currentPage--; renderReader(); }
-  else if (currentChapterIdx > 0) { currentChapterIdx--; currentPage = 0; renderReader(); }
+  else if (currentChapterIdx > 0) { currentChapterIdx--; currentPage = Number.MAX_SAFE_INTEGER; renderReader(); }
 }
 
 // Прогресс-бар
@@ -1267,10 +1104,13 @@ function setReaderTheme(theme) {
 }
 
 function changeFontSize(size) {
-  savedFontSize = parseInt(size);
-  document.documentElement.style.setProperty('--reader-font-size', size + 'px');
-  document.getElementById('font-size-value').textContent = size;
-  localStorage.setItem('reader_font_size', size);
+  savedFontSize = Math.max(12, Math.min(28, parseInt(size) || 16));
+  document.documentElement.style.setProperty('--reader-font-size', savedFontSize + 'px');
+  document.getElementById('font-size-slider').value = savedFontSize;
+  document.getElementById('font-size-value').textContent = savedFontSize + ' px';
+  document.getElementById('font-smaller').disabled = savedFontSize === 12;
+  document.getElementById('font-larger').disabled = savedFontSize === 28;
+  localStorage.setItem('reader_font_size', savedFontSize);
 }
 
 // ===== УЛУЧШЕННЫЙ ПОИСК С КОНТЕКСТОМ =====
@@ -1289,38 +1129,42 @@ function performSearch() {
   const query = document.getElementById('search-input-large').value.trim();
   const resultsDiv = document.getElementById('search-results-large');
   const statsDiv = document.getElementById('search-stats');
-  
+
   if (!query || query.length < 2) {
     resultsDiv.innerHTML = '';
     statsDiv.textContent = '';
     return;
   }
-  
+
   const book = state.books.find(b => b.id === currentBookId);
   if (!book) return;
-  
+
   const queryLower = query.toLowerCase();
   const allResults = [];
   let totalMatches = 0;
-  
+
   book.chapters.forEach((ch, chIdx) => {
-    const text = (ch.content || '').replace(/<[^>]+>/g, '');
+    const chapterPages = splitIntoPages(readingHTML(ch.content), 4000);
+    const pageTexts = chapterPages.map(html => { const node = document.createElement('div'); node.innerHTML = html; return node.textContent || ''; });
+    const text = pageTexts.join('');
     const textLower = text.toLowerCase();
     let searchFrom = 0;
     let matchCount = 0;
-    
+
     while (true) {
       const idx = textLower.indexOf(queryLower, searchFrom);
       if (idx === -1) break;
-      
+
       const start = Math.max(0, idx - 60);
       const end = Math.min(text.length, idx + query.length + 60);
       const snippet = text.substring(start, end);
-      
+
       // Определяем номер страницы
       const textBefore = text.substring(0, idx);
-      const pageNum = Math.floor(textBefore.length / 4000) + 1;
-      
+      let offset = 0;
+      const pageIndex = pageTexts.findIndex(page => { offset += page.length; return idx < offset; });
+      const pageNum = Math.max(0, pageIndex) + 1;
+
       allResults.push({
         chIdx,
         pageNum,
@@ -1328,25 +1172,25 @@ function performSearch() {
         query,
         position: idx
       });
-      
+
       totalMatches++;
       matchCount++;
       searchFrom = idx + 1;
-      
+
       if (matchCount >= 5) break; // Максимум 5 вхождений на главу
     }
   });
-  
+
   statsDiv.textContent = `Найдено ${totalMatches} совпадени${totalMatches === 1 ? 'е' : totalMatches < 5 ? 'я' : 'й'} в ${new Set(allResults.map(r => r.chIdx)).size} главах`;
-  
+
   if (allResults.length === 0) {
-    resultsDiv.innerHTML = '<div class="search-empty">🔍 Ничего не найдено. Попробуй другой запрос.</div>';
+    resultsDiv.innerHTML = '<div class="search-empty"> Ничего не найдено. Попробуй другой запрос.</div>';
     return;
   }
-  
+
   resultsDiv.innerHTML = allResults.map(r => {
-    const highlighted = r.snippet.replace(
-      new RegExp(`(${r.query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi'), 
+    const highlighted = escapeHTML(r.snippet).replace(
+      new RegExp(`(${escapeHTML(r.query).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi'),
       '<span class="highlight">$1</span>'
     );
     const chapter = book.chapters[r.chIdx];
@@ -1354,7 +1198,7 @@ function performSearch() {
     return `
       <div class="search-result-card" onclick="jumpToSearchResult(${r.chIdx}, ${r.pageNum - 1})">
         <div class="search-result-header">
-          <span class="search-result-chapter">📖 ${chapterTitle}</span>
+          <span class="search-result-chapter"> ${escapeHTML(chapterTitle)}</span>
           <span class="search-result-page">Стр. ${r.pageNum}</span>
         </div>
         <div class="search-result-context">...${highlighted}...</div>
@@ -1371,303 +1215,44 @@ function jumpToSearchResult(chIdx, pageNum) {
 }
 
 // Оглавление
-function toggleToc() { document.getElementById('toc-sidebar').classList.toggle('open'); }
+function toggleToc(force) {
+  const sidebar = document.getElementById('toc-sidebar');
+  const open = typeof force === 'boolean' ? force : !sidebar.classList.contains('open');
+  sidebar.classList.toggle('open', open);
+  sidebar.inert = !open;
+  document.getElementById('toc-backdrop').classList.toggle('open', open);
+  document.getElementById('toc-toggle').setAttribute('aria-expanded', String(open));
+  document.body.style.overflow = open ? 'hidden' : '';
+  if (open) sidebar.querySelector('button').focus();
+  else if (document.getElementById('section-reader').classList.contains('active')) document.getElementById('toc-toggle').focus();
+}
 function renderToc() {
   const book = state.books.find(b => b.id === currentBookId);
-  const content = document.getElementById('toc-content');
-  content.innerHTML = book.chapters.map((ch, i) => {
-    const numPages = Math.max(1, Math.ceil((ch.content||'').replace(/<[^>]+>/g,'').length / 4000));
-    return `
-    <div class="toc-chapter ${i === currentChapterIdx ? 'active' : ''}" onclick="jumpToChapter(${i})">
-      <div class="toc-chapter-title">${i+1}. ${ch.title || 'Глава ' + (i+1)}</div>
-      <div class="toc-pages">
-        ${Array.from({length: numPages}, (_, p) => 
-          `<span class="toc-page ${i===currentChapterIdx && p===currentPage ? 'active' : ''}" onclick="event.stopPropagation(); jumpToPage(${i}, ${p})">стр.${p+1}</span>`
-        ).join('')}
-      </div>
-    </div>
-  `}).join('');
-}
-function jumpToChapter(idx) { currentChapterIdx = idx; currentPage = 0; renderReader(); toggleToc(); }
-function jumpToPage(chIdx, pgIdx) { currentChapterIdx = chIdx; currentPage = pgIdx; renderReader(); }
-
-// ===== ИМПОРТ WORD =====
-const dropZone = document.getElementById('drop-zone');
-['dragenter', 'dragover'].forEach(e => dropZone.addEventListener(e, ev => { ev.preventDefault(); dropZone.classList.add('dragover'); }));
-['dragleave', 'drop'].forEach(e => dropZone.addEventListener(e, ev => { ev.preventDefault(); dropZone.classList.remove('dragover'); }));
-dropZone.addEventListener('drop', e => { if (e.dataTransfer.files[0]) processDocx(e.dataTransfer.files[0]); });
-function handleFileSelect(e) { if (e.target.files[0]) processDocx(e.target.files[0]); }
-
-let pendingBook = null;
-function processDocx(file) {
-  const status = document.getElementById('conversion-status');
-  status.className = 'status info'; status.textContent = '⏳ Конвертация...'; status.style.display = 'block';
-  const reader = new FileReader();
-  reader.onload = e => {
-    mammoth.convertToHtml({ arrayBuffer: e.target.result }).then(result => {
-      const chapters = splitByHeadings(result.value);
-      pendingBook = { fileName: file.name.replace('.docx', ''), html: result.value, chapters };
-      document.getElementById('preview-box').innerHTML = result.value;
-      document.getElementById('preview-section').style.display = 'block';
-      status.className = 'status success'; status.textContent = `✅ Готово! Глав: ${chapters.length}`;
-    }).catch(err => { status.className = 'status error'; status.textContent = '❌ ' + err.message; });
-  };
-  reader.readAsArrayBuffer(file);
-}
-function splitByHeadings(html) {
-  const tmp = document.createElement('div'); tmp.innerHTML = html;
-  const chapters = []; let current = { title: 'Глава 1', content: '' }; let num = 1;
-  Array.from(tmp.children).forEach(node => {
-    if (node.tagName === 'H1' || node.tagName === 'H2') {
-      if (current.content.trim()) chapters.push(current);
-      current = { title: node.textContent.trim() || `Глава ${num}`, content: '' }; num++;
-    } else { current.content += node.outerHTML; }
-  });
-  if (current.content.trim()) chapters.push(current);
-  if (chapters.length === 0) chapters.push({ title: 'Глава 1', content: html });
-  return chapters;
-}
-function saveConvertedBook() {
-  if (!pendingBook) return;
-  const title = prompt('Название книги:', pendingBook.fileName); if (!title) return;
-  const cover = prompt('Обложка (из img/):', 'dragon.png') || 'dragon.png';
-  const era = prompt('Эра/часть (для таймлайна):', 'Часть 1') || 'Без эры';
-  const description = prompt('Краткое описание:', '') || '';
-  const timelineDate = prompt('Дата или период событий (можно оставить пустым):', '') || '';
-  
-  const book = { 
-    id: 'book_' + Date.now(), title, cover, era, timelineDate, description,
-    chapters: pendingBook.chapters.map((c, i) => ({ id: 'ch_'+Date.now()+'_'+i, title: c.title, content: c.content })), 
-    createdAt: new Date().toISOString() 
-  };
-  state.books.push(book);
-  state.bookOrder.push(book.id);
-  
-  if (!state.backgrounds.find(b => b.img === cover)) {
-    state.backgrounds.push({ id: 'bg_' + Date.now(), img: cover, name: title });
-  }
-  
-  saveData(); pendingBook = null;
-  document.getElementById('preview-section').style.display = 'none';
-  renderAdminBookList();
-}
-function cancelConversion() { pendingBook = null; document.getElementById('preview-section').style.display = 'none'; }
-
-function editBookTimeline(bookId) {
-  const book = state.books.find(item => item.id === bookId);
-  if (!book) return;
-  const value = prompt('Дата или период событий (например: 2045 год, осень 2045). Оставьте пустым, чтобы убрать дату:', book.timelineDate || book.eventDate || book.date || '');
-  if (value === null) return;
-  book.timelineDate = value.trim();
-  saveData();
-  renderAdminBookList();
-  renderTimeline();
-}
-
-function renderAdminBookList() {
-  const list = document.getElementById('admin-book-list');
-  if (state.books.length === 0) { list.innerHTML = '<p style="color:var(--text-dim)">Нет книг</p>'; return; }
-  list.innerHTML = state.books.map(book => `
-    <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; background:var(--bg); border:1px solid var(--border); border-radius:7px;">
-      <div><b style="font-size:13px">${book.title}</b><br><small style="color:var(--text-dim)">${(book.chapters||[]).length} глав • ${book.era || ''} • ${book.timelineDate ? '🗓️ ' + book.timelineDate : 'дата не задана'}</small></div>
-      <div style="display:flex; gap:5px;">
-        <button class="btn btn-small" onclick="editBookTimeline('${book.id}')" title="Задать дату в хронологии" aria-label="Задать дату в хронологии">🗓️</button>
-        <button class="btn btn-small" onclick="openEditor('${book.id}')">✏️</button>
-        <button class="btn btn-small btn-danger" onclick="deleteBook('${book.id}')">🗑️</button>
-      </div>
-    </div>
-  `).join('');
-}
-function deleteBook(id) { 
-  if(!confirm('Удалить?')) return; 
-  state.books = state.books.filter(b => b.id !== id); 
-  state.bookOrder = state.bookOrder.filter(bid => bid !== id);
-  saveData(); renderAdminBookList(); 
-}
-function createEmptyBook() {
-  const title = document.getElementById('quick-title').value.trim(); if (!title) return alert('Введи название');
-  const cover = document.getElementById('quick-cover').value.trim() || 'dragon.png';
-  const era = document.getElementById('quick-era').value.trim() || 'Без эры';
-  const desc = document.getElementById('quick-desc').value.trim() || '';
-  const timelineDate = document.getElementById('quick-timeline-date').value.trim();
-  const book = { id: 'book_' + Date.now(), title, cover, era, timelineDate, description: desc, chapters: [], createdAt: new Date().toISOString() };
-  state.books.push(book);
-  state.bookOrder.push(book.id);
-  
-  if (!state.backgrounds.find(b => b.img === cover)) {
-    state.backgrounds.push({ id: 'bg_' + Date.now(), img: cover, name: title });
-  }
-  
-  saveData(); 
-  document.getElementById('quick-title').value = ''; 
-  document.getElementById('quick-cover').value = '';
-  document.getElementById('quick-era').value = '';
-  document.getElementById('quick-timeline-date').value = '';
-  document.getElementById('quick-desc').value = '';
-  renderAdminBookList();
-}
-
-// ===== РЕДАКТОР КНИГ =====
-function openEditor(bookId) {
-  editingBookId = bookId; editingChapterId = null;
-  const book = state.books.find(b => b.id === bookId);
-  document.getElementById('editor-book-title').textContent = '✏️ ' + book.title;
-  showSection('editor'); renderEditorChapterList();
-  document.getElementById('editor-content').innerHTML = ''; document.getElementById('chapter-title').value = ''; document.getElementById('chapter-cover').value = '';
-}
-function renderEditorChapterList() {
-  const book = state.books.find(b => b.id === editingBookId);
-  const list = document.getElementById('editor-chapter-list');
-  if (!book.chapters.length) { list.innerHTML = '<p style="color:var(--text-dim)">Нет глав</p>'; return; }
-  list.innerHTML = book.chapters.map((ch, i) => `
-    <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; background:var(--bg); border:1px solid var(--border); border-radius:7px;">
-      <div><b style="font-size:13px">${i+1}. ${ch.title}</b>${ch.cover ? '<br><small style="color:var(--text-dim)">Обложка: '+ch.cover+'</small>' : ''}</div>
-      <div style="display:flex; gap:5px;">
-        <button class="btn btn-small" onclick="loadChapter('${ch.id}')">✏️</button>
-        <button class="btn btn-small btn-danger" onclick="deleteChapter('${ch.id}')">🗑️</button>
-      </div>
-    </div>
-  `).join('');
-}
-function loadChapter(id) {
-  const book = state.books.find(b => b.id === editingBookId);
-  const ch = book.chapters.find(c => c.id === id); if (!ch) return;
-  editingChapterId = id; 
-  document.getElementById('chapter-title').value = ch.title; 
-  document.getElementById('chapter-cover').value = ch.cover || '';
-  document.getElementById('editor-content').innerHTML = ch.content;
-  updateCharCount();
-}
-function saveChapter() {
-  const book = state.books.find(b => b.id === editingBookId);
-  const title = document.getElementById('chapter-title').value.trim() || 'Без названия';
-  const cover = document.getElementById('chapter-cover').value.trim() || '';
-  const content = document.getElementById('editor-content').innerHTML;
-  if (editingChapterId) { 
-    const ch = book.chapters.find(c => c.id === editingChapterId); 
-    if(ch) { ch.title = title; ch.content = content; ch.cover = cover; } 
-  }
-  else { book.chapters.push({ id: 'ch_' + Date.now(), title, content, cover }); }
-  saveData(); renderEditorChapterList();
-  const s = document.getElementById('editor-status'); s.className = 'status success'; s.textContent = '✅ Сохранено!'; setTimeout(() => s.textContent = '', 2000);
-}
-function deleteChapter(id) {
-  if(!confirm('Удалить главу?')) return;
-  const book = state.books.find(b => b.id === editingBookId);
-  book.chapters = book.chapters.filter(c => c.id !== id); saveData(); renderEditorChapterList();
-  if (editingChapterId === id) { editingChapterId = null; document.getElementById('editor-content').innerHTML = ''; document.getElementById('chapter-title').value = ''; document.getElementById('chapter-cover').value = ''; }
-}
-function execCmd(cmd, val) { document.execCommand(cmd, false, val); document.getElementById('editor-content').focus(); }
-function updateCharCount() {
-  const text = document.getElementById('editor-content').innerText.length;
-  document.getElementById('char-count').textContent = text;
-  document.getElementById('page-count').textContent = Math.ceil(text / 4000) || 0;
-}
-
-// ===== ЛОР С TOOLTIP =====
-function addDynamicField(label = '', value = '') {
-  const container = document.getElementById('dynamic-fields');
-  const div = document.createElement('div');
-  div.className = 'dynamic-field';
-  div.innerHTML = `
-    <input type="text" class="form-input field-label" placeholder="Название (Статус)" value="${label}" style="flex:1">
-    <input type="text" class="form-input field-value" placeholder="Значение (Жив)" value="${value}" style="flex:1.5">
-    <button class="btn btn-icon btn-danger" onclick="this.parentElement.remove()">✕</button>
-  `;
-  container.appendChild(div);
-}
-
-function getDynamicFields() {
-  const fields = [];
-  document.querySelectorAll('.dynamic-field').forEach(div => {
-    const label = div.querySelector('.field-label').value.trim();
-    const value = div.querySelector('.field-value').value.trim();
-    if (label && value) fields.push({ label, value });
-  });
-  return fields;
-}
-
-function saveLoreEntry() {
-  const editId = document.getElementById('lore-edit-id').value;
-  const type = document.getElementById('lore-type').value;
-  const name = document.getElementById('lore-name').value.trim();
-  const img = document.getElementById('lore-img').value.trim() || 'dragon.png';
-  const short = document.getElementById('lore-short').value.trim();
-  const fields = getDynamicFields();
-  const categories = document.getElementById('lore-categories').value.trim();
-  const full = document.getElementById('lore-editor').innerHTML;
-  if (!name || !full) return alert('Заполни название и текст!');
-  
-  const entry = { id: editId || 'lore_' + Date.now(), name, img, short, fields, categories: categories ? categories.split(',').map(c => c.trim()) : [], full, updatedAt: new Date().toISOString() };
-
-  if (editId) {
-    ['characters', 'locations', 'items'].forEach(t => { state.lore[t] = state.lore[t].filter(i => i.id !== editId); });
-  }
-  state.lore[type].push(entry);
-  saveData(); renderAdminLoreList(); resetLoreForm();
-  
-  const s = document.getElementById('lore-status'); s.className = 'status success'; s.textContent = '✅ Сохранено!'; setTimeout(() => s.textContent = '', 2500);
-}
-
-function editLoreEntry(id) {
-  let item = null, type = null;
-  ['characters', 'locations', 'items'].forEach(t => {
-    const found = state.lore[t].find(i => i.id === id);
-    if (found) { item = found; type = t; }
-  });
-  if (!item) return;
-
-  document.getElementById('lore-edit-id').value = item.id;
-  document.getElementById('lore-type').value = type;
-  document.getElementById('lore-name').value = item.name;
-  document.getElementById('lore-img').value = item.img;
-  document.getElementById('lore-short').value = item.short || '';
-  document.getElementById('lore-categories').value = (item.categories || []).join(', ');
-  document.getElementById('lore-editor').innerHTML = item.full;
-  document.getElementById('lore-form-title').textContent = '✏️ Редактирование: ' + item.name;
-  document.getElementById('lore-cancel-btn').style.display = 'inline-flex';
-
-  document.getElementById('dynamic-fields').innerHTML = '';
-  (item.fields || []).forEach(f => addDynamicField(f.label, f.value));
-
-  showAdminTab('lore');
-}
-
-function resetLoreForm() {
-  document.getElementById('lore-edit-id').value = '';
-  document.getElementById('lore-name').value = '';
-  document.getElementById('lore-img').value = '';
-  document.getElementById('lore-short').value = '';
-  document.getElementById('lore-categories').value = '';
-  document.getElementById('lore-editor').innerHTML = '';
-  document.getElementById('dynamic-fields').innerHTML = '';
-  document.getElementById('lore-form-title').textContent = '➕ Добавить запись в Лор';
-  document.getElementById('lore-cancel-btn').style.display = 'none';
-}
-
-function renderAdminLoreList() {
-  const list = document.getElementById('admin-lore-list');
-  const all = [];
-  ['characters', 'locations', 'items'].forEach(t => { state.lore[t].forEach(i => all.push({...i, type: t})); });
-  if (all.length === 0) { list.innerHTML = '<p style="color:var(--text-dim)">Записей нет</p>'; return; }
-  list.innerHTML = all.map(item => {
-    const typeLabel = item.type === 'characters' ? 'Персонаж' : item.type === 'locations' ? 'Локация' : 'Предмет';
-    return `
-    <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; background:var(--bg); border:1px solid var(--border); border-radius:7px;">
-      <div><b style="font-size:13px">${item.name}</b> <small style="color:var(--text-dim)">(${typeLabel})</small></div>
-      <div style="display:flex; gap:5px;">
-        <button class="btn btn-small" onclick="editLoreEntry('${item.id}')">✏️</button>
-        <button class="btn btn-small btn-danger" onclick="deleteLore('${item.id}')">🗑️</button>
-      </div>
-    </div>`;
+  document.getElementById('toc-content').innerHTML = book.chapters.map((chapter, i) => {
+    const count = splitIntoPages(readingHTML(chapter.content), 4000).length;
+    return '<button class="toc-chapter ' + (i === currentChapterIdx ? 'active' : '') + '" onclick="jumpToChapter(' + i + ')" ' + (i === currentChapterIdx ? 'aria-current="true"' : '') + '><span>' + (i + 1) + '. ' + escapeHTML(chapter.title || 'Раздел ' + (i + 1)) + '</span><small>' + count + ' стр.</small></button>';
   }).join('');
 }
+function jumpToChapter(index) { currentChapterIdx = index; currentPage = 0; toggleToc(false); renderReader(); }
 
-function deleteLore(id) {
-  if(!confirm('Удалить запись?')) return;
-  ['characters', 'locations', 'items'].forEach(type => { state.lore[type] = state.lore[type].filter(i => i.id !== id); });
-  saveData(); renderAdminLoreList();
-}
+document.addEventListener('keydown', event => {
+  const toc = document.getElementById('toc-sidebar');
+  const searchOpen = document.getElementById('search-modal').classList.contains('open');
+  if (event.key === 'Escape') { toggleToc(false); closeSearchModal(); return; }
+  if (toc.classList.contains('open')) {
+    if (event.key === 'Tab') {
+      const buttons = [...toc.querySelectorAll('button')];
+      const first = buttons[0], last = buttons[buttons.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    }
+    return;
+  }
+  if (searchOpen || !document.getElementById('section-reader').classList.contains('active') || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+  if (event.target.closest('input, textarea, select, button, summary, a, [contenteditable="true"]')) return;
+  if (['ArrowRight', 'PageDown'].includes(event.key)) { event.preventDefault(); nextPage(); }
+  if (['ArrowLeft', 'PageUp'].includes(event.key)) { event.preventDefault(); prevPage(); }
+});
 
 function renderLoreGrid(type) {
   lastLoreSection = type;
@@ -1690,7 +1275,7 @@ function openLoreArticle(type, id) {
   writeRoute('lore=' + encodeURIComponent(type) + '/' + encodeURIComponent(id));
   document.getElementById('lore-return-book').hidden = !currentBookId;
   const typeLabel = type === 'characters' ? 'Персонаж' : type === 'locations' ? 'Локация' : 'Предмет';
-  
+
   let fieldsHtml = '';
   if (item.fields && item.fields.length > 0) {
     fieldsHtml = item.fields.map(f => `<div class="info-row"><span class="info-label">${f.label}:</span><span class="info-value">${f.value}</span></div>`).join('');
@@ -1720,7 +1305,7 @@ function showLoreTooltip(e, id, type) {
     if (found) item = found;
   });
   if (!item) return;
-  
+
   const tooltip = document.getElementById('lore-tooltip');
   tooltip.innerHTML = `
     <img src="img/${item.img}" onerror="this.style.display='none'">
@@ -1728,12 +1313,12 @@ function showLoreTooltip(e, id, type) {
     <p>${item.short || 'Описание отсутствует'}</p>
     <div class="click-hint">Нажмите для перехода к статье</div>
   `;
-  
+
   const rect = e.target.getBoundingClientRect();
   tooltip.style.left = (rect.right + 10) + 'px';
   tooltip.style.top = rect.top + 'px';
   tooltip.classList.add('show');
-  
+
   setTimeout(() => {
     const tRect = tooltip.getBoundingClientRect();
     if (tRect.right > window.innerWidth) {
@@ -1777,97 +1362,6 @@ function processLoreLinks(html) {
   return html.replace(/<a\s+class="lore-link"\s+data-lore-id="([^"]+)"\s+data-lore-type="([^"]+)"[^>]*>([^<]*)<\/a>/g, '<a class="lore-link" data-lore-id="$1" data-lore-type="$2" href="#lore=$2/$1">$3</a>');
 }
 
-function getAllLoreItems() {
-  return [...state.lore.characters.map(i => ({...i, type: 'characters'})), ...state.lore.locations.map(i => ({...i, type: 'locations'})), ...state.lore.items.map(i => ({...i, type: 'items'}))];
-}
-
-function insertLoreLink() {
-  const allItems = getAllLoreItems();
-  if (allItems.length === 0) return alert('Сначала добавь сущности!');
-  const options = allItems.map((item, i) => `${i+1}. ${item.name}`).join('\n');
-  const choice = prompt(`Выбери сущность (номер):\n${options}`);
-  if (!choice) return;
-  const idx = parseInt(choice) - 1;
-  if (idx < 0 || idx >= allItems.length) return alert('Неверный номер');
-  const item = allItems[idx];
-  document.execCommand('insertHTML', false, `<a class="lore-link" data-lore-id="${item.id}" data-lore-type="${item.type}">${item.name}</a>`);
-}
-
-function insertLoreLinkInEditor() {
-  const allItems = getAllLoreItems();
-  if (allItems.length === 0) return alert('Сначала добавь сущности в базу лора!');
-  const options = allItems.map((item, i) => `${i+1}. ${item.name}`).join('\n');
-  const choice = prompt(`Выбери сущность для ссылки (номер):\n${options}`);
-  if (!choice) return;
-  const idx = parseInt(choice) - 1;
-  if (idx < 0 || idx >= allItems.length) return alert('Неверный номер');
-  const item = allItems[idx];
-  document.execCommand('insertHTML', false, `<a class="lore-link" data-lore-id="${item.id}" data-lore-type="${item.type}">${item.name}</a>`);
-  document.getElementById('editor-content').focus();
-}
-
-function execCmdLore(cmd, val) { document.execCommand(cmd, false, val); document.getElementById('lore-editor').focus(); }
-
-// ===== ЭКСПОРТ =====
-function exportLibraryJSON() {
-  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'library.json'; a.click();
-}
-function exportFullJSON() {
-  const data = { ...state, exportedAt: new Date().toISOString() };
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `dragonms_full_backup_${Date.now()}.json`; a.click();
-}
-function importJSON(e) {
-  const file = e.target.files[0]; if (!file) return;
-  const reader = new FileReader();
-  reader.onload = ev => {
-    try {
-      const data = JSON.parse(ev.target.result);
-      if (confirm(`Импортировать ${data.books?.length || 0} книг?`)) {
-        state = { 
-          books: data.books || [], 
-          lore: data.lore || { characters: [], locations: [], items: [] },
-          backgrounds: data.backgrounds || [],
-          bookOrder: data.bookOrder || (data.books || []).map(b => b.id)
-        };
-        saveData(); renderAdminBookList(); renderAdminLoreList(); alert('✅ Импорт завершён!');
-      }
-    } catch(err) { alert('❌ Ошибка: ' + err.message); }
-  };
-  reader.readAsText(file);
-}
-function clearAllData() {
-  if (!confirm('Удалить ВСЁ?')) return;
-  if (!confirm('Точно-точно?')) return;
-  state = { books: [], lore: { characters: [], locations: [], items: [] }, backgrounds: [], bookOrder: [] }; 
-  saveData(); renderAdminBookList(); renderAdminLoreList();
-}
-
-// Клавиатурная навигация
-document.addEventListener('keydown', e => {
-  if (document.getElementById('section-reader').classList.contains('active')) {
-    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextPage(); }
-    if (e.key === 'ArrowLeft') { e.preventDefault(); prevPage(); }
-    if (e.key === 'Escape') { 
-      const toc = document.getElementById('toc-sidebar');
-      if (toc.classList.contains('open')) toggleToc();
-      else if (document.getElementById('search-modal').classList.contains('open')) closeSearchModal();
-    }
-  }
-});
-
-document.addEventListener('keydown', event => {
-  const searchOpen = document.getElementById('search-modal')?.classList.contains('open');
-  const tocOpen = document.getElementById('toc-sidebar')?.classList.contains('open');
-  if (document.getElementById('section-reader')?.classList.contains('active') && !searchOpen && !tocOpen && !event.altKey && !event.ctrlKey && !event.metaKey) {
-    const target = event.target;
-    if (target && /INPUT|TEXTAREA|SELECT/.test(target.tagName)) return;
-    if (event.key === 'ArrowRight' || event.key === 'PageDown') { event.preventDefault(); nextPage(); }
-    if (event.key === 'ArrowLeft' || event.key === 'PageUp') { event.preventDefault(); prevPage(); }
-  }
-});
-
 window.addEventListener('scroll', hideLoreTooltip, { passive: true });
 document.addEventListener('click', function(e) {
   if (!e.target.closest('.lore-link') && !e.target.closest('.lore-tooltip')) {
@@ -1880,29 +1374,10 @@ document.addEventListener('click', function(e) {
   await loadFromServer();
   const savedTheme = localStorage.getItem('dragonms_theme') || 'dark';
   setTheme(savedTheme);
-  
-  petalsEnabled = localStorage.getItem('dragonms_petals') === 'true';
-  if (savedTheme === 'sakura') {
-    const btn = document.getElementById('petals-btn');
-    const btnMobile = document.getElementById('petals-btn-mobile');
-    if (btn) btn.style.display = 'block';
-    if (btnMobile) btnMobile.style.display = 'block';
-    const text = petalsEnabled ? '🌸 Лепестки: ВКЛ' : '🌸 Лепестки: ВЫКЛ';
-    if (btn) btn.textContent = text;
-    if (btnMobile) btnMobile.textContent = text;
-    if (petalsEnabled) startPetals();
-  }
-  
-  const savedFont = localStorage.getItem('reader_font_size');
-  if (savedFont) {
-    savedFontSize = parseInt(savedFont);
-    document.documentElement.style.setProperty('--reader-font-size', savedFont + 'px');
-    const slider = document.getElementById('font-size-slider');
-    const value = document.getElementById('font-size-value');
-    if (slider) slider.value = savedFont;
-    if (value) value.textContent = savedFont;
-  }
-  
+
+  setEffect(localStorage.getItem('dragonms_effect') || (localStorage.getItem('dragonms_petals') === 'true' ? 'sakura' : 'off'));
+  changeFontSize(localStorage.getItem('reader_font_size') || 16);
+
   applyBg();
   renderTimeline();
   updateLibrarySummary();
