@@ -19,6 +19,9 @@ const assertFile = relative => {
 };
 let illustrations = 0, links = 0;
 const checkLinks = html => {
+  for (const match of html.matchAll(/href="#book=([^"]+)"/g)) {
+    assert.ok(books.has(match[1]), `Unknown book target: ${match[1]}`);
+  }
   for (const match of html.matchAll(/data-lore-id="([^"]+)"\s+data-lore-type="([^"]+)"/g)) {
     assert.ok(loreIds.get(match[2])?.has(match[1]), `Unknown lore target: ${match[1]}`); links++;
   }
@@ -41,6 +44,6 @@ for (const rows of Object.values(data.lore)) for (const row of rows) {
   checkLinks(row.full); assertFile('img/' + row.img);
 }
 assert.equal(books.get('book_c67316e892f8').chapters.filter(c => c.title.startsWith('Глава')).length, 11);
-assert.equal(books.get('book_6b577b40bbd4').chapters.filter(c => c.title.startsWith('Глава')).length, 7);
+assert.ok([...books.values()].every(book => book.status === 'Завершено'), 'Only completed works belong in the public library');
 assert.ok(!books.has('book_6d4d5a0fc0e4'));
 console.log(`OK: ${books.size} books/materials, ${articles} articles, ${illustrations} illustrations, ${links} valid lore links; JavaScript syntax and source files verified.`);

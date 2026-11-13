@@ -54,7 +54,7 @@ body.custom-bg::after {
 body[data-theme="dark"]:not(.custom-bg) { background: radial-gradient(ellipse at top, var(--bg-2) 0%, var(--bg) 50%); }
 body[data-theme="light"]:not(.custom-bg) { background: #f5f5f7; }
 body[data-theme="snow"]:not(.custom-bg) { background: radial-gradient(ellipse at top, var(--bg-2) 0%, var(--bg) 50%); }
-body[data-theme="sakura"]:not(.custom-bg) { background: linear-gradient(rgba(20, 10, 15, 0.7), rgba(20, 10, 15, 0.85)), url('img/mitsuko.png') center/cover fixed no-repeat; }
+body[data-theme="sakura"]:not(.custom-bg) { background: linear-gradient(rgba(20, 10, 15, 0.7), rgba(20, 10, 15, 0.85)), url('img/mitsuko-background-v2.webp') center/cover fixed no-repeat; }
 
 .petal { position: fixed; top: -10vh; z-index: 1; pointer-events: none; background: #ffb7c5; border-radius: 150% 0 150% 0; animation: fall linear infinite; }
 @keyframes fall { 0% { transform: translateY(0) rotate(0deg) translateX(0); opacity: 1; } 100% { transform: translateY(110vh) rotate(360deg) translateX(100px); opacity: 0; } }
@@ -589,17 +589,17 @@ h2 { font-size: 22px; color: var(--text); margin-bottom: 14px; } h3 { margin-bot
   </div>
   
   <p id="library-summary" class="library-summary" role="status">Загружаем библиотеку…</p>
-  <div class="home-actions"><button class="btn btn-primary" onclick="openBook('book_8f306e589126')">Начать с «Потерянных в океане»</button><button class="btn" onclick="showSection('books')">Все произведения и редакции</button></div>
+  <div class="home-actions"><button class="btn btn-primary" onclick="openBook('book_8f306e589126')">Начать с «Потерянных в океане»</button><button class="btn" onclick="showSection('books')">Все завершённые произведения</button></div>
   <h2>⏳ Основная история · порядок чтения</h2>
-  <p class="timeline-hint">Порядок событий и чтения не совпадает с годом редакции. «Сыны Японии» читаются между главами II и III третьих «Лапок». Ремейк первых «Лапок» и третья часть ещё пишутся; «Застрявшие в лесу» ожидают переработки. «Друзья навсегда» содержат спойлеры к будущему финалу.</p>
+  <p class="timeline-hint">В библиотеке представлены завершённые произведения. Первая часть «Лапок» доступна в оригинальной редакции 2023 года. Порядок событий и чтения не совпадает с годом редакции; «Друзья навсегда» раскрывают будущие события основной истории.</p>
   <div class="timeline" id="timeline-container"></div>
 </section>
 
 <section id="section-books" class="section">
   <h1>📚 Читальный зал Драгона</h1>
-  <p class="timeline-hint">Архив от 9 ноября 2026 года. Основная история, самостоятельные линии и ранние тексты сохранены отдельно от старых редакций и рабочих заметок. В произведениях встречаются ненормативная лексика, насилие и тяжёлые темы.</p>
+  <p class="timeline-hint">Завершённые произведения: основная история, самостоятельные линии и школьные истории. В произведениях встречаются ненормативная лексика, насилие и тяжёлые темы.</p>
   <input type="text" class="form-input" id="book-search" placeholder="🔍 Поиск по книгам..." oninput="renderBooks()" style="margin-bottom: 16px;">
-  <div class="library-filters"><label>Раздел <select id="book-collection" class="form-input" onchange="renderBooks()"><option value="">Все разделы</option><option>Основная история</option><option>Отдельные линии</option><option>Школьные истории</option><option>Другие произведения</option><option>Короткие истории</option><option>Старые редакции</option><option>Авторские материалы</option></select></label><label>Готовность <select id="book-status-filter" class="form-input" onchange="renderBooks()"><option value="">Все тексты</option><option value="unfinished">Незавершённые и фрагменты</option><option value="rewrite">Ожидают переработки</option></select></label><span id="book-result-count" role="status"></span></div>
+  <div class="library-filters"><label>Раздел <select id="book-collection" class="form-input" onchange="renderBooks()"><option value="">Все разделы</option><option>Основная история</option><option>Отдельные линии</option><option>Школьные истории</option><option>Другие произведения</option></select></label><span id="book-result-count" role="status"></span></div>
   <div class="books-grid" id="books-grid"></div>
 </section>
 
@@ -1142,9 +1142,7 @@ function timelineYear(value) {
 function renderBooks() {
   const search = (document.getElementById('book-search').value || '').toLowerCase();
   const collection = document.getElementById('book-collection').value;
-  const status = document.getElementById('book-status-filter').value;
-  const unfinished = /не завершено|фрагмент|продолжение|заготовка|рабочие заметки/i;
-  const filtered = state.books.filter(b => `${b.title} ${b.description || ''}`.toLowerCase().includes(search) && (!collection || b.collection === collection) && (!status || (status === 'rewrite' ? /переработка/i.test(b.status) : unfinished.test(b.status))));
+  const filtered = state.books.filter(b => `${b.title} ${b.description || ''}`.toLowerCase().includes(search) && (!collection || b.collection === collection));
   document.getElementById('book-result-count').textContent = `Найдено: ${filtered.length}`;
   const grid = document.getElementById('books-grid');
   if (filtered.length === 0) { grid.innerHTML = '<p style="color:var(--text-dim); grid-column:1/-1; text-align:center; padding:32px;">Книг нет.</p>'; return; }
